@@ -1,0 +1,22 @@
+{% extends "base_template.html" %} {% block body %} 
+{% if current_user.u.user_id == v.promoter_user.user_id %} 
+La votazione è attiva:
+    <div>{{v.votation_description}}</div>
+    <div>Candidati e scrutatori possono ora inviare le proprie chiavi.</div>
+    <div>
+        <h3>Candidati:</h3>
+        {% for c in candidates_array %}
+        <div>{{c.u.user_name}}</div>
+        {% endfor %}
+
+    </div>
+    <div>
+        <h3>Scrutatori:</h3>
+        {% for g in guarantors_array %}
+        <div>{{g.u.user_name}}</div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <div>Non puoi essere qui...</div>
+{% endif %} {% endblock %}

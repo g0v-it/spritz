@@ -1,0 +1,9 @@
+{% extends "base_template.html" %} {% block body %}
+<h3>Clicca il bottone per divenire uno scrutatore.</h3>
+Confermi di fare lo scutatore per: <b>{{v.votation_description}}</b>?
+<form action="/be_a_guarantor_confirm" method="GET">
+    <input type="submit" value="Confermo" class="btn btn-primary" />
+    <input type="hidden" name="votation_id" value="{{v.votation_id}}">
+</form>
+
+{% endblock %}

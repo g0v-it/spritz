@@ -1,0 +1,74 @@
+@charset "UTF-8";
+/* CSS Document */
+
+@import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i|Noto+Sans:400,400i,700,700i');
+
+body{color: #6b685f; margin-top: 0; font-family: 'Lato', sans-serif;}
+.textCenter{text-align: center;}
+.botton1{background-color: #167788; color: #fff; font-family: 'Lato', sans-serif; font-weight: lighter; font-size: 1rem; padding: 10px 20px; border-radius: 10px;}
+a{color: #167788;}
+.col2{width: 20%;}
+.col6{width: 60%;}
+
+/*form*/
+.alert{color: #a1a1a1 !important; font-weight: lighter !important; font-family: 'Fedra Sans' !important;}
+#login, #votationPurpose{text-align: left;}
+input{width: 350px; height: 40px; border-radius: 10px; background-color: #f8f8f8; margin: 15px 0; font-family: 'Lato', sans-serif; font-size: 15px; color: #6b685f;}
+#main form{max-width: 356px; margin: 50px auto;}
+label{font-family: 'Lato', sans-serif;}
+#votationPurpose .beginDate{width: 45%; float: left; margin-right: 15px;}
+#votationPurpose .endDate{width: 45%; float: right;}
+#votationPurpose .beginDate input, #votationPurpose .endDate input{max-width: 168px;}
+
+/*Start vot*/
+.startVot{background: #fade18; font-size: 1.5em; width: 350px; padding: 18px 20px; color: #6b685f; font-family: 'Lato', sans-serif; font-weight: lighter; border-radius: 5px;}
+.startVot>i{color: #167788; float: left; border: 2px solid #167788; border-radius: 30px; padding: 15px;}
+.goVot{background: #167788; font-size: 1.5em; width: 350px; padding: 18px 20px; color: #fff; font-family: 'Lato', sans-serif; font-weight: lighter; border-radius: 5px;}
+.goVot>i{color: #fade18; float: left; border: 2px solid #fade18; border-radius: 30px; padding: 15px;}
+.textButton{position: relative; top: 10px;}
+
+/*list*/
+.boxList{max-width: 1280px; margin: 0 auto;}
+.boxList h3{text-align: left;}
+.tabVotatioList{width: 100%; text-align: left;}
+.rigaTab{height: 50px; font-weight: lighter; border-bottom: 1px solid;}
+.rigaTab>td{border-bottom: 1px solid #d6d6d6; padding: 20px 10px;}
+.intestazioneTab{font-family: 'Noto Sans', sans-serif; font-weight: bold; height: 60px;}
+.idVotation{text-align: center; max-width: 80px; border-bottom: none !important;}
+.idVotation>a>span{border: 2px solid #fade18; padding: 10px; border-radius: 20px;}
+.tabVotatioList .myVote{background: rgba(22, 119, 136, 0.8); color: #fff;}
+.tabVotatioList .myVote a{color: #fff;}
+
+/*detail*/
+#main #vDetail{max-width: 400px; margin: 50px auto;}
+#vDetail{text-align: left;}
+#vDetail a{font-weight: bold;}
+span.lab{font-weight: bold;}
+.candidateList{display: inline-flex;}
+.candidateList .botton1{max-width: 160px; margin-left: 5px; padding-top: 6px;}
+.candidateList .nameV{font-weight: bold; margin-right: 20px; padding-top: 25px;}
+.candidateList input{max-height: 35px;}
+
+/*header*/
+header{background-image: url(images/header_bg.jpeg); margin-left: -15px; margin-right: -15px; background-size: 100% auto; background-repeat: no-repeat; margin-bottom: 50px; height: 164px;}
+#logo{margin-left: 30px; padding-top: 15px; float: left;}
+#logo img{max-width: 100%;}
+#icoAlSito{float: right; text-align: center;}
+#icoAlSito img{max-width: 100%;}
+
+/*menu user*/
+#menuUser{font-family: 'Noto Sans', sans-serif; width: 100%; min-height: 1px; margin-bottom: 60px;}
+#menuUser>.menu{float: right; color: #167788; padding-right: 80px;}
+.linkMenu{text-decoration: underline;}
+
+/*message*/
+#message h1, #main h1{font-family: 'Noto Sans', sans-serif; font-weight: lighter; color: #6b685f;}
+#message h3, #main h3{font-family: 'Lato', sans-serif; color: #6b685f;}
+#message p, #main p{font-family: 'Noto Sans', sans-serif; font-weight: lighter; color: #6b685f;}
+#message p>strong, #main p>strong{font-family: 'Lato', sans-serif; color: #6b685f;}
+
+/* form votation page */
+.voteForm {width: 1000px; margin:50px !important; max-width: 1000px !important;}
+.voteRadio {float:none; height: 20px; width: 20px; margin-left: 15px;}
+.voteTable {align-self: center;}
+

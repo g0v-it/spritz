@@ -1,0 +1,20 @@
+{% extends "base_template.html" %} 
+{% block body %} 
+{% if current_user.is_authenticated %} 
+Sei registrato come {{ current_user.user_name }}. 
+<div>Vai al <a href="/">Menu principale</a></div>
+{% else %}
+  <form action="login" method="post" id="login">
+    <h2>Per piacere, fai il login</h2>
+    <div class="form-group">
+      <label for="user_name">Nome utente:</label><br>
+      <input type="text" id="user_name" name="user_name">
+    </div>
+    <div class="form-group">
+      <label for="pass_word">Password:</label><br>
+      <input type="password" id="pass_word" name="pass_word">
+    </div>
+      <button class="btn btn-warning" type="submit">Entra</button>
+    </form>
+{% endif %} 
+{% endblock %}

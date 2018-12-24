@@ -1,0 +1,61 @@
+{% extends "base_template.html" %} {% block body %}
+    {% if  v.votation_status == 0 %}
+        <p>Non &egrave; ancora possibile votare.</p>
+    {% endif %}
+    {% if  v.votation_status > 1 %}
+        <p>Non &egrave; pi&ugrave; possibile votare.</p>
+    {% endif %}
+    {% if  v.votation_status == 1 %}
+        <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
+            <table class="table table-bordered">
+            <tr>
+                <th>Opzione</th>
+                <th>Giudizio</th>
+            </tr>
+            {% for c in options_array %}
+            <tr>
+                <td>{{c.option_name}}</td>
+                <td>
+                {% for i in range(words_array|count) %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" 
+                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} />
+                        <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i]}}</label>
+                    </div>
+                {% endfor %}
+                </td> 
+            </tr>
+            {% endfor %}
+
+            </table>
+            <div class="form-group">
+                <label for="secret_key_{{v.votation_id}}">Password per questo voto:</label>
+                <input type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" />
+                <small class="form-text text-muted">Ricordarla con attenzione. Non sarà recuperabile</small>
+            </div>
+        <button class="btn btn-warning" type="submit" id="sub_button">Vota</button>
+        <input type="hidden" id="vote_key" name="vote_key" value="xxx"  />
+    </form>
+    {% endif %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js"></script>
+<script>
+
+    $("#vote_form").submit(function( event ){
+        var pass_word = $("#secret_key_{{v.votation_id}}").val().trim();
+        if (!pass_word) {
+            alert("Password obbligatoria");
+            return false;
+        }
+        var md = forge.md.sha256.create();
+        var vote_key = "{{current_user.u.user_id}}-" + "{{v.votation_id}}-" + $("#secret_key_{{v.votation_id}}").val();
+        md.update(vote_key);
+        console.log("vote_key " + vote_key);
+        $("#vote_key").val(md.digest().toHex());
+        return true;
+    });
+
+</script>
+
+{% endblock %}

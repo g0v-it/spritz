@@ -1,0 +1,103 @@
+{% extends "base_template.html" %} {% block body %}
+
+<form action="votation_propose" method="post" id="votationPurpose">
+    <div class="form-group">
+        <label for="votation_description">Descrizione:</label>
+        <input class="form-control" type="text" id="votation_description" name="votation_description">
+    </div>
+    <div class="form-group">
+        <label for="votation_type">Tipo di votazione:</label>
+        <select class="form-control"  id="votation_type" name="votation_type">
+            <option value="maj_jud">Majority judgment</option>
+            <option value="maj_jud_sec">Majority judgment sicuro</option>
+            <option value="draw">Sorteggio</option>
+        </select>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm">
+            <label for="begin_date">Begin date</label>
+            <input class="form-control" type="date" id="begin_date" name="begin_date">
+        </div>
+        <div class="form-group col-sm">
+            <label for="begin_time">Begin time</label>
+            <input class="form-control" type="time" id="begin_time" name="begin_time">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm">
+            <label for="end_date">End date</label>
+            <input class="form-control" type="date" id="end_date" name="end_date">
+        </div>
+        <div class="form-group col-sm">
+            <label for="end_time">End time</label>
+            <input class="form-control" type="time" id="end_time" name="end_time">
+        </div>
+    </div>
+
+    <div class="form-group" id="votation_options_group">
+        <label for="votation_options">Lista di candidati o di opzioni su cui votare:</label>
+        <textarea class="form-control text-uppercase" type="text" id="votation_options" name="votation_options" rows="5"></textarea>
+        <small class="form-text text-muted">Un candidato o una opzione per riga</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Salva</button>
+</form>
+
+<script>
+$(function () {
+    // show and hide of options
+    $("#votation_type").change(
+        function() {
+            if ($("#votation_type").val() == "draw") {
+                $("#votation_options_group").hide();
+            }
+            else {
+                $("#votation_options_group").show();
+            }
+        }
+    );
+
+    // set date today
+    var d = new Date();
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+    var formatted_date = d.getFullYear() + '-' +
+        (month<10 ? '0' : '') + month + '-' +
+        (day<10 ? '0' : '') + day;
+    $("#begin_date").val(formatted_date)
+    $("#begin_time").val('12:00')
+    
+    // set date next week
+    var ms = new Date().getTime() + (86400000*7);
+    d = new Date(ms);
+    month = d.getMonth()+1;
+    day = d.getDate();
+    formatted_date = d.getFullYear() + '-' +
+        (month<10 ? '0' : '') + month + '-' +
+        (day<10 ? '0' : '') + day;
+    
+    $("#end_date").val(formatted_date)
+    $("#end_time").val('12:00')
+
+    $("#votationPurpose").submit(function( event ){
+        var l = $("#votation_description").val().trim();
+        if(!l) {
+            alert("Scrivi una descrizione della votazione");
+            return false;
+        }
+        var l = $("#votation_options").val().trim();
+        if(!l) {
+            alert("Scrivi almeno tre opzioni");
+            return false;
+        }
+
+        return true;
+    });
+
+
+    
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,4 @@
+Flask==1.0.2
+Flask-Login==0.4.1
+Flask-Ldap==0.1.6
+psycopg2==2.7.6.1

@@ -1,0 +1,15 @@
+eVoting software has three main parts: backend, frontend and database.
+* Backend directories:
+/opt/voting/bin
+/opt/voting/elections
+
+* Database
+/opt/voting/database/voting.sqlite3.db
+
+* Frontend 
+/var/www/voting/frontend/web/ 
+    *.py
+    templates/   
+    static/
+
+           
