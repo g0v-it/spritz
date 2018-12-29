@@ -1,4 +1,5 @@
 {% extends "base_template.html" %} {% block body %}
+    <div><h4>{{v.votation_description}}</h4></div>
     {% if  v.votation_status == 0 %}
         <p>Non &egrave; ancora possibile votare.</p>
     {% endif %}

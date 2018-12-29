@@ -47,13 +47,17 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    message = None
     if request.method == 'POST':    
         user_name = request.form['user_name']
         pass_word = request.form['pass_word']
         u = user.User(user_name)
         if u.try_to_authenticate(pass_word):
             login_user(u)
-    return render_template('login_template.html', pagetitle="Login")
+            message = ("Login effettuato",MSG_OK)
+        else:
+            message = ("Login errato",MSG_KO)
+    return render_template('login_template.html', pagetitle="Login",message=message)
 
 
 @app.route("/logout")

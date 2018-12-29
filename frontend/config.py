@@ -9,7 +9,3 @@ DBUSER = "dinogen"
 DBPWD = "abc123"
 BINPATH = os.path.join(BASEPATH, "bin")
 ELECTIONPATH = os.path.join(BASEPATH,"elections")
-# auth method database or ldap
-AUTH_METHOD = "database"
-#AUTH_METHOD = "ldap"
-LDAP_URL = 'ldap://ldap.forumsys.com:389/'
