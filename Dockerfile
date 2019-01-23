@@ -3,6 +3,8 @@ FROM tiangolo/uwsgi-nginx-flask:python3.6
 MAINTAINER Reinhard Spisser "reinhard@spisser.it"
 RUN apt-get update -y
 RUN apt-get install -y sqlite3
+RUN apt-get install -y libsasl2-dev python-dev libldap2-dev libssl-dev
+
 
 RUN mkdir -p /opt/voting
 
