@@ -7,18 +7,18 @@
     <div class="container">
         {% if votation_timing == -1 %}
         <p class="font-weight-bold">La votazione non è ancora iniziata.</p>
-        <p><span class="font-weight-bold">Inizio previsto per:</span> {{v.begin_date}} {{v.begin_time}}</p>
-        <p><span class="font-weight-bold">Terminere previsto per:</span> {{v.end_date}} {{v.end_time}}</p>    
+        <p><span class="font-weight-bold">Inizio previsto per:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC">UTC</a></p>
+        <p><span class="font-weight-bold">Terminere previsto per:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC">UTC</a></p>    
         {% endif %}
         {% if votation_timing == +1 %}
         <p class="font-weight-bold">La votazione è terminata.</p>
-        <p><span class="font-weight-bold">Iniziata il:</span> {{v.begin_date}} {{v.begin_time}}</p>
-        <p><span class="font-weight-bold">Terminata il:</span> {{v.end_date}} {{v.end_time}}</p>
+        <p><span class="font-weight-bold">Iniziata il:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC">UTC</a></p>
+        <p><span class="font-weight-bold">Terminata il:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC">UTC</a></p>
         {% endif %}
         {% if votation_timing == 0 %}
         <p class="font-weight-bold">La votazione è in corso.</p>
-        <p><span class="font-weight-bold">Iniziata il:</span> {{v.begin_date}} {{v.begin_time}}</p>
-        <p><span class="font-weight-bold">Terminerà il:</span> {{v.end_date}} {{v.end_time}}</p>    
+        <p><span class="font-weight-bold">Iniziata il:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC">UTC</a></p>
+        <p><span class="font-weight-bold">Terminerà il:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC">UTC</a></p>    
         {% endif %}
     </div>
     <p><span class="font-weight-bold">Votanti :</span> {{count_voters}}</p>

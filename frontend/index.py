@@ -23,7 +23,7 @@ login_manager.init_app(app)
 
 def votation_timing(v):
     # timing of votation
-    now = datetime.datetime.now()
+    now = datetime.datetime.utcnow()
     #now_string = "{}-{}-{} {}:{}".format(now.year, now.month,now.day,now.hour,now.minute)
     votation_timing = 0
     if now < v.begin_date:

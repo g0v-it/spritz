@@ -20,7 +20,7 @@
             <input class="form-control" type="date" id="begin_date" name="begin_date">
         </div>
         <div class="form-group col-sm">
-            <label for="begin_time">Begin time</label>
+            <label for="begin_time">Begin time <a href="https://time.is/it/UTC">UTC</a></label>
             <input class="form-control" type="time" id="begin_time" name="begin_time">
         </div>
     </div>
@@ -31,7 +31,7 @@
             <input class="form-control" type="date" id="end_date" name="end_date">
         </div>
         <div class="form-group col-sm">
-            <label for="end_time">End time</label>
+            <label for="end_time">End time <a href="https://time.is/it/UTC">UTC</a></label>
             <input class="form-control" type="time" id="end_time" name="end_time">
         </div>
     </div>
@@ -68,8 +68,8 @@ $(function () {
     $("#begin_date").val(formatted_date)
     $("#begin_time").val('12:00')
     
-    // set date next week
-    var ms = new Date().getTime() + (86400000*7);
+    // set date next day
+    var ms = new Date().getTime() + (86400000);
     d = new Date(ms);
     month = d.getMonth()+1;
     day = d.getDate();
