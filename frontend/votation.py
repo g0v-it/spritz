@@ -22,7 +22,7 @@ states = [
     "Fallita",
 ]
 
-WORDS = ['Pessimo','Scarso','Insufficiente','Accettabile','Buono','Ottimo']
+WORDS = ['Non so','Scarso','Insufficiente','Accettabile','Buono','Ottimo']
 
 
 class votation_dto:
@@ -198,6 +198,18 @@ def update_status(votation_id, new_status):
     conn = dbmanager.get_connection()
     c = conn.cursor()
     c.execute("update votation set votation_status=%s where votation_id = %s", (new_status,votation_id,))
+    c.close()
+    conn.close()
+
+def deltree_votation_by_id(votation_id):
+    """Delete the votation from the DB
+    with all dependencies"""
+    conn = dbmanager.get_connection()
+    c = conn.cursor()
+    c.execute("delete from votation where votation_id = %s", (votation_id,))
+    c.execute("delete from vote where votation_id = %s", (votation_id,))
+    c.execute("delete from voter where votation_id = %s", (votation_id,))
+    c.execute("delete from voting_option where votation_id = %s", (votation_id,))
     c.close()
     conn.close()
 

@@ -28,6 +28,10 @@
         {% if current_user.u.user_id == v.promoter_user.user_id and votation_timing == +1 and v.votation_status ==1 %}
             <p><a class="btn btn-warning" href="/close_election/{{v.votation_id}}">Termina l'elezione</a></p>
         {% endif %}
+
+        {% if current_user.u.user_id == v.promoter_user.user_id  %}
+            <p><a class="btn btn-danger" href="/delete_election/{{v.votation_id}}">Cancella l'elezione</a></p>
+        {% endif %}
     {% endif %}
 
 

@@ -93,7 +93,7 @@ def votation_propose():
     return render_template('votation_propose_template.html', pagetitle="Crea una votazione", \
     votation_obj=v, message=message)
 
-@app.route("/votation_list", methods=['GET', 'POST'])
+@app.route("/votation_list")
 @login_required
 def votation_list():
     votations_array = votation.load_votations()
@@ -171,7 +171,21 @@ def close_election(votation_id):
     votation.update_status(votation_id,votation.STATUS_ENDED)
     return render_template('thank_you_template.html', \
     pagetitle="Votazione Chiusa", \
-    message=("Votazione chiusa. Controlla i risultati."))
+    message=("Votazione chiusa. Controlla i risultati.",MSG_OK))
+
+@app.route("/delete_election/<int:votation_id>")
+@login_required
+def delete_election(votation_id):
+    if request.args.get('confirm') == "yes":
+        votation.deltree_votation_by_id(votation_id)
+        return render_template('thank_you_template.html', \
+        pagetitle="Cancellazione", \
+        message=("Votazione cancellata",MSG_OK))
+    else:
+        return render_template('confirmation_template.html', \
+        pagetitle="Cancellazione", \
+        message=None,votation_id=votation_id)
+
 
 
 @login_manager.unauthorized_handler
