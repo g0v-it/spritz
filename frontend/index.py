@@ -11,6 +11,7 @@ import option
 import vote
 import voter
 import datetime
+import auth 
 
 MSG_INFO = 0
 MSG_OK   = 1
@@ -57,7 +58,7 @@ def login():
             message = ("Login effettuato",MSG_OK)
         else:
             message = ("Login errato",MSG_KO)
-    return render_template('login_template.html', pagetitle="Login",message=message)
+    return render_template(auth.LOGIN_TEMPLATE, pagetitle="Login",message=message, CLIENT_ID=auth.CLIENT_ID)
 
 
 @app.route("/logout")

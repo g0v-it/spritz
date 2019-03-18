@@ -1,35 +1,38 @@
-"""Authentication module for LDAP
+"""Authentication module for google sign in
 """
 import os
-import ldap
+from google.oauth2 import id_token
+#from google.auth.transport import requests
 
-LDAP_SERVER_HOST = os.environ.get('LDAP_SERVER_HOST') # ldap.forumsys.com
-LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT') # 389
-LDAP_USER_SEARCH_BASE = os.environ.get('LDAP_USER_SEARCH_BASE') # dc=example,dc=com
-#LDAP_ROOT_DN = os.environ.get('LDAP_ROOT_DN') 
-LDAP_USER_SEARCH_FILTER = os.environ.get('LDAP_USER_SEARCH_FILTER') # uid={}
+ADD_UNKNOWN_USER = True
+LOGIN_TEMPLATE = 'login_google_template.html'
+CLIENT_ID='1005534143144-rumegcgece72qbjq30ganftaf3vhv2p2.apps.googleusercontent.com'
 
-LDAP_URL = "ldap://{}:{}/".format(LDAP_SERVER_HOST,LDAP_SERVER_PORT) # ldap://ldap.forumsys.com:389/
-LDAP_BIND = "{},{}".format(LDAP_USER_SEARCH_FILTER, LDAP_USER_SEARCH_BASE) # uid={},dc=example,dc=com
-
-#print(LDAP_URL, LDAP_BIND)
-
-#LDAP_URL = 'ldap://ldap.forumsys.com:389/'
-# if this is true, an unknown username is added in the internal database
-# at the first login, if the login is successful
-ADD_UNKNOWN_USER=True
-
-def get_ldap_connection():
-    conn = ldap.initialize(LDAP_URL)
-    return conn
 
 def auth(user_name,token):
-    try: 
-        conn = get_ldap_connection()
-        conn.simple_bind_s(LDAP_BIND.format(user_name),token)
+    try:
+        # Specify the CLIENT_ID of the app that accesses the backend:
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+
+        # Or, if multiple clients access the backend server:
+        # idinfo = id_token.verify_oauth2_token(token, requests.Request())
+        # if idinfo['aud'] not in [CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]:
+        #     raise ValueError('Could not verify audience.')
+
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            #raise ValueError('Wrong issuer.')
+            return False
+
+        # If auth request is from a G Suite domain:
+        # if idinfo['hd'] != GSUITE_DOMAIN_NAME:
+        #     raise ValueError('Wrong hosted domain.')
+
+        # ID token is valid. Get the user's Google Account ID from the decoded token.
+        user_name = idinfo['email']
         return True
-    except:
-        return False
+    except ValueError:
+        # Invalid token
+        pass
     return False
 
 
