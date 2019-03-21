@@ -11,7 +11,11 @@ import option
 import vote
 import voter
 import datetime
-import auth 
+if config.AUTH == 'ldap':
+    import auth_ldap as auth
+if config.AUTH == 'google':
+    import auth_google as auth
+     
 
 MSG_INFO = 0
 MSG_OK   = 1

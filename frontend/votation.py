@@ -13,7 +13,8 @@ STATUS_FAILED = 4
 TYPE_DRAW = 'draw'
 TYPE_MAJORITY_JUDGMENT = 'maj_jud'
 TYPE_MAJORITY_JUDGMENT_SECURE = 'maj_jud_sec'
-TYPE_DESCRIPTION={TYPE_DRAW:"Sorteggio", TYPE_MAJORITY_JUDGMENT_SECURE: "Secure Majority Judgment", TYPE_MAJORITY_JUDGMENT: "Majority Judgment"}
+TYPE_SIMPLE_MAJORITY = 'simple_maj'
+TYPE_DESCRIPTION={TYPE_DRAW:"Sorteggio", TYPE_MAJORITY_JUDGMENT_SECURE: "Secure Majority Judgment", TYPE_MAJORITY_JUDGMENT: "Majority Judgment", TYPE_SIMPLE_MAJORITY: "Simple Majority"}
 states = [
     "Creata",
     "Voto",

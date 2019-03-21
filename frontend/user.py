@@ -1,8 +1,11 @@
 import dbmanager
 import config
 from flask_login import UserMixin
-import auth
-
+if config.AUTH == 'ldap':
+    import auth_ldap as auth
+if config.AUTH == 'google':
+    import auth_google as auth
+    
 class user_dto:
     """This class is a DTO for the database table"""
     def __init__(self):

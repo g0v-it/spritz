@@ -12,6 +12,7 @@ LDAP_USER_SEARCH_FILTER = os.environ.get('LDAP_USER_SEARCH_FILTER') # uid={}
 LDAP_URL = "ldap://{}:{}/".format(LDAP_SERVER_HOST,LDAP_SERVER_PORT) # ldap://ldap.forumsys.com:389/
 LDAP_BIND = "{},{}".format(LDAP_USER_SEARCH_FILTER, LDAP_USER_SEARCH_BASE) # uid={},dc=example,dc=com
 LOGIN_TEMPLATE = 'login_template.html'
+CLIENT_ID = ''
 
 #print(LDAP_URL, LDAP_BIND)
 
