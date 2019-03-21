@@ -8,7 +8,9 @@ Sei registrato come {{ current_user.user_name }}.
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <meta name="google-signin-client_id" content="{{ CLIENT_ID }}">
 
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<div class="container">
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+</div>
 
 <script>
 function onSignIn(googleUser) {
@@ -20,12 +22,12 @@ function onSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
   console.log('idtoken: ' + id_token);
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost:5000/tokensignin');
+  xhr.open('POST', {{ url_for('login') }}');
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
       console.log('Signed in as: ' + xhr.responseText);
     };
-  xhr.send('idtoken=' + id_token);
+  xhr.send('user_name=' + profile.getEmail() + "&pass_word=" + id_token);
   //window.location.href = "http://localhost:5000/hello";
 }
 </script>
