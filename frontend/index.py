@@ -15,6 +15,8 @@ if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
     import auth_google as auth
+if config.AUTH == 'test':
+    import auth_test as auth
      
 
 MSG_INFO = 0
@@ -30,11 +32,11 @@ def votation_timing(v):
     # timing of votation
     now = datetime.datetime.utcnow()
     #now_string = "{}-{}-{} {}:{}".format(now.year, now.month,now.day,now.hour,now.minute)
-    votation_timing = 0
+    votation_timing = 0 # ok to vote
     if now < v.begin_date:
-        votation_timing = -1 
+        votation_timing = -1 # too early
     if now > v.end_date:
-        votation_timing = +1 
+        votation_timing = +1 # too late
     return votation_timing
 
 
@@ -76,6 +78,7 @@ def logout():
 def votation_propose():
     v = votation.get_blank_dto()
     message = ("Inserire i dati",MSG_INFO)
+    print("XXX",request.method)
     if request.method == 'POST':    
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
@@ -94,7 +97,9 @@ def votation_propose():
                 # options saving
                 option.save_options_from_text(v.votation_id,request.form['votation_options'])
             else:
-                message = ("Errore, votazione non salvata",MSG_KO )                   
+                message = ("Errore, votazione non salvata",MSG_KO )    
+        else:
+            message = (msg,MSG_KO)               
     return render_template('votation_propose_template.html', pagetitle="Crea una votazione", \
     votation_obj=v, message=message)
 
@@ -102,6 +107,7 @@ def votation_propose():
 @login_required
 def votation_list():
     votations_array = votation.load_votations()
+    votations_array.reverse()
     return render_template('votation_list_template.html', pagetitle="Lista delle votazioni", \
     votations_array=votations_array,states=votation.states,type_description=votation.TYPE_DESCRIPTION)
 

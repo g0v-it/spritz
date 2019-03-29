@@ -2,7 +2,7 @@ import dbmanager
 import sqlite3
 import config
 import re
-from datetime import date
+from datetime import date,datetime
 import user
 
 STATUS_WAIT_FOR_CAND_AND_GUAR = 0
@@ -14,7 +14,10 @@ TYPE_DRAW = 'draw'
 TYPE_MAJORITY_JUDGMENT = 'maj_jud'
 TYPE_MAJORITY_JUDGMENT_SECURE = 'maj_jud_sec'
 TYPE_SIMPLE_MAJORITY = 'simple_maj'
-TYPE_DESCRIPTION={TYPE_DRAW:"Sorteggio", TYPE_MAJORITY_JUDGMENT_SECURE: "Secure Majority Judgment", TYPE_MAJORITY_JUDGMENT: "Majority Judgment", TYPE_SIMPLE_MAJORITY: "Simple Majority"}
+TYPE_DESCRIPTION={TYPE_DRAW:"Sorteggio", \
+    TYPE_MAJORITY_JUDGMENT_SECURE: "Secure Majority Judgment", \
+    TYPE_MAJORITY_JUDGMENT: "Majority Judgment", \
+    TYPE_SIMPLE_MAJORITY: "Simple Majority"}
 states = [
     "Creata",
     "Voto",
@@ -37,6 +40,23 @@ class votation_dto:
         self.end_date = None
         self.votation_type = None
         self.votation_status = None
+
+class votation():
+    def __init__(self,votation_id = 0):
+        if votation_id == 0: 
+            self.dto = get_blank_dto()
+        if votation_id != 0:
+            self.dto = load_votation_by_id(votation_id)
+    def votation_timing(self):
+        # timing of votation
+        now = datetime.utcnow()
+        result = 0 # ok to vote
+        if now < self.dto.begin_date:
+            result = -1 # too early
+        if now > self.dto.end_date:
+            result = +1 # too late
+        return result
+
 
 
 def get_blank_dto():
@@ -173,7 +193,7 @@ def validate_dto(v):
             result = False
             errorMessage = "Begin and End dates are not in sequence"
     if result:
-        if v.votation_type != TYPE_DRAW and v.votation_type != TYPE_MAJORITY_JUDGMENT and v.votation_type != TYPE_MAJORITY_JUDGMENT_SECURE:
+        if v.votation_type != TYPE_DRAW and v.votation_type != TYPE_MAJORITY_JUDGMENT and v.votation_type != TYPE_MAJORITY_JUDGMENT_SECURE and v.votation_type != TYPE_SIMPLE_MAJORITY:
             result = False
             errorMessage = "Votation Type not valid"
     if result:
@@ -214,5 +234,3 @@ def deltree_votation_by_id(votation_id):
     c.close()
     conn.close()
 
-
-    

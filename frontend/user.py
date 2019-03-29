@@ -5,6 +5,8 @@ if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
     import auth_google as auth
+if config.AUTH == 'test':
+    import auth_test as auth
     
 class user_dto:
     """This class is a DTO for the database table"""
