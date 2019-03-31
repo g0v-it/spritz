@@ -1,43 +1,22 @@
 {% extends "base_template.html" %} {% block body %}
     <div><h4>{{v.votation_description}}</h4></div>
-    {% if  v.votation_status < 0 %}
+    {% if  v.votation_status == 0 %}
         <p>Non &egrave; ancora possibile votare.</p>
     {% endif %}
-    {% if  v.votation_status > 0 %}
+    {% if  v.votation_status > 1 %}
         <p>Non &egrave; pi&ugrave; possibile votare.</p>
     {% endif %}
-    {% if  v.votation_status == 0 %}
+    {% if  v.votation_status == 1 %}
         <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
-            Vota questi:
-            {% for o in option_array %}
-            <div class="custom-control custom-radio">
-                <input type="radio" id="o{{o.option_id}}" name="voted_option" class="custom-control-input">
-                <label class="custom-control-label" for="o{{o.option_id}}">{{o.option_name}}</label>
+            Vota una sola opzione:
+            {% for o in options_array %}
+            <div class="form-check ">
+                <input class="form-check-input" type="radio" 
+                name="my_vote" id="v_{{o.option_id}}" value="{{o.option_id}}"  />
+                <label class="form-check-label" for="v_{{o.option_id}}">{{o.option_name}}</label>
             </div>
             {% endfor %}
 
-                  
-            <table class="table table-bordered">
-            <tr>
-                <th>Opzione</th>
-                <th>Giudizio</th>
-            </tr>
-            {% for c in options_array %}
-            <tr>
-                <td>{{c.option_name}}</td>
-                <td>
-                {% for i in range(words_array|count) %}
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" 
-                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} />
-                        <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i]}}</label>
-                    </div>
-                {% endfor %}
-                </td> 
-            </tr>
-            {% endfor %}
-
-            </table>
             <div class="form-group">
                 <label for="secret_key_{{v.votation_id}}">Password per questo voto:</label>
                 <input type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" />

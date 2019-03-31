@@ -41,21 +41,6 @@ class votation_dto:
         self.votation_type = None
         self.votation_status = None
 
-class votation():
-    def __init__(self,votation_id = 0):
-        if votation_id == 0: 
-            self.dto = get_blank_dto()
-        if votation_id != 0:
-            self.dto = load_votation_by_id(votation_id)
-    def votation_timing(self):
-        # timing of votation
-        now = datetime.utcnow()
-        result = 0 # ok to vote
-        if now < self.dto.begin_date:
-            result = -1 # too early
-        if now > self.dto.end_date:
-            result = +1 # too late
-        return result
 
 
 
@@ -233,4 +218,14 @@ def deltree_votation_by_id(votation_id):
     c.execute("delete from voting_option where votation_id = %s", (votation_id,))
     c.close()
     conn.close()
+
+def votation_timing(vdto):
+    # timing of votation
+    now = datetime.utcnow()
+    votation_timing = 0 # ok to vote
+    if now < vdto.begin_date:
+        votation_timing = -1 # too early
+    if now > vdto.end_date:
+        votation_timing = +1 # too late
+    return votation_timing
 

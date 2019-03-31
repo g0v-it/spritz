@@ -9,6 +9,8 @@ import candidate
 import backend
 import option
 import vote
+import vote_maj_jud
+import vote_simple
 import voter
 import datetime
 if config.AUTH == 'ldap':
@@ -27,17 +29,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24) 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-def votation_timing(v):
-    # timing of votation
-    now = datetime.datetime.utcnow()
-    #now_string = "{}-{}-{} {}:{}".format(now.year, now.month,now.day,now.hour,now.minute)
-    votation_timing = 0 # ok to vote
-    if now < v.begin_date:
-        votation_timing = -1 # too early
-    if now > v.end_date:
-        votation_timing = +1 # too late
-    return votation_timing
 
 
 @login_manager.user_loader
@@ -78,7 +69,6 @@ def logout():
 def votation_propose():
     v = votation.get_blank_dto()
     message = ("Inserire i dati",MSG_INFO)
-    print("XXX",request.method)
     if request.method == 'POST':    
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
@@ -159,7 +149,7 @@ def votation_detail(votation_id):
          v=v, candidates_array=candidates_array, \
          states=votation.states, options_array=options_array, \
          count_voters=voter.count_voters(votation_id), \
-         count_votes=vote.count_votes(votation_id), votation_timing=votation_timing(v),counting=counting, \
+         count_votes=vote.count_votes(votation_id), votation_timing=votation.votation_timing(v),counting=counting, \
          words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
 
 @app.route("/start_election/<int:votation_id>")
@@ -210,11 +200,17 @@ def print_version():
   
 @app.route("/vote/<int:votation_id>",  methods=['GET', 'POST'])
 @login_required
-def vote_maj_jud(votation_id):
+def vote(votation_id):
     v = votation.load_votation_by_id(votation_id)
-    if votation_timing(v) != 0:
+    if votation.votation_timing(v) != 0:
         return redirect('/votation_detail/'+str(votation_id))
-    options_array = option.load_options_by_votation(votation_id)
+    if v.votation_type == votation.TYPE_MAJORITY_JUDGMENT:
+        return votemajjud(v)
+    if v.votation_type == votation.TYPE_SIMPLE_MAJORITY:
+        return votesimplemaj(v)
+        
+def votemajjud(v):
+    options_array = option.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
         return render_template('majority/vote_template.html', pagetitle="Vota", \
         v=v, options_array=options_array,words_array=votation.WORDS) 
@@ -224,13 +220,27 @@ def vote_maj_jud(votation_id):
         for c in options_array:
             param = "v_" + str(c.option_id)
             vote_array.append(int(request.form[param]))
-        result = vote.save_votes(current_user.u.user_id, vote_key, votation_id, vote_array )
+        result = vote.save_votes(current_user.u.user_id, vote_key, v.votation_id, vote_array )
         if result:
             message = ("Voto registrato correttamente", MSG_OK)
         else:
             message = ("Errore. Voto NON registrato. Password Errata?",MSG_KO)
         return render_template('thank_you_template.html', pagetitle="Registrazione voto", message=message)
 
+def votesimplemaj(v):
+    options_array = option.load_options_by_votation(v.votation_id)
+    if request.method == 'GET':    
+        return render_template('simple_majority/vote_template.html', pagetitle="Vota", \
+        v=v, options_array=options_array) 
+    if request.method == 'POST':  
+        vote_key = request.form["vote_key"]
+        my_vote = request.form["my_vote"]
+        result = vote_simple.save_vote(current_user.u.user_id, vote_key, v.votation_id,my_vote)
+        if result:
+            message = ("Voto registrato correttamente", MSG_OK)
+        else:
+            message = ("Errore. Voto NON registrato. Password Errata?",MSG_KO)
+        return render_template('thank_you_template.html', pagetitle="Registrazione voto", message=message)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0') 
