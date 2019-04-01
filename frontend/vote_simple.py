@@ -22,10 +22,12 @@ def save_vote(user_id, vote_key,votation_id,option_id):
     return True
 
 def counting_votes(votation_id):
+    """ Return an array 
+    """
     conn = dbmanager.get_connection()
     ar = {}
     c = conn.cursor()
-    q = "select option_id, count(*) from vote where votation_id = %s group by option_id"
+    q = "select option_id, count(*) from vote where votation_id = %s group by option_id order by 2 desc"
     c.execute(q, (votation_id, ))
     row = c.fetchone()
     while row:

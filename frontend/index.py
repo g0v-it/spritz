@@ -132,25 +132,55 @@ def be_a_candidate_confirm():
 @login_required
 def votation_detail(votation_id):
     v = votation.load_votation_by_id(votation_id)
-    candidates_array = None
-    options_array = None
-    counting = None
+    if v.votation_type == votation.TYPE_MAJORITY_JUDGMENT:
+        return votation_detail_maj_jud(v)
     if v.votation_type == votation.TYPE_DRAW:
-        candidates_array = candidate.load_candidate_by_votation(votation_id)
-    else:
-        options_array = option.load_options_by_votation(votation_id)
+        return votation_detail_draw(v)
+    if v.votation_type == votation.TYPE_SIMPLE_MAJORITY:
+        return votation_detail_simple(v)
+
+
+def votation_detail_draw(v):
+    candidates_array = None
+    counting = None
+    candidates_array = candidate.load_candidate_by_votation(v.votation_id)
     # if v.votation_status > votation.STATUS_WAIT_FOR_CAND_AND_GUAR:
     #     state_array = backend.election_state(votation_id)
     # else:
     #     state_array = []
+    return render_template('draw/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+         v=v, candidates_array=candidates_array, \
+         states=votation.states,  \
+         count_voters=voter.count_voters(v.votation_id), \
+         count_votes=vote.count_votes(v.votation_id), \
+         votation_timing=votation.votation_timing(v),counting=counting, \
+         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+
+
+def votation_detail_maj_jud(v):
+    options_array = option.load_options_by_votation(v.votation_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
-    return render_template('votation_detail_template.html', pagetitle="Dettaglio votazione", \
-         v=v, candidates_array=candidates_array, \
+    return render_template('majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+         v=v,  \
          states=votation.states, options_array=options_array, \
-         count_voters=voter.count_voters(votation_id), \
-         count_votes=vote.count_votes(votation_id), votation_timing=votation.votation_timing(v),counting=counting, \
+         count_voters=voter.count_voters(v.votation_id), \
+         count_votes=vote.count_votes(v.votation_id), \
+         votation_timing=votation.votation_timing(v),counting=counting, \
          words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+
+def votation_detail_simple(v):
+    options_array = option.load_options_by_votation(v.votation_id)
+    if v.votation_status == votation.STATUS_ENDED:
+        counting = vote_simple.counting_votes(v.votation_id)
+    return render_template('simple_majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+         v=v,  \
+         states=votation.states, options_array=options_array, \
+         count_voters=voter.count_voters(v.votation_id), \
+         count_votes=vote.count_votes(v.votation_id), \
+         votation_timing=votation.votation_timing(v),counting=counting, \
+         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+
 
 @app.route("/start_election/<int:votation_id>")
 @login_required
