@@ -144,7 +144,7 @@ def votation_detail(votation_id):
     # else:
     #     state_array = []
     if v.votation_status == votation.STATUS_ENDED:
-        counting = vote.votation_counting(v)
+        counting = vote_maj_jud.votation_counting(v)
     return render_template('votation_detail_template.html', pagetitle="Dettaglio votazione", \
          v=v, candidates_array=candidates_array, \
          states=votation.states, options_array=options_array, \
@@ -200,7 +200,7 @@ def print_version():
   
 @app.route("/vote/<int:votation_id>",  methods=['GET', 'POST'])
 @login_required
-def vote(votation_id):
+def vote_(votation_id):
     v = votation.load_votation_by_id(votation_id)
     if votation.votation_timing(v) != 0:
         return redirect('/votation_detail/'+str(votation_id))
@@ -220,7 +220,7 @@ def votemajjud(v):
         for c in options_array:
             param = "v_" + str(c.option_id)
             vote_array.append(int(request.form[param]))
-        result = vote.save_votes(current_user.u.user_id, vote_key, v.votation_id, vote_array )
+        result = vote_maj_jud.save_votes(current_user.u.user_id, vote_key, v.votation_id, vote_array )
         if result:
             message = ("Voto registrato correttamente", MSG_OK)
         else:

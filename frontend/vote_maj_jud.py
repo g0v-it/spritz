@@ -1,5 +1,8 @@
 import vote
 import voter
+import option
+import dbmanager
+import votation
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
     vu = voter.voter_dto()
@@ -13,7 +16,7 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
         vote.delete_votes_by_key(vote_key)
     options_list = option.load_options_by_votation(votation_id)
     for i in range(len(vote_array)):
-        o = vote_dto()
+        o = vote.vote_dto()
         o.vote_key = vote_key
         o.votation_id = votation_id
         o.option_id = options_list[i].option_id
@@ -100,20 +103,7 @@ def maj_jud_compare(totals_array1, totals_array2):
         return -1
     return 0
 
-def count_votes(votation_id):
-    """
-    Count number of different vote_key. Its pourpose is to compare with voters.
-    """
-    result = None
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select count(*) from (select distinct vote_key from vote where votation_id = %s) A", (votation_id,) )
-    row = c.fetchone()
-    if row:
-        result = row[0]
-    c.close()
-    conn.close()
-    return result
+
 
 
 def count_votes_by_option(votation_id, option_id):

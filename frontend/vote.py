@@ -57,3 +57,18 @@ def load_vote_by_key(vote_key):
     c.close()
     conn.close()
     return ar
+
+def count_votes(votation_id):
+    """
+    Count number of different vote_key. Its pourpose is to compare with voters.
+    """
+    result = None
+    conn = dbmanager.get_connection()
+    c = conn.cursor()
+    c.execute("select count(*) from (select distinct vote_key from vote where votation_id = %s) A", (votation_id,) )
+    row = c.fetchone()
+    if row:
+        result = row[0]
+    c.close()
+    conn.close()
+    return result
