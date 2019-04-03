@@ -1,5 +1,6 @@
 import vote
 import voter
+import dbmanager
 
 def save_vote(user_id, vote_key,votation_id,option_id):
     vu = voter.voter_dto()

@@ -7,18 +7,15 @@
         {% endif %}
         <h4>Classifica</h4>
         <div class="container">
-            <ol>
-                {% for r in counting %}
-                    <li class="mb-1">
-                        {{r.option_name}}
-                        <div class="row">
-                            {% for i in range(words|count) %} 
-                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25">{{r.totals_array[i]}}</span> {{words[i]}}</div>                                                  
-                            {% endfor %}
-                        </div> 
-                    </li>
+            <ul>
+                {% for o in options_array %}
+                  {% if o.option_id in counting.keys() %}
+                    <li>{{o.option_name}}: {{counting[o.option_id]}} voti</li>
+                  {% else %}
+                    <li>{{o.option_name}}: 0 voti</li>
+                  {% endif %}
                 {% endfor %}
-            </ol>
+            </ul>
         </div>
         <h4>Grafico</h4>
         <div id="chart_div"></div>
@@ -38,15 +35,15 @@
           function drawChart() {
     
             var data = google.visualization.arrayToDataTable([
-            [ "Giudizio",
-            {% for w in words %}"{{w}}", {% endfor %}
-            { role: 'annotation' } ],
-            {% for r in counting %}
-                ["{{r.option_name}}",
-                {% for n in r.totals_array %}{{n}}, {% endfor %}
-                ''],           
-            {% endfor %}
-          ]);
+             [ "Opzione", "Voti"],
+             {% for o in options_array %}
+               {% if o.option_id in counting.keys() %}
+                 ["{{o.option_name}}", {{counting[o.option_id]}}],
+               {% else %}
+                 ["{{o.option_name}}", 0],
+               {% endif %}
+             {% endfor %}
+             ]);
     
           var options = {
             width: 600,

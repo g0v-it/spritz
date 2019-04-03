@@ -82,7 +82,7 @@ def load_votations():
     ar = []
     conn = dbmanager.get_connection()
     c = conn.cursor()
-    c.execute("select * from votation")
+    c.execute("select * from votation order by votation_id")
     row = c.fetchone()
     while row:
         v = votation_dto()

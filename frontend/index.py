@@ -159,6 +159,7 @@ def votation_detail_draw(v):
 
 def votation_detail_maj_jud(v):
     options_array = option.load_options_by_votation(v.votation_id)
+    counting = None
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
     return render_template('majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
@@ -171,6 +172,7 @@ def votation_detail_maj_jud(v):
 
 def votation_detail_simple(v):
     options_array = option.load_options_by_votation(v.votation_id)
+    counting = None
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_simple.counting_votes(v.votation_id)
     return render_template('simple_majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
@@ -179,7 +181,7 @@ def votation_detail_simple(v):
          count_voters=voter.count_voters(v.votation_id), \
          count_votes=vote.count_votes(v.votation_id), \
          votation_timing=votation.votation_timing(v),counting=counting, \
-         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+         type_description=votation.TYPE_DESCRIPTION)
 
 
 @app.route("/start_election/<int:votation_id>")

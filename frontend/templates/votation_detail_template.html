@@ -24,7 +24,7 @@
     <p><span class="font-weight-bold">Votanti :</span> {{count_voters}}</p>
     <p><span class="font-weight-bold">Voti :</span> {{count_votes}}</p>
 
-    {% if v.votation_type == "maj_jud" or v.votation_type == "maj_jud_sec"  %}
+    {% if v.votation_type != "draw"  %}
         {% if current_user.u.user_id == v.promoter_user.user_id and votation_timing == +1 and v.votation_status ==1 %}
             <p><a class="btn btn-warning" href="/close_election/{{v.votation_id}}">Termina l'elezione</a></p>
         {% endif %}
@@ -47,7 +47,7 @@
     </ul>
     {% endif %}
 
-    {% if v.votation_type == "maj_jud" or v.votation_type == "maj_jud_sec"  %}
+    {% if v.votation_type != "draw"  %}
     <h3>Opzioni:</h3>
     <ul>
         {% for c in options_array %}
