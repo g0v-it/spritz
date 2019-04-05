@@ -21,16 +21,16 @@
         <p><span class="font-weight-bold">Terminerà il:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC">UTC</a></p>    
         {% endif %}
     </div>
-    <p><span class="font-weight-bold">Votanti :</span> {{count_voters}}</p>
-    <p><span class="font-weight-bold">Voti :</span> {{count_votes}}</p>
+    <p data-cy="count_voters"><span class="font-weight-bold">Votanti :</span> {{count_voters}}</p>
+    <p data-cy="count_votes" ><span class="font-weight-bold">Voti :   </span> {{count_votes}} </p>
 
     {% if v.votation_type != "draw"  %}
         {% if current_user.u.user_id == v.promoter_user.user_id and votation_timing == +1 and v.votation_status ==1 %}
-            <p><a class="btn btn-warning" href="/close_election/{{v.votation_id}}">Termina l'elezione</a></p>
+            <p><a class="btn btn-warning" href="/close_election/{{v.votation_id}}" data-cy="close">Termina l'elezione</a></p>
         {% endif %}
 
         {% if current_user.u.user_id == v.promoter_user.user_id  %}
-            <p><a class="btn btn-danger" href="/delete_election/{{v.votation_id}}">Cancella l'elezione</a></p>
+            <p><a class="btn btn-danger" href="/delete_election/{{v.votation_id}}" data-cy="delete_votation">Cancella l'elezione</a></p>
         {% endif %}
     {% endif %}
 

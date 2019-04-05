@@ -2,7 +2,7 @@
 {% block body %}
 <div>Confermare:</div>
 <div>
-        <a class="btn btn-danger" href="/delete_election/{{votation_id}}?confirm=yes">Cancella l'elezione</a>
+        <a class="btn btn-danger" href="/delete_election/{{votation_id}}?confirm=yes" data-cy="confirm_delete">Cancella l'elezione</a>
         <a class="btn btn-secondary" href="/">Non Cancellare</a>
 </div>
 {% endblock %}

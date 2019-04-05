@@ -9,9 +9,9 @@
         <div class="col border m-1"><span class="font-weight-bold">Fine:</span> {{v.end_date}}</div>
         <div class="col m-1">
             {% if v.votation_status == 1 %}
-                <a href="/vote/{{v.votation_id}}" class="btn btn-warning btn-sm m-2">Vota</a>  
+                <a href="/vote/{{v.votation_id}}" class="btn btn-warning btn-sm m-2" data-cy="vote">Vota</a>  
             {% endif %}
-                <a href="/votation_detail/{{v.votation_id}}" class="btn btn-warning btn-sm m-2">Guarda</a>
+                <a href="/votation_detail/{{v.votation_id}}" class="btn btn-warning btn-sm m-2" data-cy="detail">Guarda</a>
             {% if v.votation_status == 0 %}
                 <a href="/be_a_candidate/{{v.votation_id}}" class="btn btn-warning btn-sm m-2">Candidati</a>
             {% endif %}

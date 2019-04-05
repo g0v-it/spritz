@@ -20,7 +20,7 @@
                 {% for i in range(words_array|count) %}
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" 
-                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} />
+                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} data-cy="word{{i}}" />
                         <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i]}}</label>
                     </div>
                 {% endfor %}
@@ -31,7 +31,7 @@
             </table>
             <div class="form-group">
                 <label for="secret_key_{{v.votation_id}}">Password per questo voto:</label>
-                <input type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" />
+                <input data-cy="password" type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" />
                 <small class="form-text text-muted">Ricordarla con attenzione. Non sarà recuperabile</small>
             </div>
         <button class="btn btn-warning" type="submit" id="sub_button">Vota</button>
