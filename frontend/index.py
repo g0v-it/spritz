@@ -91,7 +91,7 @@ def votation_propose():
         else:
             message = (msg,MSG_KO)               
     return render_template('votation_propose_template.html', pagetitle="Crea una votazione", \
-    votation_obj=v, message=message)
+    votation_obj=v, message=message,utcnow=str(datetime.datetime.utcnow()) )
 
 @app.route("/votation_list")
 @login_required

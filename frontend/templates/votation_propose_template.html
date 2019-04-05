@@ -44,6 +44,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Salva</button>
 </form>
+<div class="font-weight-light mt-4">UTC time: {{utcnow}}</div>
 
 <script>
 $(function () {
@@ -89,7 +90,7 @@ $(function () {
         }
         var l = $("#votation_options").val().trim();
         if(!l) {
-            alert("Scrivi almeno tre opzioni");
+            alert("Scrivi le opzioni");
             return false;
         }
 
