@@ -1,1 +1,0 @@
-se salvo una votazione con lo stesso nome di un'altra va in errore non gestito

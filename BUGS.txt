@@ -1,0 +1,12 @@
+1. se salvo una votazione con lo stesso nome di un'altra va in errore non gestito
+2. aggiungere la descrizione della votazione
+3. aggiungere un campo a voters
+4. lista degli aventi diritto
+5. tradurre in inglese
+6. mettere gettext/Flask-babel
+7. cambiare algoritmo classifica
+
+
+
+
+
