@@ -128,19 +128,22 @@ def insert_votation_dto(v):
     """Insert the votation_dto into the DB"""
     result = True
     conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""insert into votation(
-                    promoter_user_id, 
-                    votation_description, 
-                    begin_date, 
-                    end_date, 
-                    votation_type,
-                    votation_status) values(%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.begin_date, v.end_date, v.votation_type, v.votation_status))
-    row =c.fetchone()
-    v.votation_id = row[0]
+    try:
+        c = conn.cursor()
+        c.execute("""insert into votation(
+                        promoter_user_id, 
+                        votation_description, 
+                        begin_date, 
+                        end_date, 
+                        votation_type,
+                        votation_status) values(%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.begin_date, v.end_date, v.votation_type, v.votation_status))
+        row =c.fetchone()
+        v.votation_id = row[0]
 
-    c.close()
-    conn.close()
+        c.close()
+        conn.close()
+    except:
+        result = False
     return result
 
 

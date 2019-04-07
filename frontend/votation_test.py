@@ -38,6 +38,18 @@ class votation_test(unittest.TestCase):
         self.assertFalse(votation.validate_string_date("2018-32-10"))
         self.assertFalse(votation.validate_string_date("2018-02-30"))
 
+    def test_insert_duplicate_description(self):
+        v = votation.votation_dto()
+        v.votation_description = 'Duplicate description test'
+        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
+        v.promoter_user.user_id = 1
+        v.begin_date = datetime(2018,1,1)
+        v.end_date = datetime(2018,1,15)
+        v.votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR
+        self.assertTrue( votation.insert_votation_dto(v) )
+        self.assertFalse( votation.insert_votation_dto(v) )
+        votation.delete_votation_by_id(v.votation_id)
+        
 
 if __name__ == '__main__':
     unittest.main()
