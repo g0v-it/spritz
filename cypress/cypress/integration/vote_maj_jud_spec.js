@@ -43,7 +43,8 @@ describe('voting majority judgment Test', function() {
         cy.get('[data-cy=close]').click()        
         cy.get('.alert-success').should('contain', 'Votazione chiusa')
 
-
+        cy.visit("/votation_list")
+        cy.get('[data-cy=detail]').first().click()
         cy.get("[data-cy=delete_votation]").click()
         cy.get("[data-cy=confirm_delete]").click()
         cy.get('.alert-success').should('contain', 'Votazione cancellata')
