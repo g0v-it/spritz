@@ -72,6 +72,7 @@ def votation_propose():
     if request.method == 'POST':    
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
+        v.description_url = request.form['description_url']
         v.begin_date = request.form['begin_date'] + " " + request.form['begin_time']
         v.end_date = request.form['end_date'] + " " + request.form['end_time']
         v.votation_type = request.form['votation_type']

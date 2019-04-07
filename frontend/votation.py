@@ -36,6 +36,7 @@ class votation_dto:
         self.votation_id = None
         self.promoter_user = user.user_dto()
         self.votation_description = None
+        self.description_url = None
         self.begin_date = None
         self.end_date = None
         self.votation_type = None
@@ -49,6 +50,7 @@ def get_blank_dto():
     v.votation_id = 0
     v.promoter_user.user_id = 0
     v.votation_description = ''
+    v.description_url = ''
     v.begin_date = ''
     v.end_date = ''
     v.votation_type = ''
@@ -68,6 +70,7 @@ def load_votation_by_id(votation_id):
         v.votation_id = row['votation_id']
         v.promoter_user = user.load_user_by_id( row['promoter_user_id'] )
         v.votation_description = row['votation_description']
+        v.description_url = row['description_url']
         v.begin_date = row['begin_date']
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
@@ -89,6 +92,7 @@ def load_votations():
         v.votation_id = row['votation_id']
         v.promoter_user = user.load_user_by_id( row['promoter_user_id'] )
         v.votation_description = row['votation_description']
+        v.description_url = row['description_url']
         v.begin_date = row['begin_date']
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
@@ -113,6 +117,7 @@ def load_votations_by_promoter_user_id(promoter_user_id):
         v.votation_id = row['votation_id']
         v.promoter_user = user.load_user_by_id(row['promoter_user_id'])
         v.votation_description = row['votation_description']
+        v.description_url = row['description_url']
         v.begin_date = row['begin_date']
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
@@ -133,10 +138,11 @@ def insert_votation_dto(v):
         c.execute("""insert into votation(
                         promoter_user_id, 
                         votation_description, 
+                        description_url, 
                         begin_date, 
                         end_date, 
                         votation_type,
-                        votation_status) values(%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.begin_date, v.end_date, v.votation_type, v.votation_status))
+                        votation_status) values(%s,%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.description_url, v.begin_date, v.end_date, v.votation_type, v.votation_status))
         row =c.fetchone()
         v.votation_id = row[0]
 

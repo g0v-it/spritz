@@ -15,6 +15,7 @@ describe('Create votation Test', function() {
         cy.visit("/votation_propose")
         const random_number = Math.trunc( Math.random() * 10000 ) 
         cy.get('#votation_description').type('cypress' + random_number)
+        cy.get('#description_url').type("https://copernicani.it/Libro_bianco/2-il-metodo-spritz-la-nascita-dei-copernicani/")
         cy.get('#votation_type').select('simple_maj')
         cy.get('#begin_date').type('2019-04-01')
         cy.get('#begin_time').type('13:45')

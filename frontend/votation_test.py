@@ -9,6 +9,7 @@ class votation_test(unittest.TestCase):
     def test_insert(self):
         v = votation.votation_dto()
         v.votation_description = 'Votation automated test ' + str(random.randint(0,500))
+        v.description_url = ""
         v.votation_type = votation.TYPE_DRAW
         v.promoter_user.user_id = 1
         v.begin_date = datetime(2018,1,1)
@@ -41,6 +42,7 @@ class votation_test(unittest.TestCase):
     def test_insert_duplicate_description(self):
         v = votation.votation_dto()
         v.votation_description = 'Duplicate description test'
+        v.description_url = ''
         v.votation_type = votation.TYPE_SIMPLE_MAJORITY
         v.promoter_user.user_id = 1
         v.begin_date = datetime(2018,1,1)
