@@ -42,7 +42,6 @@ CREATE TABLE public.votation (
     votation_id integer NOT NULL,
     promoter_user_id integer NOT NULL,
     votation_description text NOT NULL,
-    description_url text NOT NULL,
     begin_date timestamp without time zone NOT NULL,
     end_date timestamp without time zone NOT NULL,
     votation_type text NOT NULL,
