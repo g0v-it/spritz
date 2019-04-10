@@ -41,7 +41,7 @@ class votation_dto:
         self.end_date = None
         self.votation_type = None
         self.votation_status = None
-
+        self.list_voters = None
 
 
 
@@ -55,6 +55,7 @@ def get_blank_dto():
     v.end_date = ''
     v.votation_type = ''
     v.votation_status = 0
+    v.list_voters = 0
     return v
 
 
@@ -75,6 +76,7 @@ def load_votation_by_id(votation_id):
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
         v.votation_status = row['votation_status']
+        v.list_voters = row['list_voters']
     c.close()
     conn.close()
     return v
@@ -97,6 +99,7 @@ def load_votations():
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
         v.votation_status = row['votation_status']
+        v.list_voters = row['list_voters']
         ar.append(v)
         row = c.fetchone()
     c.close()
@@ -122,6 +125,7 @@ def load_votations_by_promoter_user_id(promoter_user_id):
         v.end_date = row['end_date']
         v.votation_type = row['votation_type']
         v.votation_status = row['votation_status']
+        v.list_voters = row['list_voters']
         ar.append(v)
         row = c.fetchone()
     c.close()
@@ -142,7 +146,8 @@ def insert_votation_dto(v):
                         begin_date, 
                         end_date, 
                         votation_type,
-                        votation_status) values(%s,%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.description_url, v.begin_date, v.end_date, v.votation_type, v.votation_status))
+                        votation_status,
+                        list_voters) values(%s,%s,%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.description_url, v.begin_date, v.end_date, v.votation_type, v.votation_status,v.list_voters))
         row =c.fetchone()
         v.votation_id = row[0]
 

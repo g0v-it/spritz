@@ -15,6 +15,7 @@ class votation_test(unittest.TestCase):
         v.begin_date = datetime(2018,1,1)
         v.end_date = datetime(2018,1,15)
         v.votation_status = 2
+        v.list_voters = 0
         self.assertTrue( votation.insert_votation_dto(v) )
         self.assertGreater(v.votation_id,0)
         v1 = votation.load_votation_by_id(v.votation_id)
@@ -48,6 +49,7 @@ class votation_test(unittest.TestCase):
         v.begin_date = datetime(2018,1,1)
         v.end_date = datetime(2018,1,15)
         v.votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR
+        v.list_voters = 0;
         self.assertTrue( votation.insert_votation_dto(v) )
         self.assertFalse( votation.insert_votation_dto(v) )
         votation.delete_votation_by_id(v.votation_id)

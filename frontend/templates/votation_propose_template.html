@@ -47,6 +47,11 @@
         <textarea class="form-control text-uppercase" type="text" id="votation_options" name="votation_options" rows="5"></textarea>
         <small class="form-text text-muted">Un candidato o una opzione per riga</small>
     </div>
+    <div class="form-check mb-4">
+        <input class="form-check-input" type="checkbox" value="1" id="list_voters" name="list_voters" />
+        <label class="form-check-label" for="list_voters">Specifica gli aventi diritto</label>
+    </div>
+
     <button type="submit" class="btn btn-primary">Salva</button>
 </form>
 <div class="font-weight-light mt-4 mb-2">UTC time: {{utcnow}}</div>

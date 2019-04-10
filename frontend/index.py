@@ -76,6 +76,9 @@ def votation_propose():
         v.begin_date = request.form['begin_date'] + " " + request.form['begin_time']
         v.end_date = request.form['end_date'] + " " + request.form['end_time']
         v.votation_type = request.form['votation_type']
+        v.list_voters = 0
+        if 'list_voters' in  request.form.keys():
+            v.list_voters = request.form['list_voters']
         v.promoter_user = current_user.u
         if v.votation_type == votation.TYPE_DRAW:
             v.votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR

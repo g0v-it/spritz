@@ -4,4 +4,5 @@ dropdb -h localhost -U dinogen spritz
 createdb -h localhost -U dinogen spritz
 psql -h localhost -U dinogen spritz < create.sql
 psql -h localhost -U dinogen spritz < alter.001.sql
+psql -h localhost -U dinogen spritz < alter.002.sql
 pause
