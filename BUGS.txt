@@ -6,6 +6,7 @@ FIXED 2. aggiungere la descrizione della votazione
 6. mettere gettext/Flask-babel
 7. cambiare algoritmo classifica
 8. la creazione di un votation_dto di default dovrebbe stare nel votation.py
+9. mostrare nel detail se hai diritto al votation
 
 
 

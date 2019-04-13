@@ -164,6 +164,7 @@ def votation_detail_draw(v):
 def votation_detail_maj_jud(v):
     options_array = option.load_options_by_votation(v.votation_id)
     counting = None
+    is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
     return render_template('majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
@@ -172,11 +173,13 @@ def votation_detail_maj_jud(v):
          count_voters=voter.count_voters(v.votation_id), \
          count_votes=vote.count_votes(v.votation_id), \
          votation_timing=votation.votation_timing(v),counting=counting, \
-         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION, \
+         is_voter=is_voter)
 
 def votation_detail_simple(v):
     options_array = option.load_options_by_votation(v.votation_id)
     counting = None
+    is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_simple.counting_votes(v.votation_id)
     return render_template('simple_majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
@@ -185,7 +188,8 @@ def votation_detail_simple(v):
          count_voters=voter.count_voters(v.votation_id), \
          count_votes=vote.count_votes(v.votation_id), \
          votation_timing=votation.votation_timing(v),counting=counting, \
-         type_description=votation.TYPE_DESCRIPTION)
+         type_description=votation.TYPE_DESCRIPTION, \
+         is_voter=is_voter)
 
 
 @app.route("/start_election/<int:votation_id>")
@@ -223,22 +227,39 @@ def delete_election(votation_id):
         pagetitle="Cancellazione", \
         message=None,votation_id=votation_id)
 
-
+@app.route("/add_voters", methods=["POST",])
+@login_required
+def add_voters():
+    votation_id = request.form['votation_id']
+    v = votation.load_votation_by_id(votation_id)
+    if v.promoter_user.user_id == current_user.u.user_id: 
+        list_voters = request.form['list_voters']
+        ar = voter.split_string_remove_dup(list_voters)
+        n = voter.insert_voters_array(votation_id,ar)
+        return render_template('thank_you_template.html', \
+        pagetitle="Aventi diritto", \
+        message=("Aggiunti {} aventi diritto.".format(n),MSG_OK))
+    if v.promoter_user_id.user_id != current_user.u.user_id:
+        return render_template('thank_you_template.html', \
+            pagetitle="Aventi diritto", \
+            message=("Non sei il promotore dell'elezione e non puoi aggiungere utenti",MSG_KO))        
 
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('login'))
 
 
-@app.route("/version")
-def print_version():
-    return render_template('version_template.html', pagetitle="Frontend Version", version=os.environ['voting_version'])
+# @app.route("/version")
+# def print_version():
+#     return render_template('version_template.html', pagetitle="Frontend Version", version=os.environ['voting_version'])
   
 @app.route("/vote/<int:votation_id>",  methods=['GET', 'POST'])
 @login_required
 def vote_(votation_id):
     v = votation.load_votation_by_id(votation_id)
     if votation.votation_timing(v) != 0:
+        return redirect('/votation_detail/'+str(votation_id))
+    if voter.is_voter(votation_id, current_user.u.user_id) == False:
         return redirect('/votation_detail/'+str(votation_id))
     if v.votation_type == votation.TYPE_MAJORITY_JUDGMENT:
         return votemajjud(v)

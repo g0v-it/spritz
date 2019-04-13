@@ -1,6 +1,8 @@
 import dbmanager
 import config
 import option
+import user
+import votation
 
 class voter_dto:
     """DTO class for the database table"""
@@ -11,12 +13,16 @@ class voter_dto:
 
 
 def insert_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""insert into voter(
-                    user_id, votation_id,voted) values (%s,%s,%s)""",(o.user_id,o.votation_id, o.voted) )
-    c.close()
-    conn.close()
+    try:
+        conn = dbmanager.get_connection()
+        c = conn.cursor()
+        c.execute("""insert into voter(
+                        user_id, votation_id,voted) values (%s,%s,%s)""",(o.user_id,o.votation_id, o.voted) )
+        c.close()
+        conn.close()
+        return True
+    except:
+        return False
 
 def update_dto(o):
     conn = dbmanager.get_connection()
@@ -61,3 +67,41 @@ def count_voters(votation_id):
     conn.close()
     return result
 
+def insert_voters_array(votation_id, ar):
+    """returns number of inserted rows"""
+    count = 0
+    for user_name in ar:
+        u = user.load_user_by_username(user_name)
+        if u:
+            o = voter_dto()
+            o.votation_id = votation_id
+            o.user_id = u.user_id
+            o.voted = 0
+            if insert_dto(o):
+                count += 1
+    return count
+        
+def split_string_remove_dup(text):
+    lines = text.splitlines()
+    lines = list(map(lambda l: l.strip(),lines))
+    lines = filter(None,lines)
+    lines = list(set(lines)) # removing duplicates  
+    return lines
+
+def is_voter(votation_id,user_id):
+    result = False
+    v = votation.load_votation_by_id(votation_id)
+    if votation_id == v.promoter_user.user_id:
+        return True
+    if v.list_voters == 0:
+        return True
+    conn = dbmanager.get_connection()
+    c = conn.cursor()
+    c.execute("select * from voter where user_id = %s and votation_id = %s", (user_id,votation_id) )
+    row = c.fetchone()
+    if row:
+        result = True
+    c.close()
+    conn.close()
+    return result
+    
