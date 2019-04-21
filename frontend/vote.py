@@ -14,12 +14,16 @@ class vote_dto:
 
 
 def insert_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""insert into vote(
-                    vote_key, votation_id, option_id,jud_value) values (%s,%s,%s,%s)""",(o.vote_key,o.votation_id, o.option_id ,o.jud_value) )
-    c.close()
-    conn.close()
+    try:
+        conn = dbmanager.get_connection()
+        c = conn.cursor()
+        c.execute("""insert into vote(
+                vote_key, votation_id, option_id,jud_value) values (%s,%s,%s,%s)""",(o.vote_key,o.votation_id, o.option_id ,o.jud_value) )
+        c.close()
+        conn.close()
+        return True
+    except:
+        return False
 
 def delete_votes_by_key(vote_key):
     conn = dbmanager.get_connection()

@@ -1,49 +1,71 @@
 describe('voting simple majority Test', function() {
-    it('create a simple majority', function() {
-        cy.request({
-            method: 'POST',
-            url: '/login', 
-            form: true, 
-            body: {
-              user_name: 'aldo',
-              pass_word: 'aldo'
-            }
-        })
-
-        cy.visit("/votation_propose")
-        const random_number = Math.trunc( Math.random() * 10000 ) 
-        const begin_date = Cypress.moment().utc().format("YYYY-MM-DD")
-        const end_date   = begin_date
-        const begin_time = Cypress.moment().utc().format("HH:mm")
-        const end_time = Cypress.moment().utc().add(2,'m').format("HH:mm")
-        cy.get('#votation_description').type('cypress' + random_number)
-        cy.get('#votation_type').select('simple_maj')
-        cy.get('#begin_date').type(begin_date)
-        cy.get('#begin_time').type(begin_time)
-        cy.get('#end_date').type(end_date)
-        cy.get('#end_time').type(end_time)
-        cy.get('#votation_options').type("mare\nmonti\ncampagna")
-        cy.get('button').click()
-        cy.get('.alert-success').should('contain', 'Votazione salvata')
-
-        cy.visit("/votation_list")
-        cy.get('[data-cy=vote]').first().click()
-        cy.get("[data-cy=radio]").first().check()
-        cy.get("[data-cy=password]").type("aa")
-        cy.get('button').click()
-        cy.get('.alert-success').should('contain', 'Voto registrato correttamente')
-        
-        cy.visit("/votation_list")
-        cy.get('[data-cy=detail]').first().click()
-        cy.get('[data-cy=count_voters]').should('contain', '1')        
-        cy.get('[data-cy=count_votes]').should('contain', '1')        
-        cy.get("[data-cy=delete_votation]").click()
-        cy.get("[data-cy=confirm_delete]").click()
-        cy.get('.alert-success').should('contain', 'Votazione cancellata')
-
-
-
+    beforeEach(function () {
+        cy.login('aldo', 'aldo')
     })
+    afterEach(function () {
+        cy.visit('/logout')
+    })
+
+    it('vote a simple majority', function() {
+        
+        cy.createvotation('during','simple')
+        // go in the votation and get the first ID
+        cy.visit("/votation_list")
+        cy.get('[data-cy=votation_id]').first().then(($span) => {
+            const votation_id = $span.text()
+            // set a vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=radio]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get('button').click()
+            cy.get('.alert-success').should('contain', 'Voto registrato correttamente')
+
+            // set the end_date and time so you can close
+            const new_end_date = Cypress.moment().utc().format("YYYY-MM-DD")
+            const new_end_time = Cypress.moment().utc().subtract(2,'m').format("HH:mm")
+            //cy.wait(1000 * 120)
+
+            cy.updateenddate(votation_id, new_end_date,new_end_time)
+    
+            // check for counters
+            cy.visit("/votation_list")
+            cy.get('[data-cy=detail]').first().click()
+            cy.get('[data-cy=count_voters]').should('contain', '1')        
+            cy.get('[data-cy=count_votes]').should('contain', '1')        
+
+            // close the votation
+            cy.get('[data-cy=close]').click()        
+            cy.get('.alert-success').should('contain', 'Votazione chiusa')
+
+            cy.deletefirstvotation()
+        })
+    })
+
+    it('wrong vote password', function() {
+        
+        cy.createvotation('during','simple')
+        // go in the votation and get the first ID
+        cy.visit("/votation_list")
+        cy.get('[data-cy=votation_id]').first().then(($span) => {
+            const votation_id = $span.text()
+            // set a vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=radio]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get('button').click()
+            cy.get('.alert-success').should('contain', 'Voto registrato correttamente')
+            // set a vote but with wrong password
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=radio]").first().check()
+            cy.get("[data-cy=password]").type("bb")
+            cy.get('button').click()
+            cy.get('.alert-danger').should('contain', 'Errore')
+            
+    
+            cy.deletefirstvotation()
+        })
+    })
+
 
 
 })

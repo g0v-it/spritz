@@ -3,11 +3,12 @@ import voter
 import dbmanager
 
 def save_vote(user_id, vote_key,votation_id,option_id):
+    #print(user_id, vote_key,votation_id,option_id)
     vu = voter.voter_dto()
     vu.user_id = user_id
     vu.votation_id = votation_id
-    b_has_voted = voter.has_voted(vu)
-    if b_has_voted:
+    vu.voted = voter.has_voted(vu)
+    if vu.voted:
         votes = vote.load_vote_by_key(vote_key)
         if len(votes) == 0:
             return False
@@ -18,8 +19,7 @@ def save_vote(user_id, vote_key,votation_id,option_id):
     o.option_id = option_id
     o.jud_value = 1
     vote.insert_dto(o)
-    if not b_has_voted:
-        voter.insert_dto(vu)
+    voter.set_voted(vu)
     return True
 
 def counting_votes(votation_id):

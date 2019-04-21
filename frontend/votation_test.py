@@ -53,6 +53,25 @@ class votation_test(unittest.TestCase):
         self.assertTrue( votation.insert_votation_dto(v) )
         self.assertFalse( votation.insert_votation_dto(v) )
         votation.delete_votation_by_id(v.votation_id)
+
+    def test_update_end_date(self):
+        v = votation.votation_dto()
+        v.votation_description = 'Update end date test'
+        v.description_url = ''
+        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
+        v.promoter_user.user_id = 1
+        v.begin_date = datetime(2018,1,1)
+        v.end_date = datetime(2018,2,1)
+        v.votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR
+        v.list_voters = 0;
+        self.assertTrue( votation.insert_votation_dto(v) )
+        new_end_date = datetime(2019,12,31,8,34)
+        votation.update_end_date(v.votation_id, new_end_date)
+        
+        v2 = votation.load_votation_by_id(v.votation_id)
+        self.assertEqual(new_end_date, v2.end_date)
+
+        votation.delete_votation_by_id(v.votation_id)
         
 
 if __name__ == '__main__':

@@ -31,6 +31,7 @@ def update_dto(o):
                     where user_id=%s and votation_id=%s""",(o.voted,o.user_id,o.votation_id) )
     c.close()
     conn.close()
+    return True
 
 
 def has_voted(o):
@@ -44,6 +45,7 @@ def has_voted(o):
     c.close()
     conn.close()
     return result
+
 
 def delete_dto(o):
     conn = dbmanager.get_connection()
@@ -89,10 +91,13 @@ def split_string_remove_dup(text):
     return lines
 
 def is_voter(votation_id,user_id):
+    """Have you the right to vote?"""
     result = False
     v = votation.load_votation_by_id(votation_id)
-    if votation_id == v.promoter_user.user_id:
-        return True
+    if not v:
+        return False
+    #if votation_id == v.promoter_user.user_id: NO GOOD
+        #return True
     if v.list_voters == 0:
         return True
     conn = dbmanager.get_connection()
@@ -104,4 +109,15 @@ def is_voter(votation_id,user_id):
     c.close()
     conn.close()
     return result
-    
+
+def set_voted(o):
+    """insert or update the voter record"""
+    result = False
+    if has_voted(o):
+        return True
+    o.voted = 1
+    result = insert_dto(o)
+    if not result:
+        result = update_dto(o)
+    return result
+

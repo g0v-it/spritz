@@ -2,6 +2,9 @@
 import unittest
 import voter
 import user 
+import votation
+from datetime import datetime
+import random
 
 class voter_test(unittest.TestCase):
         
@@ -137,12 +140,93 @@ class voter_test(unittest.TestCase):
              """)
         self.assertEqual(set(expected), set(actual)  )
     def test_is_voter(self):
+        v = votation.votation_dto()
+        v.votation_description = 'Votation automated test for voter1'
+        v.description_url = ""
+        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
+        v.promoter_user.user_id = 1
+        v.begin_date = datetime(2018,1,1)
+        v.end_date = datetime(2018,1,15)
+        v.votation_status = 1
+        v.list_voters = 1
+        self.assertTrue( votation.insert_votation_dto(v) )
+
+        o = voter.voter_dto()
+        o.votation_id = v.votation_id
+        o.user_id = 2
+        o.voted = 0
+        voter.delete_dto(o)
+        voter.insert_dto(o)
+        self.assertTrue(voter.is_voter(o.votation_id,o.user_id))
+        voter.delete_dto(o)
+
+        votation.deltree_votation_by_id(v.votation_id)
+
+    def test_is_voter_votation_null(self):
         o = voter.voter_dto()
         o.votation_id = 1000
         o.user_id = 1
         o.voted = 0
         voter.insert_dto(o)
-        self.assertTrue(voter.is_voter(o.votation_id,o.user_id))
+        self.assertFalse(voter.is_voter(o.votation_id,o.user_id))
+
+    def test_set_voted_no_list(self):
+        # create a votation no list
+        v = votation.votation_dto()
+        v.votation_description = 'Votation automated test no list ' + str(random.randint(0,10000 ))
+        v.description_url = ""
+        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
+        v.promoter_user.user_id = 1
+        v.begin_date = datetime(2018,1,1)
+        v.end_date = datetime(2018,1,15)
+        v.votation_status = 1
+        v.list_voters = 0 # <<---- no list
+        self.assertTrue( votation.insert_votation_dto(v) )
+
+        # run set_voted
+        o = voter.voter_dto()
+        o.votation_id = v.votation_id
+        o.user_id = 2
+        # should perform insert
+        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter.has_voted(o))
+        # should perform update
+        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter.has_voted(o))
+        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+
+        votation.deltree_votation_by_id(v.votation_id)
+
+    def test_set_voted_with_list(self):
+        # create a votation no list
+        v = votation.votation_dto()
+        v.votation_description = 'Votation automated test with list ' + str(random.randint(0,10000 ))
+        v.description_url = ""
+        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
+        v.promoter_user.user_id = 1
+        v.begin_date = datetime(2018,1,1)
+        v.end_date = datetime(2018,1,15)
+        v.votation_status = 1
+        v.list_voters = 1 # <<---- with list
+        self.assertTrue( votation.insert_votation_dto(v) )
+
+        # insert a voter 
+        o = voter.voter_dto()
+        o.votation_id = v.votation_id
+        o.user_id = 2
+        o.voted = 0
+        self.assertFalse(voter.is_voter(o.votation_id, o.user_id))
+        voter.insert_dto(o)
+        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+
+        # run set_voted()
+        self.assertFalse(voter.has_voted(o))
+        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter.has_voted(o))
+
+        votation.deltree_votation_by_id(v.votation_id)
+
 
 if __name__ == '__main__':
     unittest.main()

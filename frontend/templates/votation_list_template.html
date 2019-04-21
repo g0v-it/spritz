@@ -2,7 +2,7 @@
 
 {% for v in votations_array %}
     <div class="row border border-warning mb-3 text-center ">
-        <div class="col border m-1"><span class="font-weight-bold">Votazione</span> <span class="badge badge-pill badge-warning w-25">{{v.votation_id}}</span> {{type_description[v.votation_type]}}</div>
+        <div class="col border m-1"><span class="font-weight-bold">Votazione</span> <span class="badge badge-pill badge-warning w-25" data-cy="votation_id">{{v.votation_id}}</span> {{type_description[v.votation_type]}}</div>
         <div class="col border m-1 text-nowrap">{{v.votation_description}}</div>
         <div class="col border m-1"><span class="font-italic">{{states[v.votation_status]}}</span></div>
         <div class="col border m-1"><span class="font-weight-bold">Inizio:</span> {{v.begin_date}}</div>

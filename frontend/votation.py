@@ -221,6 +221,13 @@ def update_status(votation_id, new_status):
     c.close()
     conn.close()
 
+def update_end_date(votation_id, new_datetime):
+    conn = dbmanager.get_connection()
+    c = conn.cursor()
+    c.execute("update votation set end_date=%s where votation_id = %s", (new_datetime,votation_id,))
+    c.close()
+    conn.close()
+
 def deltree_votation_by_id(votation_id):
     """Delete the votation from the DB
     with all dependencies"""

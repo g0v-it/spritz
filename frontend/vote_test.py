@@ -3,6 +3,7 @@ import unittest
 import vote
 import votation
 import vote_maj_jud
+import vote_simple
 
 class vote_test(unittest.TestCase):
     def test_insert(self):
@@ -110,6 +111,12 @@ class vote_test(unittest.TestCase):
         b = [100,100,100,100,100,100]
         r = [100,100,100,100, 99,101]
         self.assertEqual( vote_maj_jud.maj_jud_compare(b,r), -1)
+    def test_save_simple(self):
+        self.assertTrue( vote_simple.save_vote(2,"akey",1234,10) )
+        # check for duplicate key error:
+        self.assertTrue( vote_simple.save_vote(2,"akey",1234,10) ) 
+
+
 if __name__ == '__main__':
     unittest.main()
 

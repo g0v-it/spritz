@@ -23,6 +23,7 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
         o.jud_value = vote_array[i]
         vote.insert_dto(o)
     if not b_has_voted:
+        vu.voted = 1
         voter.insert_dto(vu)
     return True
 

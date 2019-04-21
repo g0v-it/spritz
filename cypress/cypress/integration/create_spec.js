@@ -1,16 +1,11 @@
 describe('Create votation Test', function() {
     beforeEach(function () {
-        // login by request
-        cy.request({
-            method: 'POST',
-            url: '/login', // baseUrl is prepended to url
-            form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
-            body: {
-              user_name: 'aldo',
-              pass_word: 'aldo'
-            }
-        })
+        cy.login('aldo', 'aldo')
     })
+    afterEach(function () {
+        cy.visit('/logout')
+    })
+
     it('create a simple majority', function() {
         cy.visit("/votation_propose")
         const random_number = Math.trunc( Math.random() * 10000 ) 

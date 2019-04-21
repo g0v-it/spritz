@@ -299,5 +299,16 @@ def votesimplemaj(v):
             message = ("Errore. Voto NON registrato. Password Errata?",MSG_KO)
         return render_template('thank_you_template.html', pagetitle="Registrazione voto", message=message)
 
+@app.route("/update_end_date/<int:votation_id>",  methods=['GET',])
+@login_required
+def update_end_date(votation_id):
+    v = votation.load_votation_by_id(votation_id)
+    if current_user.u.user_id == v.promoter_user.user_id:
+        end_date = request.args.get('end_date')
+        end_time = request.args.get('end_time')
+        if end_date and end_time:
+            votation.update_end_date(votation_id, end_date + " " + end_time)
+            return "OK"
+    return "KO"
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0') 
