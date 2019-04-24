@@ -56,10 +56,10 @@ def maj_jud_median_calc(totals_array):
             break
     return result
 
-def trim(totals_array):
-    if sum(totals_array) == 0:
-        return totals_array
-    l = len(totals_array)
+# def trim(totals_array):
+#     if sum(totals_array) == 0:
+#         return totals_array
+#     l = len(totals_array)
 
 
 class maj_jud_result:

@@ -31,6 +31,7 @@ def delete_votes_by_key(vote_key):
     c.execute("delete from vote where vote_key = %s", (vote_key,) )
     c.close()
     conn.close()
+    return True
 
 def delete_votes_by_votation_id(votation_id):
     """
@@ -41,6 +42,7 @@ def delete_votes_by_votation_id(votation_id):
     c.execute("delete from vote where votation_id = %s", (votation_id,) )
     c.close()
     conn.close()
+    return True
 
 
 def load_vote_by_key(vote_key):
@@ -76,3 +78,4 @@ def count_votes(votation_id):
     c.close()
     conn.close()
     return result
+    

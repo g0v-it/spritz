@@ -53,6 +53,7 @@ def delete_dto(o):
     c.execute("""delete from voter where user_id = %s and votation_id = %s """,(o.user_id,o.votation_id, ) )
     c.close()
     conn.close()
+    return True
 
 def count_voters(votation_id):
     """

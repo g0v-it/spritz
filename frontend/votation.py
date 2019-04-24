@@ -165,6 +165,7 @@ def delete_votation_by_id(votation_id):
     c.execute("delete from votation where votation_id = %s", (votation_id,))
     c.close()
     conn.close()
+    return True
 
 
 def validate_dto(v):
@@ -220,6 +221,7 @@ def update_status(votation_id, new_status):
     c.execute("update votation set votation_status=%s where votation_id = %s", (new_status,votation_id,))
     c.close()
     conn.close()
+    return True
 
 def update_end_date(votation_id, new_datetime):
     conn = dbmanager.get_connection()
@@ -227,6 +229,7 @@ def update_end_date(votation_id, new_datetime):
     c.execute("update votation set end_date=%s where votation_id = %s", (new_datetime,votation_id,))
     c.close()
     conn.close()
+    return True
 
 def deltree_votation_by_id(votation_id):
     """Delete the votation from the DB
@@ -239,6 +242,7 @@ def deltree_votation_by_id(votation_id):
     c.execute("delete from voting_option where votation_id = %s", (votation_id,))
     c.close()
     conn.close()
+    return True
 
 def votation_timing(vdto):
     # timing of votation
