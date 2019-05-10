@@ -20,14 +20,17 @@
     <!-- header -->
     <div class="flyer">
         <img class="logo" src="{{url_for('static', filename='images/logo.png')}}" />
-        <a  href="/" title="vai al sito">
+        <a  href="/" title="Homepage">
             <img class="home" src="{{url_for('static', filename='images/al-sito.png')}}" />
         </a>
     </div>
     <!-- login bar -->
 	<div class="container text-right">
         {% if current_user.is_authenticated %} 
-            <span >Benvenuto {{current_user.user_name}}</span>
+            <span >{{_("Welcome")}} {{current_user.user_name}}</span>
+            <a href="/lang/uk"><img src="{{url_for('static', filename='images/uk.png')}}" alt="UK"></a>
+            &nbsp;|&nbsp;
+            <a href="/lang/it"><img src="{{url_for('static', filename='images/it.png')}}" alt="IT"></a>
         {% endif %}
     </div>      
     <div class="container">
@@ -36,18 +39,18 @@
               <a class="nav-link" href="/">Menu</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/votation_propose">Avvia</a>
+              <a class="nav-link" href="/votation_propose">{{_("New")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/votation_list">Votazioni</a>
+              <a class="nav-link" href="/votation_list">{{_("Votations")}}</a>
             </li>
             {% if current_user.is_authenticated %} 
                 <li class="nav-item">
-                    <a class="nav-link " href="/logout" data-cy="logoff">Scollegati</a>
+                    <a class="nav-link " href="/logout" data-cy="logoff">{{_("Logoff")}}</a>
                 </li>
             {% else %} 
                 <li class="nav-item">
-                    <a class="nav-link " href="/login">Entra</a>
+                    <a class="nav-link " href="/login">{{_("Login")}}</a>
                 </li>
             {% endif %}
         </ul>

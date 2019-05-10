@@ -1,8 +1,8 @@
 {% extends "base_template.html" %} 
 {% block body %} 
 {% if current_user.is_authenticated %} 
-Sei registrato come {{ current_user.user_name }}. 
-<div>Vai al <a href="/">Menu principale</a></div>
+Welcome {{ current_user.user_name }}. 
+<div>Go to <a href="/">Main menu</a></div>
 {% else %}
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -22,7 +22,7 @@ function onSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
   console.log('idtoken: ' + id_token);
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', {{ url_for('login') }}');
+  xhr.open('POST', "{{ url_for('login') }}");
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
       console.log('Signed in as: ' + xhr.responseText);

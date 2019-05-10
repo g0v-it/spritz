@@ -1,9 +1,9 @@
 {% extends "base_template.html" %}
 {% block body %}
-<div>Confermare:</div>
+<div>Confirm:</div>
 <div>
-        <a class="btn btn-danger" href="/delete_election/{{votation_id}}?confirm=yes" data-cy="confirm_delete">Cancella l'elezione</a>
-        <a class="btn btn-secondary" href="/">Non Cancellare</a>
+        <a class="btn btn-danger" href="/delete_election/{{votation_id}}?confirm=yes" data-cy="confirm_delete">Delete votation</a>
+        <a class="btn btn-secondary" href="/">Don't delete</a>
 </div>
 {% endblock %}
     

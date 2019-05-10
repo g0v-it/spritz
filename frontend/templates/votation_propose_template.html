@@ -2,18 +2,18 @@
 
 <form action="votation_propose" method="post" id="votationPurpose">
     <div class="form-group">
-        <label for="votation_description">Descrizione:</label>
+        <label for="votation_description">Description:</label>
         <input class="form-control" type="text" id="votation_description" name="votation_description">
     </div>
     <div class="form-group">
         <label for="description_url">URL:</label>
         <input class="form-control" type="text" id="description_url" name="description_url">
-        <small class="form-text text-muted">Indirizzo ad una pagina descrittiva della votazione. Esempio: un post su Facebook</small>
+        <small class="form-text text-muted">Address of a page describing the election. As an example, a Facebook post or a blog post.</small>
     </div>
     <div class="form-group">
-        <label for="votation_type">Tipo di votazione:</label>
+        <label for="votation_type">Votation type:</label>
         <select class="form-control"  id="votation_type" name="votation_type">
-            <option value="simple_maj">Maggioranza semplice</option>
+            <option value="simple_maj">Simple majority</option>
             <option value="maj_jud">Majority judgment</option>
             <!-- <option value="maj_jud_sec">Majority judgment sicuro</option> -->
             <!-- <option value="draw">Sorteggio</option> -->
@@ -43,16 +43,16 @@
     </div>
 
     <div class="form-group" id="votation_options_group">
-        <label for="votation_options">Lista di candidati o di opzioni su cui votare:</label>
+        <label for="votation_options">Option or candidate list:</label>
         <textarea class="form-control text-uppercase" type="text" id="votation_options" name="votation_options" rows="5"></textarea>
-        <small class="form-text text-muted">Un candidato o una opzione per riga</small>
+        <small class="form-text text-muted">One option each row</small>
     </div>
     <div class="form-check mb-4">
         <input class="form-check-input" type="checkbox" value="1" id="list_voters" name="list_voters" />
-        <label class="form-check-label" for="list_voters">Specifica gli aventi diritto</label>
+        <label class="form-check-label" for="list_voters">Add voters</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Salva</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 <div class="font-weight-light mt-4 mb-2">UTC time: {{utcnow}}</div>
 
@@ -95,12 +95,12 @@ $(function () {
     $("#votationPurpose").submit(function( event ){
         var l = $("#votation_description").val().trim();
         if(!l) {
-            alert("Scrivi una descrizione della votazione");
+            alert("Add a description of this votation");
             return false;
         }
         var l = $("#votation_options").val().trim();
         if(!l) {
-            alert("Scrivi le opzioni");
+            alert("Add options");
             return false;
         }
 

@@ -4,6 +4,9 @@ import config
 import re
 from datetime import date,datetime
 import user
+from flask_babel import gettext
+_ = gettext
+
 
 STATUS_WAIT_FOR_CAND_AND_GUAR = 0
 STATUS_VOTING = 1
@@ -14,19 +17,19 @@ TYPE_DRAW = 'draw'
 TYPE_MAJORITY_JUDGMENT = 'maj_jud'
 TYPE_MAJORITY_JUDGMENT_SECURE = 'maj_jud_sec'
 TYPE_SIMPLE_MAJORITY = 'simple_maj'
-TYPE_DESCRIPTION={TYPE_DRAW:"Sorteggio", \
-    TYPE_MAJORITY_JUDGMENT_SECURE: "Secure Majority Judgment", \
+TYPE_DESCRIPTION={TYPE_DRAW:_("Draw"), \
+    TYPE_MAJORITY_JUDGMENT_SECURE: _("Secure Majority Judgment"), \
     TYPE_MAJORITY_JUDGMENT: "Majority Judgment", \
-    TYPE_SIMPLE_MAJORITY: "Simple Majority"}
+    TYPE_SIMPLE_MAJORITY: _("Simple Majority")}
 states = [
-    "Creata",
-    "Voto",
-    "Elaborazione, attendere...",
-    "Terminata",
-    "Fallita",
+    _("Created"),
+    _("Voting"),
+    _("Working, please wait..."),
+    _("Ended"),
+    _("Failed"),
 ]
 
-WORDS = ['Non so','Scarso','Insufficiente','Accettabile','Buono','Ottimo']
+WORDS = [_('No opinion'), _('Poor'), _('Not enough'), _('Acceptable'), _('Good'), _('Very good')]
 
 
 class votation_dto:

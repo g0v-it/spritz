@@ -2,6 +2,7 @@
 import os
 from flask import Flask, render_template,request,redirect,url_for
 from flask_login import LoginManager, login_required, current_user,login_user,logout_user
+from flask_babel import Babel,gettext
 import config 
 import user
 import votation
@@ -13,6 +14,7 @@ import vote_maj_jud
 import vote_simple
 import voter
 import datetime
+
 if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
@@ -24,12 +26,26 @@ if config.AUTH == 'test':
 MSG_INFO = 0
 MSG_OK   = 1
 MSG_KO   = 2
+LANGUAGES = {
+    'en': 'English',
+    'it': 'Italian'
+}
+current_language = None
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24) 
 login_manager = LoginManager()
 login_manager.init_app(app)
+babel = Babel(app=app)
+_ = gettext
 
+@babel.localeselector
+def get_locale():
+    # return 'it'
+    if current_language:
+        return current_language
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 @login_manager.user_loader
 def load_user(user_name):
@@ -41,7 +57,7 @@ def load_user(user_name):
 @app.route("/")
 @login_required
 def index():
-    return render_template('index_template.html', pagetitle="Menu principale")
+    return render_template('index_template.html', pagetitle=_("Main menu"))
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -52,11 +68,10 @@ def login():
         u = user.User(user_name)
         if u.try_to_authenticate(pass_word):
             login_user(u)
-            message = ("Login effettuato",MSG_OK)
+            message = (_("Login successful"),MSG_OK)
         else:
-            message = ("Login errato",MSG_KO)
+            message = (_("Wrong login"),MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle="Login",message=message, CLIENT_ID=auth.CLIENT_ID)
-
 
 @app.route("/logout")
 @login_required
@@ -68,7 +83,7 @@ def logout():
 @login_required
 def votation_propose():
     v = votation.get_blank_dto()
-    message = ("Inserire i dati",MSG_INFO)
+    message = (_("Please, insert data"),MSG_INFO)
     if request.method == 'POST':    
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
@@ -87,14 +102,14 @@ def votation_propose():
         result, msg = votation.validate_dto(v)
         if result:
             if votation.insert_votation_dto(v):
-                message = ("Votazione salvata",MSG_OK)
+                message = (_("Votation data saved"),MSG_OK)
                 # options saving
                 option.save_options_from_text(v.votation_id,request.form['votation_options'])
             else:
-                message = ("Errore, votazione non salvata",MSG_KO )    
+                message = (_("Error, votation data NOT saved"),MSG_KO )    
         else:
             message = (msg,MSG_KO)               
-    return render_template('votation_propose_template.html', pagetitle="Crea una votazione", \
+    return render_template('votation_propose_template.html', pagetitle=_("New votation"), \
     votation_obj=v, message=message,utcnow=str(datetime.datetime.utcnow()) )
 
 @app.route("/votation_list")
@@ -102,7 +117,7 @@ def votation_propose():
 def votation_list():
     votations_array = votation.load_votations()
     votations_array.reverse()
-    return render_template('votation_list_template.html', pagetitle="Lista delle votazioni", \
+    return render_template('votation_list_template.html', pagetitle=_("Votations list"), \
     votations_array=votations_array,states=votation.states,type_description=votation.TYPE_DESCRIPTION)
 
 @app.route("/be_a_candidate/<int:votation_id>")
@@ -167,7 +182,7 @@ def votation_detail_maj_jud(v):
     is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
-    return render_template('majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+    return render_template('majority/votation_detail_template.html', pagetitle=_("Votation details"), \
          v=v,  \
          states=votation.states, options_array=options_array, \
          count_voters=voter.count_voters(v.votation_id), \
@@ -182,7 +197,7 @@ def votation_detail_simple(v):
     is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_simple.counting_votes(v.votation_id)
-    return render_template('simple_majority/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+    return render_template('simple_majority/votation_detail_template.html', pagetitle=_("Votation details"), \
          v=v,  \
          states=votation.states, options_array=options_array, \
          count_voters=voter.count_voters(v.votation_id), \
@@ -202,17 +217,17 @@ def start_election(votation_id):
         # TODO error handling
         backend.create_election(v.votation_id, len(candidates_array), len(votation.WORDS) )
         votation.update_status(votation_id, votation.STATUS_VOTING)
-    return render_template('start_election_template.html', pagetitle="Inizio votazione", \
+    return render_template('start_election_template.html', pagetitle=_("Votation begin"), \
       v=v, candidates_array=candidates_array)
 
 @app.route("/close_election/<int:votation_id>")
 @login_required
 def close_election(votation_id):
-    v = votation.load_votation_by_id(votation_id)
+    #v = votation.load_votation_by_id(votation_id)
     votation.update_status(votation_id,votation.STATUS_ENDED)
     return render_template('thank_you_template.html', \
-    pagetitle="Votazione Chiusa", \
-    message=("Votazione chiusa. Controlla i risultati.",MSG_OK))
+    pagetitle=_("Votation closed"), \
+    message=(_("Votation closed, please, check results"),MSG_OK))
 
 @app.route("/delete_election/<int:votation_id>")
 @login_required
@@ -220,11 +235,11 @@ def delete_election(votation_id):
     if request.args.get('confirm') == "yes":
         votation.deltree_votation_by_id(votation_id)
         return render_template('thank_you_template.html', \
-        pagetitle="Cancellazione", \
-        message=("Votazione cancellata",MSG_OK))
+        pagetitle=_("Delete"), \
+        message=(_("Votation deleted"),MSG_OK))
     else:
         return render_template('confirmation_template.html', \
-        pagetitle="Cancellazione", \
+        pagetitle=_("Delete"), \
         message=None,votation_id=votation_id)
 
 @app.route("/add_voters", methods=["POST",])
@@ -237,12 +252,12 @@ def add_voters():
         ar = voter.split_string_remove_dup(list_voters)
         n = voter.insert_voters_array(votation_id,ar)
         return render_template('thank_you_template.html', \
-        pagetitle="Aventi diritto", \
-        message=("Aggiunti {} aventi diritto.".format(n),MSG_OK))
-    if v.promoter_user_id.user_id != current_user.u.user_id:
+        pagetitle=_("Voter"), \
+        message=(_("{} voters being added").format(n),MSG_OK))
+    if v.promoter_user.user_id != current_user.u.user_id:
         return render_template('thank_you_template.html', \
-            pagetitle="Aventi diritto", \
-            message=("Non sei il promotore dell'elezione e non puoi aggiungere utenti",MSG_KO))        
+            pagetitle=_("Voters"), \
+            message=(_("Sorry, only the owner of this votation can add voters"),MSG_KO))        
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -269,7 +284,7 @@ def vote_(votation_id):
 def votemajjud(v):
     options_array = option.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
-        return render_template('majority/vote_template.html', pagetitle="Vota", \
+        return render_template('majority/vote_template.html', pagetitle=_("Vote"), \
         v=v, options_array=options_array,words_array=votation.WORDS) 
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]
@@ -279,10 +294,10 @@ def votemajjud(v):
             vote_array.append(int(request.form[param]))
         result = vote_maj_jud.save_votes(current_user.u.user_id, vote_key, v.votation_id, vote_array )
         if result:
-            message = ("Voto registrato correttamente", MSG_OK)
+            message = (_("Your vote has been registered"), MSG_OK)
         else:
-            message = ("Errore. Voto NON registrato. Password Errata?",MSG_KO)
-        return render_template('thank_you_template.html', pagetitle="Registrazione voto", message=message)
+            message = (_("Error. Vote NOT registered. Wrong Password?"),MSG_KO)
+        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
 
 def votesimplemaj(v):
     options_array = option.load_options_by_votation(v.votation_id)
@@ -294,10 +309,10 @@ def votesimplemaj(v):
         my_vote = request.form["my_vote"]
         result = vote_simple.save_vote(current_user.u.user_id, vote_key, v.votation_id,my_vote)
         if result:
-            message = ("Voto registrato correttamente", MSG_OK)
+            message = (_("Your vote has been registered"), MSG_OK)
         else:
-            message = ("Errore. Voto NON registrato. Password Errata?",MSG_KO)
-        return render_template('thank_you_template.html', pagetitle="Registrazione voto", message=message)
+            message = (_("Error. Vote NOT registered. Wrong Password?"),MSG_KO)
+        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
 
 @app.route("/update_end_date/<int:votation_id>",  methods=['GET',])
 @login_required
@@ -310,5 +325,13 @@ def update_end_date(votation_id):
             votation.update_end_date(votation_id, end_date + " " + end_time)
             return "OK"
     return "KO"
+
+@app.route("/lang/<lang_code>")
+@login_required
+def lang(lang_code):
+    global current_language
+    current_language = lang_code
+    return render_template('index_template.html', pagetitle=_("Main menu"))
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0') 

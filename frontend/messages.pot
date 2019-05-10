@@ -1,0 +1,187 @@
+# Translations template for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-05-10 10:44+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: index.py:57
+msgid "Main menu"
+msgstr ""
+
+#: index.py:68
+msgid "Login successful"
+msgstr ""
+
+#: index.py:70
+msgid "Wrong login"
+msgstr ""
+
+#: index.py:83
+msgid "Please, insert data"
+msgstr ""
+
+#: index.py:102
+msgid "Votation data saved"
+msgstr ""
+
+#: index.py:106
+msgid "Error, votation data NOT saved"
+msgstr ""
+
+#: index.py:109
+msgid "New votation"
+msgstr ""
+
+#: index.py:117
+msgid "Votations list"
+msgstr ""
+
+#: index.py:182 index.py:197
+msgid "Votation details"
+msgstr ""
+
+#: index.py:217
+msgid "Votation begin"
+msgstr ""
+
+#: index.py:226
+msgid "Votation closed"
+msgstr ""
+
+#: index.py:227
+msgid "Votation closed, please, check results"
+msgstr ""
+
+#: index.py:235 index.py:239
+msgid "Delete"
+msgstr ""
+
+#: index.py:236
+msgid "Votation deleted"
+msgstr ""
+
+#: index.py:252
+msgid "Voter"
+msgstr ""
+
+#: index.py:253
+msgid "{} voters being added"
+msgstr ""
+
+#: index.py:256
+msgid "Voters"
+msgstr ""
+
+#: index.py:257
+msgid "Sorry, only the owner of this votation can add voters"
+msgstr ""
+
+#: index.py:284
+msgid "Vote"
+msgstr ""
+
+#: index.py:294 index.py:309
+msgid "Your vote has been registered"
+msgstr ""
+
+#: index.py:296 index.py:311
+msgid "Error. Vote NOT registered. Wrong Password?"
+msgstr ""
+
+#: index.py:297 index.py:312
+msgid "Vote registering"
+msgstr ""
+
+#: votation.py:20
+msgid "Draw"
+msgstr ""
+
+#: votation.py:21
+msgid "Secure Majority Judgment"
+msgstr ""
+
+#: votation.py:23
+msgid "Simple Majority"
+msgstr ""
+
+#: votation.py:25
+msgid "Created"
+msgstr ""
+
+#: votation.py:26
+msgid "Voting"
+msgstr ""
+
+#: votation.py:27
+msgid "Working, please wait..."
+msgstr ""
+
+#: votation.py:28
+msgid "Ended"
+msgstr ""
+
+#: votation.py:29
+msgid "Failed"
+msgstr ""
+
+#: votation.py:32
+msgid "No opinion"
+msgstr ""
+
+#: votation.py:32
+msgid "Poor"
+msgstr ""
+
+#: votation.py:32
+msgid "Not enough"
+msgstr ""
+
+#: votation.py:32
+msgid "Acceptable"
+msgstr ""
+
+#: votation.py:32
+msgid "Good"
+msgstr ""
+
+#: votation.py:32
+msgid "Very good"
+msgstr ""
+
+#: templates/base_template.html:39
+msgid "New"
+msgstr ""
+
+#: templates/base_template.html:42
+msgid "Votations"
+msgstr ""
+
+#: templates/base_template.html:46
+msgid "Logoff"
+msgstr ""
+
+#: templates/base_template.html:50
+msgid "Login"
+msgstr ""
+
+#: templates/login_template.html:8
+msgid "Please, login"
+msgstr ""
+
+#: templates/login_template.html:10
+msgid "User name"
+msgstr ""
+
