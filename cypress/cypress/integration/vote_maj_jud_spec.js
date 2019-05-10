@@ -1,8 +1,16 @@
 describe('voting majority judgment Test', function() {
-    it('create a majority judgment', function() {
+    beforeEach(function () {
         cy.login('aldo', 'aldo')
-
+        cy.visit('/lang/uk')
         cy.createvotation('during','maj_jud')
+    })
+    afterEach(function () {
+        cy.deletefirstvotation()
+        cy.visit('/logout')
+    })
+
+
+    it('Vote a majority judgment', function() {
         // go in the votation and get the first ID
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {
@@ -13,7 +21,7 @@ describe('voting majority judgment Test', function() {
             cy.get("[data-cy=word4]").first().check()
             cy.get("[data-cy=password]").type("aa")
             cy.get('button').click()
-            cy.get('.alert-success').should('contain', 'Voto registrato correttamente')
+            cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set the end_date and time so you can close
             const new_end_date = Cypress.moment().utc().format("YYYY-MM-DD")
@@ -29,11 +37,68 @@ describe('voting majority judgment Test', function() {
 
             // close the votation
             cy.get('[data-cy=close]').click()        
-            cy.get('.alert-success').should('contain', 'Votazione chiusa')
+            cy.get('.alert-success').should('contain', 'Votation closed')
 
-            cy.deletefirstvotation()
 
         })
     })
+
+    it('Two different votes', function() {
+        // go in the votation and get the first ID
+        cy.visit("/votation_list")
+        cy.get('[data-cy=votation_id]').first().then(($span) => {
+            const votation_id = $span.text()
+
+            // set a vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=word4]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get('button').click()
+            cy.get('.alert-success').should('contain', 'Your vote has been registered')
+
+            // set another vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=word3]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get('button').click()
+            cy.get('.alert-success').should('contain', 'Your vote has been registered')
+
+            cy.visit("/votation_list")
+            cy.get('[data-cy=detail]').first().click()
+            cy.get('[data-cy=count_voters]').should('contain', '1')        
+            cy.get('[data-cy=count_votes]').should('contain', '1')        
+
+        })
+    })
+
+    it('Wrong password', function() {
+        // go in the votation and get the first ID
+        cy.visit("/votation_list")
+        cy.get('[data-cy=votation_id]').first().then(($span) => {
+            const votation_id = $span.text()
+
+            // set a vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=word4]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get('button').click()
+            cy.get('.alert-success').should('contain', 'Your vote has been registered')
+
+            // set another vote
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=word3]").first().check()
+            cy.get("[data-cy=password]").type("bb") // <<< WRONG PASSWORD
+            cy.get('button').click()
+            cy.get('.alert-danger').should('contain', 'Error')
+
+            cy.visit("/votation_list")
+            cy.get('[data-cy=detail]').first().click()
+            cy.get('[data-cy=count_voters]').should('contain', '1')        
+            cy.get('[data-cy=count_votes]').should('contain', '1')        
+
+        })
+    })
+
+
 })
 

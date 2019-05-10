@@ -1,6 +1,7 @@
 describe('Create votation Test', function() {
     beforeEach(function () {
         cy.login('aldo', 'aldo')
+        cy.visit('/lang/uk')
     })
     afterEach(function () {
         cy.visit('/logout')
@@ -18,14 +19,14 @@ describe('Create votation Test', function() {
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("mare\nmonti\ncampagna")
         cy.get('button').click()
-        cy.get('.alert-success').should('contain', 'Votazione salvata')
+        cy.get('.alert-success').should('contain', 'Votation data saved')
     })
     it('delete the simple maj', function() {
         cy.visit("/votation_list")
         cy.get('[data-cy=detail]').first().click()
         cy.get("[data-cy=delete_votation]").click()
         cy.get("[data-cy=confirm_delete]").click()
-        cy.get('.alert-success').should('contain', 'Votazione cancellata')
+        cy.get('.alert-success').should('contain', 'Votation deleted')
     })
     it('duplicate description error', function() {
         cy.visit("/votation_propose")
@@ -37,7 +38,7 @@ describe('Create votation Test', function() {
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("mare\nmonti\ncampagna")
         cy.get('button').click()
-        cy.get('.alert-success').should('contain', 'Votazione salvata')
+        cy.get('.alert-success').should('contain', 'Votation data saved')
         cy.visit("/votation_propose")
         cy.get('#votation_description').type('cypress Duplicate description error')
         cy.get('#votation_type').select('simple_maj')
@@ -47,14 +48,14 @@ describe('Create votation Test', function() {
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("cypress\nDuplicate\ndescription\nerror")
         cy.get('button').click()
-        cy.get('.alert-danger').should('contain', 'Errore, votazione non salvata')
+        cy.get('.alert-danger').should('contain', 'Error, votation data NOT saved')
     })
     it('delete the duplicate', function() {
         cy.visit("/votation_list")
         cy.get('[data-cy=detail]').first().click()
         cy.get("[data-cy=delete_votation]").click()
         cy.get("[data-cy=confirm_delete]").click()
-        cy.get('.alert-success').should('contain', 'Votazione cancellata')
+        cy.get('.alert-success').should('contain', 'Votation deleted')
     })
 
 

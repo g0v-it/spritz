@@ -115,6 +115,7 @@ class vote_test(unittest.TestCase):
         self.assertTrue( vote_simple.save_vote(2,"akey",1234,10) )
         # check for duplicate key error:
         self.assertTrue( vote_simple.save_vote(2,"akey",1234,10) ) 
+        self.assertFalse( vote_simple.save_vote(2,"anotherkey",1234,10) ) 
 
 
 if __name__ == '__main__':

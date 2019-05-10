@@ -1,11 +1,12 @@
 describe('Login Test', function() {
     it('login as aldo', function() {
         // login
+        cy.visit('/lang/uk')  
         cy.visit('/login')  
         cy.get('#user_name').type('aldo')
         cy.get('#pass_word').type('aldo')
         cy.get('button').click()
-        cy.get('.alert-success').should('contain', 'Login effettuato')
+        cy.get('.alert-success')
         // logout
         cy.get('[data-cy=logoff]').click()
         cy.get('h1').contains('Logout')
@@ -22,7 +23,18 @@ describe('Login Test', function() {
             }
         })
         cy.visit('/votation_list')
-        cy.get('h1').contains('Lista delle votazioni')
+        cy.get('h1').contains('Votations list')
     })
-  })
+
+    it('Wrong login', function() {
+        // login
+        cy.visit('/lang/uk')  
+        cy.visit('/login')  
+        cy.get('#user_name').type('aldo')
+        cy.get('#pass_word').type('wrong password')
+        cy.get('button').click()
+        cy.get('.alert-danger')
+    })
+
+})
 

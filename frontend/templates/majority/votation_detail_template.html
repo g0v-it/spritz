@@ -1,11 +1,11 @@
 {% extends "votation_detail_template.html" %} {% block results %}
-        <h3>Risultato della votazione</h3>
+        <h3>Votation Result</h3>
         {% if count_voters == count_votes %}
-            <div class="alert alert-success">Il numero di voti è coerente con il numero di votanti.</div>
+            <div class="alert alert-success">The number of votes and the number of voters match.</div>
         {% else %}
-            <div class="alert alert-danger">Il numero di voti  non è coerente con il numero di votanti.</div>
+            <div class="alert alert-danger">The number of votes and the number of voters do not match.</div>
         {% endif %}
-        <h4>Classifica</h4>
+        <h4>Ranking</h4>
         <div class="container">
             <ol>
                 {% for r in counting %}
@@ -20,7 +20,7 @@
                 {% endfor %}
             </ol>
         </div>
-        <h4>Grafico</h4>
+        <h4>Chart</h4>
         <div id="chart_div"></div>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -38,7 +38,7 @@
           function drawChart() {
     
             var data = google.visualization.arrayToDataTable([
-            [ "Giudizio",
+            [ "Judge",
             {% for w in words %}"{{w}}", {% endfor %}
             { role: 'annotation' } ],
             {% for r in counting %}

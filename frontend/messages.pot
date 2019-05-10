@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-10 10:44+0200\n"
+"POT-Creation-Date: 2019-05-10 19:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,91 +17,91 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: index.py:57
+#: index.py:60 index.py:334
 msgid "Main menu"
 msgstr ""
 
-#: index.py:68
+#: index.py:71
 msgid "Login successful"
 msgstr ""
 
-#: index.py:70
+#: index.py:73
 msgid "Wrong login"
 msgstr ""
 
-#: index.py:83
+#: index.py:86
 msgid "Please, insert data"
 msgstr ""
 
-#: index.py:102
+#: index.py:105
 msgid "Votation data saved"
 msgstr ""
 
-#: index.py:106
+#: index.py:109
 msgid "Error, votation data NOT saved"
 msgstr ""
 
-#: index.py:109
+#: index.py:112
 msgid "New votation"
 msgstr ""
 
-#: index.py:117
+#: index.py:120
 msgid "Votations list"
 msgstr ""
 
-#: index.py:182 index.py:197
+#: index.py:185 index.py:200
 msgid "Votation details"
 msgstr ""
 
-#: index.py:217
+#: index.py:220
 msgid "Votation begin"
 msgstr ""
 
-#: index.py:226
+#: index.py:229
 msgid "Votation closed"
 msgstr ""
 
-#: index.py:227
+#: index.py:230
 msgid "Votation closed, please, check results"
 msgstr ""
 
-#: index.py:235 index.py:239
+#: index.py:238 index.py:242
 msgid "Delete"
 msgstr ""
 
-#: index.py:236
+#: index.py:239
 msgid "Votation deleted"
 msgstr ""
 
-#: index.py:252
+#: index.py:255
 msgid "Voter"
 msgstr ""
 
-#: index.py:253
+#: index.py:256
 msgid "{} voters being added"
 msgstr ""
 
-#: index.py:256
+#: index.py:259
 msgid "Voters"
 msgstr ""
 
-#: index.py:257
+#: index.py:260
 msgid "Sorry, only the owner of this votation can add voters"
 msgstr ""
 
-#: index.py:284
+#: index.py:287
 msgid "Vote"
 msgstr ""
 
-#: index.py:294 index.py:309
+#: index.py:297 index.py:312
 msgid "Your vote has been registered"
 msgstr ""
 
-#: index.py:296 index.py:311
+#: index.py:299 index.py:314
 msgid "Error. Vote NOT registered. Wrong Password?"
 msgstr ""
 
-#: index.py:297 index.py:312
+#: index.py:300 index.py:315
 msgid "Vote registering"
 msgstr ""
 
@@ -161,19 +161,23 @@ msgstr ""
 msgid "Very good"
 msgstr ""
 
-#: templates/base_template.html:39
-msgid "New"
+#: templates/base_template.html:30
+msgid "Welcome"
 msgstr ""
 
 #: templates/base_template.html:42
+msgid "New"
+msgstr ""
+
+#: templates/base_template.html:45
 msgid "Votations"
 msgstr ""
 
-#: templates/base_template.html:46
+#: templates/base_template.html:49
 msgid "Logoff"
 msgstr ""
 
-#: templates/base_template.html:50
+#: templates/base_template.html:53
 msgid "Login"
 msgstr ""
 

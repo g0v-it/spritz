@@ -8,8 +8,12 @@ def save_vote(user_id, vote_key,votation_id,option_id):
     vu = voter.voter_dto()
     vu.user_id = user_id
     vu.votation_id = votation_id
-    voter.set_voted(vu)
-    vote.delete_votes_by_key(vote_key)
+    b_has_voted = voter.has_voted(vu)
+    if b_has_voted:
+        votes = vote.load_vote_by_key(vote_key)
+        if len(votes) == 0:
+            return False
+        vote.delete_votes_by_key(vote_key)
     o = vote.vote_dto()
     o.vote_key = vote_key
     o.votation_id = votation_id

@@ -74,7 +74,7 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
         cy.get('#list_voters').check()
     }
     cy.get('button').click()
-    cy.get('.alert-success').should('contain', 'Votazione salvata')
+    cy.get('.alert-success').should('contain', 'Votation data saved')
 })
 
 Cypress.Commands.add("deletefirstvotation", () => {
@@ -83,7 +83,7 @@ Cypress.Commands.add("deletefirstvotation", () => {
             cy.get('[data-cy=detail]').first().click()
             cy.get("[data-cy=delete_votation]").click()
             cy.get("[data-cy=confirm_delete]").click()
-            cy.get('.alert-success').should('contain', 'Votazione cancellata')
+            cy.get('.alert-success').should('contain', 'Votation deleted')
 })
 
 Cypress.Commands.add("updateenddate", (votation_id,new_end_date,new_end_time) => {

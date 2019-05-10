@@ -1,13 +1,14 @@
 describe('List of voters Testing', function() {
     beforeEach(function () {
         cy.login('aldo', 'aldo')
+        cy.visit('/lang/uk')
         cy.createvotation('during','simple',"cat\ndog\nbird\nfish",true)
     })
-    // afterEach(function () {
-    //     cy.login('aldo', 'aldo')
-    //     cy.deletefirstvotation()
-    //     cy.visit('/logout')
-    // })
+    afterEach(function () {
+        cy.login('aldo', 'aldo')
+        cy.deletefirstvotation()
+        cy.visit('/logout')
+    })
 
     it('you are on the list', function() {        
         // put two voters
