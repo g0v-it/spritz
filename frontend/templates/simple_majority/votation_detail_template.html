@@ -1,23 +1,23 @@
 {% extends "votation_detail_template.html" %} {% block results %}
-        <h3>Risultato della votazione</h3>
+        <h3>Votation results</h3>
         {% if count_voters == count_votes %}
-            <div class="alert alert-success">Il numero di voti è coerente con il numero di votanti.</div>
+            <div class="alert alert-success">The number of votes and the number of voters match.</div>
         {% else %}
-            <div class="alert alert-danger">Il numero di voti  non è coerente con il numero di votanti.</div>
+            <div class="alert alert-danger">The number of votes and the number of voters do not match.</div>
         {% endif %}
-        <h4>Classifica</h4>
+        <h4>Ranking</h4>
         <div class="container">
             <ul>
                 {% for o in options_array %}
                   {% if o.option_id in counting.keys() %}
-                    <li>{{o.option_name}}: {{counting[o.option_id]}} voti</li>
+                    <li>{{o.option_name}}: {{counting[o.option_id]}} votes</li>
                   {% else %}
-                    <li>{{o.option_name}}: 0 voti</li>
+                    <li>{{o.option_name}}: 0 votes</li>
                   {% endif %}
                 {% endfor %}
             </ul>
         </div>
-        <h4>Grafico</h4>
+        <h4>Chart</h4>
         <div id="chart_div"></div>
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -35,7 +35,7 @@
           function drawChart() {
     
             var data = google.visualization.arrayToDataTable([
-             [ "Opzione", "Voti"],
+             [ "Options", "Votes"],
              {% for o in options_array %}
                {% if o.option_id in counting.keys() %}
                  ["{{o.option_name}}", {{counting[o.option_id]}}],

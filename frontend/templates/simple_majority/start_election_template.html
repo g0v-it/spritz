@@ -1,15 +1,15 @@
 {% extends "base_template.html" %} {% block body %} 
 {% if current_user.u.user_id == v.promoter_user.user_id %}
-La votazione è attiva:
+This votation is now ongoing:
     <div>{{v.votation_description}}</div>
     <div>
-        <h3>Opzioni:</h3>
+        <h3>Options:</h3>
         {% for o in options_array %}
         <div>{{o.option_name}}</div>
         {% endfor %}
     </div>
 {% else %}
-    <div>Non puoi essere qui...</div>
+    <div>You can't be here...</div>
 {% endif %} {% endblock %}
 
 

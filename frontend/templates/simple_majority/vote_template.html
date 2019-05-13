@@ -1,14 +1,14 @@
 {% extends "base_template.html" %} {% block body %}
     <div><h4>{{v.votation_description}}</h4></div>
     {% if  v.votation_status == 0 %}
-        <p>Non &egrave; ancora possibile votare.</p>
+        <p>You cannot vote yet.</p>
     {% endif %}
     {% if  v.votation_status > 1 %}
-        <p>Non &egrave; pi&ugrave; possibile votare.</p>
+        <p>You cannot vote anymore.</p>
     {% endif %}
     {% if  v.votation_status == 1 %}
         <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
-            Vota una sola opzione:
+            Choose only one option:
             {% for o in options_array %}
             <div class="form-check ">
                 <input class="form-check-input" type="radio" data-cy='radio'
@@ -18,11 +18,11 @@
             {% endfor %}
 
             <div class="form-group">
-                <label for="secret_key_{{v.votation_id}}">Password per questo voto:</label>
+                <label for="secret_key_{{v.votation_id}}">Password for this vote:</label>
                 <input type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" data-cy="password" />
-                <small class="form-text text-muted">Ricordarla con attenzione. Non sarà recuperabile</small>
+                <small class="form-text text-muted">Remember this password; it isn't possible to recover it</small>
             </div>
-        <button class="btn btn-warning" type="submit" id="sub_button">Vota</button>
+        <button class="btn btn-warning" type="submit" id="sub_button">Vote</button>
         <input type="hidden" id="vote_key" name="vote_key" value="xxx"  />
     </form>
     {% endif %}
@@ -34,7 +34,7 @@
     $("#vote_form").submit(function( event ){
         var pass_word = $("#secret_key_{{v.votation_id}}").val().trim();
         if (!pass_word) {
-            alert("Password obbligatoria");
+            alert("You must enter a password");
             return false;
         }
         var md = forge.md.sha256.create();
