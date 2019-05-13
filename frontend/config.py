@@ -11,6 +11,6 @@ DBPWD  = os.environ.get('POSTGRES_PWD')    # "abc123"
 BINPATH = os.path.join(BASEPATH, "bin")
 ELECTIONPATH = os.path.join(BASEPATH,"elections")
 #AUTH = 'ldap'
-#AUTH = 'google'
-AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
+AUTH = 'google'
+#AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
 
