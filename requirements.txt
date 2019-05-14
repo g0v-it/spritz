@@ -3,4 +3,6 @@ Flask-Login==0.4.1
 Flask-Ldap==0.1.6
 psycopg2==2.7.6.1
 babel==2.6.0
-google_auth==1.6.3
+google-api-python-client==1.7.8
+google-auth-httplib2==0.0.3
+google-auth==1.6.3
