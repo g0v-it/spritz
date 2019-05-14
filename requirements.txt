@@ -1,3 +1,4 @@
+requests
 Flask==1.0.2
 Flask-Login==0.4.1
 Flask-Ldap==0.1.6
