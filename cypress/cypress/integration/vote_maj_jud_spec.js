@@ -20,7 +20,7 @@ describe('voting majority judgment Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=word4]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set the end_date and time so you can close
@@ -53,14 +53,14 @@ describe('voting majority judgment Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=word4]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set another vote
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=word3]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             cy.visit("/votation_list")
@@ -81,14 +81,14 @@ describe('voting majority judgment Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=word4]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set another vote
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=word3]").first().check()
             cy.get("[data-cy=password]").type("bb") // <<< WRONG PASSWORD
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-danger').should('contain', 'Error')
 
             cy.visit("/votation_list")

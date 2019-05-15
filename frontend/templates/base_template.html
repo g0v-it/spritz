@@ -27,7 +27,7 @@
     <!-- login bar -->
 	<div class="container text-right">
         {% if current_user.is_authenticated %} 
-            <span >{{_("Welcome")}} {{current_user.user_name}}</span>
+            <span >{{_("Welcome")}} {{current_user.user_name}}</span>&nbsp;&nbsp;
             <a href="/lang/uk"><img src="{{url_for('static', filename='images/uk.png')}}" alt="UK"></a>
             &nbsp;|&nbsp;
             <a href="/lang/it"><img src="{{url_for('static', filename='images/it.png')}}" alt="IT"></a>
@@ -36,13 +36,13 @@
     <div class="container">
         <ul class="nav justify-content-end">
             <li class="nav-item">
-              <a class="nav-link" href="/">Menu</a>
+              <a class="nav-link" href="/">{{_("Main Menu")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/votation_propose">{{_("New")}}</a>
+              <a class="nav-link" href="/votation_propose">{{_("Create a New votation")}}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/votation_list">{{_("Votations")}}</a>
+              <a class="nav-link" href="/votation_list">{{_("Votation list")}}</a>
             </li>
             {% if current_user.is_authenticated %} 
                 <li class="nav-item">

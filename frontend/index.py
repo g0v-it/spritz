@@ -117,7 +117,7 @@ def votation_propose():
 def votation_list():
     votations_array = votation.load_votations()
     votations_array.reverse()
-    return render_template('votation_list_template.html', pagetitle=_("Votations list"), \
+    return render_template('votation_list_template.html', pagetitle=_("Votation list"), \
     votations_array=votations_array,states=votation.states,type_description=votation.TYPE_DESCRIPTION)
 
 @app.route("/be_a_candidate/<int:votation_id>")

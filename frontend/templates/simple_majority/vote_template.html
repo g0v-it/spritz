@@ -7,6 +7,17 @@
         <p>You cannot vote anymore.</p>
     {% endif %}
     {% if  v.votation_status == 1 %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Set your vote.</strong> 
+            You can vote only one option. &nbsp;
+            You need to think up and enter a secret key, type it and keep it secret. &nbsp; 
+            You can use any word or phrase you want. &nbsp;
+            You can change your vote later, but you MUST use the same secret key as before. &nbsp;
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
             Choose only one option:
             {% for o in options_array %}
@@ -18,11 +29,20 @@
             {% endfor %}
 
             <div class="form-group">
-                <label for="secret_key_{{v.votation_id}}">Password for this vote:</label>
+                <label for="secret_key_{{v.votation_id}}">Secret key for this vote:</label>
                 <input type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" data-cy="password" />
-                <small class="form-text text-muted">Remember this password; it isn't possible to recover it</small>
+                <small class="form-text text-muted">Remember this secret key; it is not possible to recover</small>
             </div>
-        <button class="btn btn-warning" type="submit" id="sub_button">Vote</button>
+            <div class="form-group">
+                <a data-toggle="popover" 
+                tabindex="0"
+                data-trigger="focus"
+                data-placement="top"
+                title="Think up a secret key" 
+                data-content="This secret key is for THIS votation only. You can use any word you want. Keep it secret and don't forget it.">
+                What's this secret key?</a> 
+            </div>
+        <button class="btn btn-warning" type="submit" id="sub_button" data-cy="submit">Vote</button>
         <input type="hidden" id="vote_key" name="vote_key" value="xxx"  />
     </form>
     {% endif %}
@@ -34,7 +54,7 @@
     $("#vote_form").submit(function( event ){
         var pass_word = $("#secret_key_{{v.votation_id}}").val().trim();
         if (!pass_word) {
-            alert("You must enter a password");
+            alert("You must enter a secret key");
             return false;
         }
         var md = forge.md.sha256.create();
@@ -44,6 +64,14 @@
         $("#vote_key").val(md.digest().toHex());
         return true;
     });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })    
+
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+      })
 
 </script>
 

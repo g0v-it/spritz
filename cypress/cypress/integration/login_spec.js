@@ -23,7 +23,7 @@ describe('Login Test', function() {
             }
         })
         cy.visit('/votation_list')
-        cy.get('h1').contains('Votations list')
+        cy.get('h1').contains('Votation list')
     })
 
     it('Wrong login', function() {

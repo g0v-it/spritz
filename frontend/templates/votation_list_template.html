@@ -1,12 +1,25 @@
 {% extends "base_template.html" %} {% block body %}
 
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>This is the list of votations.</strong> 
+    You can vote between the begin and end dates. &nbsp;
+    <strong>Click the vote button</strong> to insert your vote. &nbsp;
+    Click che details button to get more information about the votation. &nbsp;
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
 {% for v in votations_array %}
-    <div class="row border border-warning mb-3 text-center ">
-        <div class="col border m-1"><span class="font-weight-bold">Votation</span> <span class="badge badge-pill badge-warning w-25" data-cy="votation_id">{{v.votation_id}}</span> {{type_description[v.votation_type]}}</div>
-        <div class="col border m-1 text-nowrap">{{v.votation_description}}</div>
+    <div class="row border border-warning  mb-4 text-center rounded">
+        <div class="col border m-1"><span class="font-weight-bold">Votation</span> <span class="badge badge-pill badge-warning p-1" data-cy="votation_id">{{v.votation_id}}</span> {{type_description[v.votation_type]}}</div>
+        <div class="col border m-1 ">{{v.votation_description}}</div>
         <div class="col border m-1"><span class="font-italic">{{states[v.votation_status]}}</span></div>
-        <div class="col border m-1"><span class="font-weight-bold">Begin:</span> {{v.begin_date}}</div>
-        <div class="col border m-1"><span class="font-weight-bold">End:</span> {{v.end_date}}</div>
+        <div class="w-100"></div>
+        <div class="col border m-1 text-nowrap "><span class="font-weight-bold">Begin:</span> {{v.begin_date}}</div>
+        <div class="col border m-1 text-nowrap " ><span class="font-weight-bold">End:</span> {{v.end_date}}</div>
+        <div class="w-100"></div>
         <div class="col m-1">
             {% if v.votation_status == 1 %}
                 <a href="/vote/{{v.votation_id}}" class="btn btn-warning btn-sm m-2" data-cy="vote">Vote</a>  

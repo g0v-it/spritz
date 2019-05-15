@@ -19,7 +19,7 @@ describe('voting simple majority Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=radio]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set the end_date and time so you can close
@@ -52,13 +52,13 @@ describe('voting simple majority Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=radio]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
             // set a vote but with wrong password
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=radio]").first().check()
             cy.get("[data-cy=password]").type("bb")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-danger').should('contain', 'Error')
             
     
@@ -75,7 +75,7 @@ describe('voting simple majority Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=radio]").first().check()
             cy.get("[data-cy=password]").type("aa")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // change user
@@ -85,7 +85,7 @@ describe('voting simple majority Test', function() {
             cy.visit("/vote/" + votation_id)
             cy.get("[data-cy=radio]").first().check()
             cy.get("[data-cy=password]").type("bb")
-            cy.get('button').click()
+            cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // aldo, again
