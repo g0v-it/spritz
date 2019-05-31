@@ -1,6 +1,6 @@
 {% extends "base_template.html" %} {% block body %} 
 {% if current_user.u.user_id == v.promoter_user.user_id %}
-This votation is now ongoing:
+This election is now ongoing:
     <div>{{v.votation_description}}</div>
     <div>
         <h3>Options:</h3>

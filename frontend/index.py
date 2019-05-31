@@ -102,14 +102,14 @@ def votation_propose():
         result, msg = votation.validate_dto(v)
         if result:
             if votation.insert_votation_dto(v):
-                message = (_("Votation data saved"),MSG_OK)
+                message = (_("Election data saved"),MSG_OK)
                 # options saving
                 option.save_options_from_text(v.votation_id,request.form['votation_options'])
             else:
-                message = (_("Error, votation data NOT saved"),MSG_KO )    
+                message = (_("Error, election data NOT saved"),MSG_KO )    
         else:
             message = (msg,MSG_KO)               
-    return render_template('votation_propose_template.html', pagetitle=_("New votation"), \
+    return render_template('votation_propose_template.html', pagetitle=_("New election"), \
     votation_obj=v, message=message,utcnow=str(datetime.datetime.utcnow()) )
 
 @app.route("/votation_list")
@@ -117,7 +117,7 @@ def votation_propose():
 def votation_list():
     votations_array = votation.load_votations()
     votations_array.reverse()
-    return render_template('votation_list_template.html', pagetitle=_("Votation list"), \
+    return render_template('votation_list_template.html', pagetitle=_("Election list"), \
     votations_array=votations_array,states=votation.states,type_description=votation.TYPE_DESCRIPTION)
 
 @app.route("/be_a_candidate/<int:votation_id>")
@@ -143,7 +143,8 @@ def be_a_candidate_confirm():
         candidate.insert_dto(o)
     else:
         message = (candidate.error_messages[error] + ": " + v.votation_description,MSG_KO )
-    return render_template('be_a_candidate_confirm_template.html', pagetitle="Conferma candidatura", v=v,message=message)
+    return render_template('be_a_candidate_confirm_template.html', pagetitle="Conferma candidatura", \
+        v=v,message=message)
 
 
 
@@ -167,7 +168,7 @@ def votation_detail_draw(v):
     #     state_array = backend.election_state(votation_id)
     # else:
     #     state_array = []
-    return render_template('draw/votation_detail_template.html', pagetitle="Dettaglio votazione", \
+    return render_template('draw/votation_detail_template.html', pagetitle="Election details", \
          v=v, candidates_array=candidates_array, \
          states=votation.states,  \
          count_voters=voter.count_voters(v.votation_id), \
@@ -182,7 +183,7 @@ def votation_detail_maj_jud(v):
     is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
-    return render_template('majority/votation_detail_template.html', pagetitle=_("Votation details"), \
+    return render_template('majority/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
          states=votation.states, options_array=options_array, \
          count_voters=voter.count_voters(v.votation_id), \
@@ -197,7 +198,7 @@ def votation_detail_simple(v):
     is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation.STATUS_ENDED:
         counting = vote_simple.counting_votes(v.votation_id)
-    return render_template('simple_majority/votation_detail_template.html', pagetitle=_("Votation details"), \
+    return render_template('simple_majority/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
          states=votation.states, options_array=options_array, \
          count_voters=voter.count_voters(v.votation_id), \
@@ -217,7 +218,7 @@ def start_election(votation_id):
         # TODO error handling
         backend.create_election(v.votation_id, len(candidates_array), len(votation.WORDS) )
         votation.update_status(votation_id, votation.STATUS_VOTING)
-    return render_template('start_election_template.html', pagetitle=_("Votation begin"), \
+    return render_template('start_election_template.html', pagetitle=_("Election begin"), \
       v=v, candidates_array=candidates_array)
 
 @app.route("/close_election/<int:votation_id>")
@@ -226,8 +227,8 @@ def close_election(votation_id):
     #v = votation.load_votation_by_id(votation_id)
     votation.update_status(votation_id,votation.STATUS_ENDED)
     return render_template('thank_you_template.html', \
-    pagetitle=_("Votation closed"), \
-    message=(_("Votation closed, please, check results"),MSG_OK))
+    pagetitle=_("Election closed"), \
+    message=(_("Election closed, please, check results"),MSG_OK))
 
 @app.route("/delete_election/<int:votation_id>")
 @login_required
@@ -236,7 +237,7 @@ def delete_election(votation_id):
         votation.deltree_votation_by_id(votation_id)
         return render_template('thank_you_template.html', \
         pagetitle=_("Delete"), \
-        message=(_("Votation deleted"),MSG_OK))
+        message=(_("Election deleted"),MSG_OK))
     else:
         return render_template('confirmation_template.html', \
         pagetitle=_("Delete"), \
@@ -257,7 +258,7 @@ def add_voters():
     if v.promoter_user.user_id != current_user.u.user_id:
         return render_template('thank_you_template.html', \
             pagetitle=_("Voters"), \
-            message=(_("Sorry, only the owner of this votation can add voters"),MSG_KO))        
+            message=(_("Sorry, only the owner of this election can add voters"),MSG_KO))        
 
 @login_manager.unauthorized_handler
 def unauthorized():

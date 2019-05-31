@@ -37,7 +37,7 @@ describe('voting simple majority Test', function() {
 
             // close the votation
             cy.get('[data-cy=close]').click()        
-            cy.get('.alert-success').should('contain', 'Votation closed')
+            cy.get('.alert-success').should('contain', 'Election closed')
 
         })
     })
@@ -107,7 +107,7 @@ describe('voting simple majority Test', function() {
 
             // close the votation
             cy.get('[data-cy=close]').click()        
-            cy.get('.alert-success').should('contain', 'Votation closed')
+            cy.get('.alert-success').should('contain', 'Election closed')
 
         })
     })

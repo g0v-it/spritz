@@ -1,18 +1,18 @@
 {% extends "votation_detail_template.html" %} {% block results %}
-        <h3>Votation results</h3>
+        <h3>{{_("Election results")}}</h3>
         {% if count_voters == count_votes %}
-            <div class="alert alert-success">The number of votes and the number of voters match.</div>
+            <div class="alert alert-success">{{_("The number of votes and the number of voters match")}}.</div>
         {% else %}
-            <div class="alert alert-danger">The number of votes and the number of voters do not match.</div>
+            <div class="alert alert-danger">{{_("The number of votes and the number of voters do not match")}}.</div>
         {% endif %}
-        <h4>Ranking</h4>
+        <h4>{{_("Ranking")}}</h4>
         <div class="container">
             <ul>
                 {% for o in options_array %}
                   {% if o.option_id in counting.keys() %}
-                    <li>{{o.option_name}}: {{counting[o.option_id]}} votes</li>
+                    <li>{{o.option_name}}: {{counting[o.option_id]}} {{_("votes")}}</li>
                   {% else %}
-                    <li>{{o.option_name}}: 0 votes</li>
+                    <li>{{o.option_name}}: 0 {{_("votes")}}</li>
                   {% endif %}
                 {% endfor %}
             </ul>

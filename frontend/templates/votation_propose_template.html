@@ -2,19 +2,19 @@
 
 <form action="votation_propose" method="post" id="votationPurpose">
     <div class="form-group">
-        <label for="votation_description">Description:</label>
+        <label for="votation_description">{{_("Description")}}:</label>
         <input class="form-control" type="text" id="votation_description" name="votation_description">
     </div>
     <div class="form-group">
         <label for="description_url">URL:</label>
         <input class="form-control" type="text" id="description_url" name="description_url">
-        <small class="form-text text-muted">Address of a page describing the election. As an example, a Facebook post or a blog post.</small>
+        <small class="form-text text-muted">{{_("Address of a page describing the election. As an example, a Facebook post or a blog post")}}.</small>
     </div>
     <div class="form-group">
-        <label for="votation_type">Votation type:</label>
+        <label for="votation_type">{{_("election type")}}:</label>
         <select class="form-control"  id="votation_type" name="votation_type">
-            <option value="simple_maj">Simple majority</option>
-            <option value="maj_jud">Majority judgment</option>
+            <option value="simple_maj">{{_("Simple majority")}}</option>
+            <option value="maj_jud">{{_("Majority judgment")}}</option>
             <!-- <option value="maj_jud_sec">Majority judgment sicuro</option> -->
             <!-- <option value="draw">Sorteggio</option> -->
         </select>
@@ -22,37 +22,37 @@
 
     <div class="row">
         <div class="form-group col-sm">
-            <label for="begin_date">Begin date</label>
+            <label for="begin_date">{{_("Begin date")}}</label>
             <input class="form-control" type="date" id="begin_date" name="begin_date">
         </div>
         <div class="form-group col-sm">
-            <label for="begin_time">Begin time <a href="https://time.is/it/UTC">UTC</a></label>
+            <label for="begin_time">{{_("Begin time")}} <a href="https://time.is/it/UTC">UTC</a></label>
             <input class="form-control" type="time" id="begin_time" name="begin_time">
         </div>
     </div>
 
     <div class="row">
         <div class="form-group col-sm">
-            <label for="end_date">End date</label>
+            <label for="end_date">{{_("End date")}}</label>
             <input class="form-control" type="date" id="end_date" name="end_date">
         </div>
         <div class="form-group col-sm">
-            <label for="end_time">End time <a href="https://time.is/it/UTC">UTC</a></label>
+            <label for="end_time">{{_("End time")}} <a href="https://time.is/it/UTC">UTC</a></label>
             <input class="form-control" type="time" id="end_time" name="end_time">
         </div>
     </div>
 
     <div class="form-group" id="votation_options_group">
-        <label for="votation_options">Option or candidate list:</label>
+        <label for="votation_options">{{_("Option or candidate list")}}:</label>
         <textarea class="form-control text-uppercase" type="text" id="votation_options" name="votation_options" rows="5"></textarea>
-        <small class="form-text text-muted">One option each row</small>
+        <small class="form-text text-muted">{{_("One option each row")}}</small>
     </div>
     <div class="form-check mb-4">
         <input class="form-check-input" type="checkbox" value="1" id="list_voters" name="list_voters" />
-        <label class="form-check-label" for="list_voters">Add voters</label>
+        <label class="form-check-label" for="list_voters">{{_("Add voters")}}</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">{{_("Save")}}</button>
 </form>
 <div class="font-weight-light mt-4 mb-2">UTC time: {{utcnow}}</div>
 

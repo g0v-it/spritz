@@ -1,49 +1,53 @@
 {% extends "base_template.html" %} {% block body %}
-    <p><span class="font-weight-bold">Votation ID:</span> <span data-cy="votation_id">{{v.votation_id}}</span></p>
-    <p><span class="font-weight-bold">Votation type:</span> {{type_description[v.votation_type]}}</p>
-    <p><span class="font-weight-bold">Description:</span> {{v.votation_description}}</p>
-    <p><a href="{{v.description_url}}" target="votation_page">Votation home page</a></p>
-    <p><span class="font-weight-bold">Status:</span> {{states[v.votation_status]}} ({{v.votation_status}})</p>
-    <p><span class="font-weight-bold">Created by:</span> {{v.promoter_user.user_name}}</p>
+    <p><span class="font-weight-bold">{{_("Election ID")}}:</span> <span data-cy="votation_id">{{v.votation_id}}</span></p>
+    <p><span class="font-weight-bold">{{_("Election type")}}:</span> {{type_description[v.votation_type]}}</p>
+    <p><span class="font-weight-bold">{{_("Description")}}:</span> {{v.votation_description}}</p>
+    <p><a href="{{v.description_url}}" target="votation_page">{{_("Election home page")}}</a></p>
+    <p><span class="font-weight-bold">{{_("Status")}}:</span> {{states[v.votation_status]}} ({{v.votation_status}})</p>
+    <p><span class="font-weight-bold">{{_("Owner")}}:</span> {{v.promoter_user.user_name}}</p>
     {% if is_voter %}
-        <p><span class="font-weight-bold" data-cy="is_voter">You are a voter</span></p>
+        <p><span class="font-weight-bold" data-cy="is_voter">{{_("You are a voter")}}</span></p>
     {% else %}
-        <p><mark class="font-weight-bold" data-cy="isnt_voter">You are not a voter</mark></p>
+        <p><mark class="font-weight-bold" data-cy="isnt_voter">{{_("You are not a voter")}}</mark></p>
     {% endif %}
     <div class="container">
         {% if votation_timing == -1 %}
-        <p class="font-weight-bold">Votation not started yet.</p>
-        <p><span class="font-weight-bold">Will begin at:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">Will end at:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
+        <p class="font-weight-bold">{{_("Election is not started yet")}}.</p>
+        <p><span class="font-weight-bold">{{_("Will begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
+        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
         {% endif %}
         {% if votation_timing == +1 %}
-        <p class="font-weight-bold">Votation is over.</p>
-        <p><span class="font-weight-bold">Begun at:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">Ended at:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
+        <p class="font-weight-bold">{{_("Election is over")}}.</p>
+        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
+        <p><span class="font-weight-bold">{{_("Ended at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
         {% endif %}
         {% if votation_timing == 0 %}
-        <p class="font-weight-bold">Votation ongoing.</p>
-        <p><span class="font-weight-bold">Begun at:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">Will end at:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
+        <p class="font-weight-bold">Election is ongoing.</p>
+        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
+        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
         {% endif %}
     </div>
-    <p data-cy="count_voters"><span class="font-weight-bold">Voters :</span> {{count_voters}}</p>
-    <p data-cy="count_votes" ><span class="font-weight-bold">Votes :   </span> {{count_votes}} </p>
+    <p data-cy="count_voters"><span class="font-weight-bold">{{_("Voters")}} :</span> {{count_voters}}</p>
+    <p data-cy="count_votes" ><span class="font-weight-bold">{{_("Votes")}} :   </span> {{count_votes}} </p>
 
     {% if v.votation_type != "draw"  %}
         {% if current_user.u.user_id == v.promoter_user.user_id and votation_timing == +1 and v.votation_status ==1 %}
-            <p><a class="btn btn-warning" href="/close_election/{{v.votation_id}}" data-cy="close">Close the voting</a></p>
+            <p><a class="btn btn-warning" 
+                  href="/close_election/{{v.votation_id}}" 
+                  data-cy="close">{{_("Close the election")}}</a></p>
         {% endif %}
 
         {% if current_user.u.user_id == v.promoter_user.user_id  %}
-            <p><a class="btn btn-danger" href="/delete_election/{{v.votation_id}}" data-cy="delete_votation">Delete the voting</a></p>
+            <p><a class="btn btn-danger" 
+                href="/delete_election/{{v.votation_id}}" 
+                data-cy="delete_votation">{{_("Delete the election")}}</a></p>
         {% endif %}
     {% endif %}
 
 
     {% if v.votation_type == "draw" %}
         {% if current_user.u.user_id == v.promoter_user.user_id and v.votation_status == 0 and candidates_array|length > 0  %}
-            <p><a href="/start_election/{{v.votation_id}}">Start the voting</a></p>
+            <p><a href="/start_election/{{v.votation_id}}">{{_("Start the election")}}</a></p>
         {% endif %}
     <h3>Candidates:</h3>
     <ul>
@@ -54,7 +58,7 @@
     {% endif %}
 
     {% if v.votation_type != "draw"  %}
-    <h3>Options:</h3>
+    <h3>{{_("Options")}}:</h3>
     <ul>
         {% for c in options_array %}
             <li>{{c.option_name}}</li>
@@ -64,8 +68,8 @@
 
     
     {% if v.votation_status == 4 %}
-        <h3>Votation Result</h3>
-        <div>The election is failed.</div>
+        <h3>{{_("Election Result")}}</h3>
+        <div>{{_("The election is failed")}}.</div>
     {% endif %}
 
     {% if v.votation_status == 3 %}
@@ -76,15 +80,15 @@
 
     {% if current_user.u.user_id == v.promoter_user.user_id  %}
         {% if v.votation_status <= 1 and votation_timing <= 1 and v.list_voters == 1 and v.votation_type != "draw" %}
-            <h3>Voters list</h3>
+            <h3>{{_("Voters list")}}</h3>
             <form action="/add_voters" method="post" id="list_voters_form">
                 <input type="hidden" name="votation_id" value="{{v.votation_id}}">
                 <div class="form-group">
-                    <label for="list_voters">Add voters</label>
+                    <label for="list_voters">{{_("Add voters")}}</label>
                     <textarea class="form-control text-uppercase" type="text" id="list_voters" name="list_voters" rows="15"></textarea>
-                    <small class="form-text text-muted">Write an username each row</small>
+                    <small class="form-text text-muted">{{_("Write an username each row")}}</small>
                 </div>
-                <button type="submit" class="btn btn-primary" data-cy="add_voter_button">Add</button>
+                <button type="submit" class="btn btn-primary" data-cy="add_voter_button">{{_("Add")}}</button>
                     
             </form>
         {% endif %}

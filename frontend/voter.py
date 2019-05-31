@@ -38,9 +38,9 @@ def has_voted(o):
     result = False
     conn = dbmanager.get_connection()
     c = conn.cursor()
-    c.execute("select * from voter where user_id = %s and votation_id = %s and voted=1", (o.user_id,o.votation_id) )
+    c.execute("select count(*) from voter where user_id = %s and votation_id = %s and voted=1", (o.user_id,o.votation_id) )
     row = c.fetchone()
-    if row:
+    if row[0] == 1:
         result = True
     c.close()
     conn.close()
@@ -103,9 +103,9 @@ def is_voter(votation_id,user_id):
         return True
     conn = dbmanager.get_connection()
     c = conn.cursor()
-    c.execute("select * from voter where user_id = %s and votation_id = %s", (user_id,votation_id) )
+    c.execute("select count(*) from voter where user_id = %s and votation_id = %s", (user_id,votation_id) )
     row = c.fetchone()
-    if row:
+    if row[0] == 1:
         result = True
     c.close()
     conn.close()

@@ -87,8 +87,8 @@ def maj_jud_compare(totals_array1, totals_array2):
         return 0
     t1 = totals_array1[:]
     t2 = totals_array2[:]
-    l1 = len(t1)
-    l2 = len(t2)
+    #l1 = len(t1)
+    #l2 = len(t2)
     median1 = maj_jud_median_calc(t1)
     median2 = maj_jud_median_calc(t2)
     while median1 == median2 and sum(t1) > 0 and sum(t2) > 0:

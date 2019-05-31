@@ -1,6 +1,6 @@
 {% extends "base_template.html" %} {% block body %} 
 {% if current_user.u.user_id == v.promoter_user.user_id %} 
-La votazione è attiva:
+{{_("Election is ongoing")}}:
     <div>{{v.votation_description}}</div>
     <div>Candidati e scrutatori possono ora inviare le proprie chiavi.</div>
     <div>

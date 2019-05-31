@@ -1,11 +1,11 @@
 {% extends "votation_detail_template.html" %} {% block results %}
-        <h3>Votation Result</h3>
+        <h3>{{_("Election Result")}}</h3>
         {% if count_voters == count_votes %}
-            <div class="alert alert-success">The number of votes and the number of voters match.</div>
+            <div class="alert alert-success">{{_("The number of votes and the number of voters match")}}.</div>
         {% else %}
-            <div class="alert alert-danger">The number of votes and the number of voters do not match.</div>
+            <div class="alert alert-danger">{{_("The number of votes and the number of voters do not match")}}.</div>
         {% endif %}
-        <h4>Ranking</h4>
+        <h4>{{_("Ranking")}}</h4>
         <div class="container">
             <ol>
                 {% for r in counting %}
