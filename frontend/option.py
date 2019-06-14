@@ -1,56 +1,47 @@
-import dbmanager
 import config
+from model import Option
 
-class option_dto:
-    """DTO class for the database table"""
-    def __init__(self):
-        self.option_id = None
-        self.votation_id = None
-        self.option_name = None
-        self.description = None
+db = config.db
+
+# class option_dto:
+#     """DTO class for the database table"""
+#     def __init__(self):
+#         self.option_id = None
+#         self.votation_id = None
+#         self.option_name = None
+#         self.description = None
 
 def load_options_by_votation(votation_id):
     """Returns a option_dto array"""
-    ar = []
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select * from voting_option c where c.votation_id = %s order by option_id", (votation_id,) )
-    row = c.fetchone()
-    while row:
-        o = option_dto()
-        o.option_id = row['option_id']
-        o.votation_id = row['votation_id']
-        o.option_name = row['option_name']
-        o.description = row['description']
-        ar.append(o)
-        row = c.fetchone()
-    c.close()
-    conn.close()
+    ar = db.session.query(Option).filter(Option.votation_id == votation_id).order_by(Option.option_id).all()
     return ar
 
 
 def insert_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""insert into voting_option(
-                    votation_id, option_name, description) values (%s,%s,%s)""",(o.votation_id, o.option_name ,o.description) )
-    c.close()
-    conn.close()
+    try:
+        db.session.add(o)
+    except Exception as e:
+        print("option.insert_dto: " + str(e))
+        return False
+    return True
 
 def delete_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("delete from voting_option where option_id = %s", (o.option_id,) )
-    c.close()
-    conn.close()
+    try:
+        db.session.delete(o)
+    except Exception as e:
+        print("option.delete_dto: " + str(e))
+        return False
+    return True
 
 def delete_options_by_votation(votation_id):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("delete from voting_option where votation_id = %s", (votation_id,) )
-    c.close()
-    conn.close()
-
+    try:
+        ar = db.session.query(Option).filter(Option.votation_id == votation_id).all()
+        for o in ar: 
+            db.session.delete(o)
+    except Exception as e:
+        print("option.delete_options_by_votation: " + str(e))
+        return False
+    return True
 
 def save_options_from_text(votation_id,text):
     result = True
@@ -60,10 +51,7 @@ def save_options_from_text(votation_id,text):
     lines.sort()     
     for l in lines:
         if l.strip():
-            o = option_dto()
-            o.votation_id = votation_id
-            o.option_name = l.strip()
-            o.description = ""
+            o = Option(votation_id=votation_id, option_name=l,description="")
             insert_dto(o)
     return result
 

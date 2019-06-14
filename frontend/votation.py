@@ -1,12 +1,13 @@
-import dbmanager
-import sqlite3
 import config
 import re
 from datetime import date,datetime
 import user
+import option
+from model import Votation,Vote,Voter,Option
 from flask_babel import gettext
 _ = gettext
 
+db = config.db
 
 STATUS_WAIT_FOR_CAND_AND_GUAR = 0
 STATUS_VOTING = 1
@@ -32,144 +33,84 @@ states = [
 WORDS = [_('No opinion'), _('Poor'), _('Not enough'), _('Acceptable'), _('Good'), _('Very good')]
 
 
-class votation_dto:
-    """DTO class for the database table"""
+# class votation_dto:
+#     """DTO class for the database table"""
 
-    def __init__(self):
-        self.votation_id = None
-        self.promoter_user = user.user_dto()
-        self.votation_description = None
-        self.description_url = None
-        self.begin_date = None
-        self.end_date = None
-        self.votation_type = None
-        self.votation_status = None
-        self.list_voters = None
+#     def __init__(self):
+#         self.votation_id = None
+#         self.promoter_user = user.user_dto()
+#         self.votation_description = None
+#         self.description_url = None
+#         self.begin_date = None
+#         self.end_date = None
+#         self.votation_type = None
+#         self.votation_status = None
+#         self.list_voters = None
 
 
 
-def get_blank_dto():
-    v = votation_dto()
-    v.votation_id = 0
-    v.promoter_user.user_id = 0
-    v.votation_description = ''
-    v.description_url = ''
-    v.begin_date = ''
-    v.end_date = ''
-    v.votation_type = ''
-    v.votation_status = 0
-    v.list_voters = 0
-    return v
+# def get_blank_dto():
+#     v = votation_dto()
+#     v.votation_id = 0
+#     v.promoter_user.user_id = 0
+#     v.votation_description = ''
+#     v.description_url = ''
+#     v.begin_date = ''
+#     v.end_date = ''
+#     v.votation_type = ''
+#     v.votation_status = 0
+#     v.list_voters = 0
+#     return v
 
 
 def load_votation_by_id(votation_id):
     """Returns a votation_dto object or None"""
-    v = None
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select * from votation where votation_id = %s", (votation_id,))
-    row = c.fetchone()
-    if row:
-        v = votation_dto()
-        v.votation_id = row['votation_id']
-        v.promoter_user = user.load_user_by_id( row['promoter_user_id'] )
-        v.votation_description = row['votation_description']
-        v.description_url = row['description_url']
-        v.begin_date = row['begin_date']
-        v.end_date = row['end_date']
-        v.votation_type = row['votation_type']
-        v.votation_status = row['votation_status']
-        v.list_voters = row['list_voters']
-    c.close()
-    conn.close()
+    v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
     return v
 
 
 def load_votations():
     """Returns a votation_dto array"""
-    ar = []
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select * from votation order by votation_id")
-    row = c.fetchone()
-    while row:
-        v = votation_dto()
-        v.votation_id = row['votation_id']
-        v.promoter_user = user.load_user_by_id( row['promoter_user_id'] )
-        v.votation_description = row['votation_description']
-        v.description_url = row['description_url']
-        v.begin_date = row['begin_date']
-        v.end_date = row['end_date']
-        v.votation_type = row['votation_type']
-        v.votation_status = row['votation_status']
-        v.list_voters = row['list_voters']
-        ar.append(v)
-        row = c.fetchone()
-    c.close()
-    conn.close()
+    ar = db.session.query(Votation).all()
     return ar
-
 
 def load_votations_by_promoter_user_id(promoter_user_id):
     """Returns a votation_dto array"""
-    ar = []
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select * from votation where promoter_user_id = %s",
-              (promoter_user_id,))
-    row = c.fetchone()
-    while row:
-        v = votation_dto()
-        v.votation_id = row['votation_id']
-        v.promoter_user = user.load_user_by_id(row['promoter_user_id'])
-        v.votation_description = row['votation_description']
-        v.description_url = row['description_url']
-        v.begin_date = row['begin_date']
-        v.end_date = row['end_date']
-        v.votation_type = row['votation_type']
-        v.votation_status = row['votation_status']
-        v.list_voters = row['list_voters']
-        ar.append(v)
-        row = c.fetchone()
-    c.close()
-    conn.close()
+    ar = db.session.query(Votation).filter(Votation.promoter_user_id == promoter_user_id).all()
     return ar
-
 
 def insert_votation_dto(v):
     """Insert the votation_dto into the DB"""
-    result = True
-    conn = dbmanager.get_connection()
     try:
-        c = conn.cursor()
-        c.execute("""insert into votation(
-                        promoter_user_id, 
-                        votation_description, 
-                        description_url, 
-                        begin_date, 
-                        end_date, 
-                        votation_type,
-                        votation_status,
-                        list_voters) values(%s,%s,%s,%s,%s,%s,%s,%s) returning votation_id""", (v.promoter_user.user_id, v.votation_description, v.description_url, v.begin_date, v.end_date, v.votation_type, v.votation_status,v.list_voters))
-        row =c.fetchone()
-        v.votation_id = row[0]
+        db.session.add(v)
+        v = db.session.query(Votation).filter(Votation.votation_description == v.votation_description).first()
+    except Exception as e:
+        print ("Exception insert_votation_dto: " + str(e))
+        db.session.rollback()
+        return False
+    return True
 
-        c.close()
-        conn.close()
-    except:
-        result = False
-    return result
-
+def insert_votation_and_options(v,option_array):
+    try:
+        db.session.add(v)
+        v = db.session.query(Votation).filter(Votation.votation_description == v.votation_description).first()
+        for o in option_array:
+            option.insert_dto(o)
+        db.session.commit()
+    except Exception as e:
+        print ("Exception insert_votation_and_options: " + str(e))
+        db.session.rollback()
+        return False
+    return True
 
 def delete_votation_by_id(votation_id):
     """Delete the votation from the DB"""
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("delete from votation where votation_id = %s", (votation_id,))
-    c.close()
-    conn.close()
-    return True
-
+    result = False
+    v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
+    if v:
+        db.session.delete(v)
+        result = True
+    return result
 
 def validate_dto(v):
     """Validate data for writing in DB. Returns (True/False, "Error message")"""
@@ -219,32 +160,29 @@ def validate_string_date(d):
 
 
 def update_status(votation_id, new_status):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("update votation set votation_status=%s where votation_id = %s", (new_status,votation_id,))
-    c.close()
-    conn.close()
-    return True
+    v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
+    if v:
+        v.votation_status = new_status
+        db.session.commit()
+        return True
+    return False
 
 def update_end_date(votation_id, new_datetime):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("update votation set end_date=%s where votation_id = %s", (new_datetime,votation_id,))
-    c.close()
-    conn.close()
-    return True
+    v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
+    if v:
+        v.end_date = new_datetime
+        db.session.commit()
+        return True
+    return False
 
 def deltree_votation_by_id(votation_id):
     """Delete the votation from the DB
     with all dependencies"""
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("delete from votation where votation_id = %s", (votation_id,))
-    c.execute("delete from vote where votation_id = %s", (votation_id,))
-    c.execute("delete from voter where votation_id = %s", (votation_id,))
-    c.execute("delete from voting_option where votation_id = %s", (votation_id,))
-    c.close()
-    conn.close()
+    db.session.delete(Votation).where(Votation.votation_id == votation_id)
+    db.session.delete(Vote).where(Vote.votation_id == votation_id)
+    db.session.delete(Voter).where(Voter.votation_id == votation_id)
+    db.session.delete(Option).where(Option.votation_id == votation_id)
+    db.session.commit()
     return True
 
 def votation_timing(vdto):

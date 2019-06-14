@@ -3,25 +3,9 @@ import os
 from flask import Flask, render_template,request,redirect,url_for
 from flask_login import LoginManager, login_required, current_user,login_user,logout_user
 from flask_babel import Babel,gettext
+from flask_sqlalchemy import SQLAlchemy
 import config 
-import user
-import votation
-import candidate
-import backend
-import option
-import vote
-import vote_maj_jud
-import vote_simple
-import voter
 import datetime
-
-if config.AUTH == 'ldap':
-    import auth_ldap as auth
-if config.AUTH == 'google':
-    import auth_google as auth
-if config.AUTH == 'test':
-    import auth_test as auth
-     
 
 MSG_INFO = 0
 MSG_OK   = 1
@@ -32,13 +16,38 @@ LANGUAGES = {
 }
 current_language = None
 
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24) 
+# flask-login initialization
 login_manager = LoginManager()
 login_manager.init_app(app)
+# flask-babel initialization
 babel = Babel(app=app)
 _ = gettext
+# flask-sqlalchemy initialization
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+config.db = db
+
+import user
+import votation
+import candidate
+import backend
+import option
+import vote
+import vote_maj_jud
+import vote_simple
+import voter
+if config.AUTH == 'ldap':
+    import auth_ldap as auth
+if config.AUTH == 'google':
+    import auth_google as auth
+if config.AUTH == 'test':
+    import auth_test as auth
+     
+
+
 
 @babel.localeselector
 def get_locale():
