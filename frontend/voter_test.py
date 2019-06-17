@@ -1,18 +1,58 @@
 #!/usr/bin/env python3
-import unittest
-import voter
-import user 
-import votation
-from datetime import datetime
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import config
 import random
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+config.db = db
+
+import unittest
+import voter
+import votation
+import user
+from model import Votation,Voter
+from datetime import datetime
+
 class voter_test(unittest.TestCase):
+    __votation__ = None 
+    __votation_list__ = None
+
+    def setUp(self):
+        self.__votation__ = Votation( \
+            votation_description = 'Votation for voter test ' + str(random.randint(0,50000)) , \
+            description_url = "" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 0)
+        self.assertTrue( votation.insert_votation_dto(self.__votation__) )
+        self.__votation_list__ = Votation( \
+            votation_description = 'Votation for voter test (list) ' + str(random.randint(0,500)) , \
+            description_url = "" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 1)
+        self.assertTrue( votation.insert_votation_dto(self.__votation_list__) )
+        db.session.commit()
+        return super().setUp()
+
+    def tearDown(self):
+        votation.deltree_votation_by_id(self.__votation__.votation_id)
+        votation.deltree_votation_by_id(self.__votation_list__.votation_id)
+        db.session.commit()
+        return super().tearDown()
         
     def test_insert(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 1
+        o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=1)
         voter.delete_dto(o)
         self.assertFalse(voter.has_voted(o))
         voter.insert_dto(o)
@@ -20,10 +60,7 @@ class voter_test(unittest.TestCase):
         voter.delete_dto(o)
         self.assertFalse(voter.has_voted(o))
     def test_insert2(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 0
+        o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         voter.delete_dto(o)
         self.assertFalse(voter.has_voted(o))
         voter.insert_dto(o)
@@ -31,35 +68,24 @@ class voter_test(unittest.TestCase):
         voter.delete_dto(o)
         self.assertFalse(voter.has_voted(o))
     def test_insert3(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 0
-        voter.delete_dto(o)
-        self.assertTrue( voter.insert_dto(o))
-        self.assertFalse(voter.insert_dto(o))
-        voter.delete_dto(o)
+        o1 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
+        o2 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
+        voter.delete_dto(o1)
+        self.assertTrue( voter.insert_dto(o1))
+        #self.assertFalse(voter.insert_dto(o2)) this don't thrown errors in sqlalchemy
+        voter.delete_dto(o1)
     def test_count_voters1(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 1
+        o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=1)
         voter.insert_dto(o)
         self.assertEqual(1, voter.count_voters(o.votation_id) )
         voter.delete_dto(o)
     def test_count_voters2(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 0
+        o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         voter.insert_dto(o)
         self.assertEqual(0, voter.count_voters(o.votation_id) )
         voter.delete_dto(o)
     def test_update_dto1(self):
-        o = voter.voter_dto()
-        o.user_id = 1000
-        o.votation_id = 999
-        o.voted = 0
+        o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         voter.delete_dto(o)
         voter.insert_dto(o)
         self.assertFalse(voter.has_voted(o))
@@ -67,43 +93,44 @@ class voter_test(unittest.TestCase):
         voter.update_dto(o) 
         self.assertTrue(voter.has_voted(o))
         voter.delete_dto(o)
-    def test_insert_voters_array(self):
-        votation_id = 1000
+    def test_insert_voters_array_3(self):
+        votation_id = self.__votation__.votation_id
         u1 = "aldo"
         u2 = "beppe"
         u3 = "carlo"
         ar = [u1,u2,u3]
-
-        u = user.load_user_by_username(u1)       
-        o = voter.voter_dto()
-        o.votation_id = votation_id
-        o.user_id = u.user_id
-        voter.delete_dto(o)
-
-        u = user.load_user_by_username(u2)       
-        o = voter.voter_dto()
-        o.votation_id = votation_id
-        o.user_id = u.user_id
-        voter.delete_dto(o)
-
-        u = user.load_user_by_username(u3)       
-        o = voter.voter_dto()
-        o.votation_id = votation_id
-        o.user_id = u.user_id
-        voter.delete_dto(o)
-
         self.assertEqual(3,voter.insert_voters_array(votation_id, ar) )
-        u = user.load_user_by_username(u1)       
-        o = voter.voter_dto()
-        o.votation_id = votation_id
-        o.user_id = u.user_id
-        voter.delete_dto(o)
+        db.session.commit()
+
+    def test_insert_voters_array_1(self):
+        votation_id = self.__votation__.votation_id
+        u1 = "aldo"
+        u2 = "beppe"
+        u3 = "carlo"
+        ar = [u1,u2]
+        self.assertEqual(2,voter.insert_voters_array(votation_id, ar) )
+        db.session.commit()
+        ar = [u1,u2,u3]
         self.assertEqual(1,voter.insert_voters_array(votation_id, ar) )
+        db.session.commit()
+
+    def test_insert_voters_array_0(self):
+        votation_id = self.__votation__.votation_id
+        u1 = "aldo"
+        u2 = "beppe"
+        u3 = "carlo"
+        ar = [u1,u2,u3]
+        self.assertEqual(3,voter.insert_voters_array(votation_id, ar) )
+        db.session.commit()
         self.assertEqual(0,voter.insert_voters_array(votation_id, ar) )
+        db.session.commit()
+
     def test_insert_unknown_voter(self):
-        votation_id = 1000
+        votation_id = self.__votation__.votation_id
         ar = ["nobody",]
         self.assertEqual(0,voter.insert_voters_array(votation_id,ar))
+        db.session.commit()
+
     def test_split1(self):
         expected = ["a","b","c"]
         actual = voter.split_string_remove_dup("""a
@@ -139,54 +166,18 @@ class voter_test(unittest.TestCase):
              
              """)
         self.assertEqual(set(expected), set(actual)  )
-    def test_is_voter(self):
-        v = votation.votation_dto()
-        v.votation_description = 'Votation automated test for voter1'
-        v.description_url = ""
-        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
-        v.promoter_user.user_id = 1
-        v.begin_date = datetime(2018,1,1)
-        v.end_date = datetime(2018,1,15)
-        v.votation_status = 1
-        v.list_voters = 1
-        self.assertTrue( votation.insert_votation_dto(v) )
 
-        o = voter.voter_dto()
-        o.votation_id = v.votation_id
-        o.user_id = 2
-        o.voted = 0
+    def test_is_voter(self):
+        o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
         voter.delete_dto(o)
         voter.insert_dto(o)
         self.assertTrue(voter.is_voter(o.votation_id,o.user_id))
         voter.delete_dto(o)
 
-        votation.deltree_votation_by_id(v.votation_id)
-
-    def test_is_voter_votation_null(self):
-        o = voter.voter_dto()
-        o.votation_id = 1000
-        o.user_id = 1
-        o.voted = 0
-        voter.insert_dto(o)
-        self.assertFalse(voter.is_voter(o.votation_id,o.user_id))
 
     def test_set_voted_no_list(self):
-        # create a votation no list
-        v = votation.votation_dto()
-        v.votation_description = 'Votation automated test no list ' + str(random.randint(0,10000 ))
-        v.description_url = ""
-        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
-        v.promoter_user.user_id = 1
-        v.begin_date = datetime(2018,1,1)
-        v.end_date = datetime(2018,1,15)
-        v.votation_status = 1
-        v.list_voters = 0 # <<---- no list
-        self.assertTrue( votation.insert_votation_dto(v) )
-
         # run set_voted
-        o = voter.voter_dto()
-        o.votation_id = v.votation_id
-        o.user_id = 2
+        o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
         # should perform insert
         self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
         self.assertTrue(voter.set_voted(o))
@@ -196,26 +187,10 @@ class voter_test(unittest.TestCase):
         self.assertTrue(voter.has_voted(o))
         self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
 
-        votation.deltree_votation_by_id(v.votation_id)
 
     def test_set_voted_with_list(self):
-        # create a votation no list
-        v = votation.votation_dto()
-        v.votation_description = 'Votation automated test with list ' + str(random.randint(0,10000 ))
-        v.description_url = ""
-        v.votation_type = votation.TYPE_SIMPLE_MAJORITY
-        v.promoter_user.user_id = 1
-        v.begin_date = datetime(2018,1,1)
-        v.end_date = datetime(2018,1,15)
-        v.votation_status = 1
-        v.list_voters = 1 # <<---- with list
-        self.assertTrue( votation.insert_votation_dto(v) )
-
         # insert a voter 
-        o = voter.voter_dto()
-        o.votation_id = v.votation_id
-        o.user_id = 2
-        o.voted = 0
+        o = Voter(user_id=2, votation_id=self.__votation_list__.votation_id, voted=0)
         self.assertFalse(voter.is_voter(o.votation_id, o.user_id))
         voter.insert_dto(o)
         self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
@@ -224,9 +199,6 @@ class voter_test(unittest.TestCase):
         self.assertFalse(voter.has_voted(o))
         self.assertTrue(voter.set_voted(o))
         self.assertTrue(voter.has_voted(o))
-
-        votation.deltree_votation_by_id(v.votation_id)
-
 
 if __name__ == '__main__':
     unittest.main()

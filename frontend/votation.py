@@ -3,6 +3,7 @@ import re
 from datetime import date,datetime
 import user
 import option
+import voter
 from model import Votation,Vote,Voter,Option
 from flask_babel import gettext
 _ = gettext
@@ -178,10 +179,10 @@ def update_end_date(votation_id, new_datetime):
 def deltree_votation_by_id(votation_id):
     """Delete the votation from the DB
     with all dependencies"""
-    db.session.delete(Votation).where(Votation.votation_id == votation_id)
-    db.session.delete(Vote).where(Vote.votation_id == votation_id)
-    db.session.delete(Voter).where(Voter.votation_id == votation_id)
-    db.session.delete(Option).where(Option.votation_id == votation_id)
+    #db.session.delete(Vote).where(Vote.votation_id == votation_id)
+    voter.delete_by_votation_id(votation_id)
+    option.delete_options_by_votation(votation_id)
+    delete_votation_by_id(votation_id)
     db.session.commit()
     return True
 

@@ -12,11 +12,11 @@ SECRET_KEY = b'Live long and prosper' # you really should change this, according
 DBTYPE="postgresql"
 DBHOST = os.environ.get('POSTGRES_HOST')   # "localhost"
 #DBNAME = os.environ.get('POSTGRES_DBNAME') # "spritz"
-DBNAME = "provasqlalchemy" # just a test
+DBNAME = "prova" # just a test
 DBUSER = os.environ.get('POSTGRES_USER')   # "dinogen"
 DBPWD  = os.environ.get('POSTGRES_PWD')    # "abc123"
-# SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,5432,DBNAME)
-SQLALCHEMY_DATABASE_URI='sqlite:///test.db'
+SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,5432,DBNAME)
+#SQLALCHEMY_DATABASE_URI='sqlite:///test.db'
 
 #
 # Authentication

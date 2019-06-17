@@ -1,74 +1,62 @@
-import dbmanager
 import config
+from model import Voter,Option,VotingUser,Votation
+
+db = config.db
+
 import option
 import user
 import votation
 
-class voter_dto:
-    """DTO class for the database table"""
-    def __init__(self):
-        self.user_id = None
-        self.votation_id = None
-        self.voted = None
+# class voter_dto:
+#     """DTO class for the database table"""
+#     def __init__(self):
+#         self.user_id = None
+#         self.votation_id = None
+#         self.voted = None
 
 
 def insert_dto(o):
     try:
-        conn = dbmanager.get_connection()
-        c = conn.cursor()
-        c.execute("""insert into voter(
-                        user_id, votation_id,voted) values (%s,%s,%s)""",(o.user_id,o.votation_id, o.voted) )
-        c.close()
-        conn.close()
-        return True
-    except:
+        db.session.add(o)
+    except Exception as e:
+        print ("Exception voter.insert_dto: " + str(e))
         return False
-
-def update_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""update voter set voted = %s 
-                    where user_id=%s and votation_id=%s""",(o.voted,o.user_id,o.votation_id) )
-    c.close()
-    conn.close()
     return True
 
+def update_dto(o):
+    v = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id).first()
+    if v:
+        v.voted = o.voted
+        db.session.commit()
+        return True
+    return False
 
 def has_voted(o):
     result = False
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select count(*) from voter where user_id = %s and votation_id = %s and voted=1", (o.user_id,o.votation_id) )
-    row = c.fetchone()
-    if row[0] == 1:
+    n = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id, Voter.voted==1).count()
+    if n == 1:
         result = True
-    c.close()
-    conn.close()
     return result
 
-
 def delete_dto(o):
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("""delete from voter where user_id = %s and votation_id = %s """,(o.user_id,o.votation_id, ) )
-    c.close()
-    conn.close()
+    result = False
+    v = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id).first()
+    if v:
+        db.session.delete(v)
+        result = True
+    return result
+
+def delete_by_votation_id(votation_id):
+    ar = db.session.query(Voter).filter(Voter.votation_id == votation_id).all()
+    for v in ar:
+        db.session.delete(v)
     return True
 
 def count_voters(votation_id):
     """
     Count voters. Its pourpose is to compare with number of votes.
     """
-    result = None
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select count(*) from voter where votation_id = %s and voted=1", (votation_id,) )
-    row = c.fetchone()
-    if row:
-        result = row[0]
-    c.close()
-    conn.close()
-    return result
+    return db.session.query(Voter).filter(Voter.votation_id == votation_id, Voter.voted == 1).count()
 
 def insert_voters_array(votation_id, ar):
     """returns number of inserted rows"""
@@ -76,12 +64,11 @@ def insert_voters_array(votation_id, ar):
     for user_name in ar:
         u = user.load_user_by_username(user_name)
         if u:
-            o = voter_dto()
-            o.votation_id = votation_id
-            o.user_id = u.user_id
-            o.voted = 0
-            if insert_dto(o):
-                count += 1
+            n = db.session.query(Voter).filter(Voter.user_id == u.user_id).count() 
+            if n == 0:
+                o = Voter(votation_id = votation_id, user_id = u.user_id, voted = 0)
+                if insert_dto(o):
+                    count += 1
     return count
         
 def split_string_remove_dup(text):
@@ -101,14 +88,9 @@ def is_voter(votation_id,user_id):
         #return True
     if v.list_voters == 0:
         return True
-    conn = dbmanager.get_connection()
-    c = conn.cursor()
-    c.execute("select count(*) from voter where user_id = %s and votation_id = %s", (user_id,votation_id) )
-    row = c.fetchone()
-    if row[0] == 1:
+    n = db.session.query(Voter).filter(Voter.votation_id == votation_id, Voter.user_id == user_id).count()
+    if n == 1:
         result = True
-    c.close()
-    conn.close()
     return result
 
 def set_voted(o):

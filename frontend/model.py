@@ -53,4 +53,5 @@ class Voter(db.Model):
     user = relationship(VotingUser)
     votation_id = Column(Integer,ForeignKey('votation.votation_id'),nullable=False)
     votation = relationship(Votation)
+    voted = Column(Integer)
 

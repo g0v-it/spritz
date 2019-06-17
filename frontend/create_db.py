@@ -11,7 +11,6 @@ if __name__ == '__main__':
     import model
     db.create_all()
     
-
     u = model.VotingUser(user_name='aldo', pass_word='aldo')
     db.session.add(u)
     u = model.VotingUser(user_name='beppe', pass_word='beppe')
