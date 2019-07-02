@@ -16,8 +16,14 @@ import random
 from datetime import datetime
 
 class votation_test(unittest.TestCase):
-        
+    def setUp(self):
+        return super().setUp()
+
+    def tearDown(self):
+        return super().tearDown()
+
     def test_insert(self):
+        print("VOTATION TEST")
         v = Votation( \
             votation_description = 'Votation automated test ' + str(random.randint(0,500)) , \
             description_url = "" , \
@@ -90,8 +96,7 @@ class votation_test(unittest.TestCase):
         
         v2 = votation.load_votation_by_id(v.votation_id)
         self.assertEqual(new_end_date, v2.end_date)
-
-        votation.delete_votation_by_id(v.votation_id)
+        votation.deltree_votation_by_id(v.votation_id)
     
     def test_insert_votation_and_options(self):
         v = Votation( \
@@ -109,6 +114,7 @@ class votation_test(unittest.TestCase):
         o3 = Option(votation_id=v.votation_id,option_name = "option 3",description="")
         ar = [o1,o2,o3]
         self.assertTrue(votation.insert_votation_and_options(v,ar))
+        votation.deltree_votation_by_id(v.votation_id)
 
 if __name__ == '__main__':
     unittest.main()

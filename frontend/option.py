@@ -20,6 +20,7 @@ def load_options_by_votation(votation_id):
 def insert_dto(o):
     try:
         db.session.add(o)
+        o = db.session.query(Option).filter(Option.votation_id == o.votation_id, Option.option_name == o.option_name).first()
     except Exception as e:
         print("option.insert_dto: " + str(e))
         return False

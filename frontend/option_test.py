@@ -21,7 +21,7 @@ class option_test(unittest.TestCase):
 
     def setUp(self):
         self.__votation__ = Votation( \
-            votation_description = 'Votation for option test ' + str(random.randint(0,500)) , \
+            votation_description = 'Votation for option test ' + str(random.randint(0,50000)) , \
             description_url = "" , \
             votation_type = votation.TYPE_DRAW , \
             promoter_user_id = 1 , \
@@ -34,15 +34,15 @@ class option_test(unittest.TestCase):
         return super().setUp()
 
     def tearDown(self):
-        db.session.delete(self.__votation__)
+        votation.deltree_votation_by_id(self.__votation__.votation_id)
         db.session.commit()
         return super().tearDown()
 
     def test_insert(self):
         votation_id = self.__votation__.votation_id
-        option.delete_options_by_votation(votation_id)
         u = Option(votation_id=votation_id,option_name = 'test.option',description = 'test.description')
         self.assertTrue( option.insert_dto(u))
+        self.assertIsNotNone(u.option_id)
         ar = option.load_options_by_votation(votation_id)
         self.assertEqual(1,len(ar))
         u1 = ar[0]

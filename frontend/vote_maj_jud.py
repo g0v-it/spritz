@@ -1,13 +1,17 @@
+import config
+from model import Vote,Voter,Option,Votation
+from sqlalchemy import func,desc
+db = config.db
+
 import vote
 import voter
 import option
-import dbmanager
 import votation
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
-    vu = voter.voter_dto()
-    vu.user_id = user_id
-    vu.votation_id = votation_id
+    vu = Voter( \
+        user_id = user_id, \
+        votation_id = votation_id)
     b_has_voted = voter.has_voted(vu)
     if b_has_voted:
         votes = vote.load_vote_by_key(vote_key)
@@ -16,11 +20,11 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
         vote.delete_votes_by_key(vote_key)
     options_list = option.load_options_by_votation(votation_id)
     for i in range(len(vote_array)):
-        o = vote.vote_dto()
-        o.vote_key = vote_key
-        o.votation_id = votation_id
-        o.option_id = options_list[i].option_id
-        o.jud_value = vote_array[i]
+        o = Vote(  \
+            vote_key = vote_key, \
+            votation_id = votation_id, \
+            option_id = options_list[i].option_id, \
+            jud_value = vote_array[i])
         vote.insert_dto(o)
     if not b_has_voted:
         vu.voted = 1
@@ -108,15 +112,10 @@ def maj_jud_compare(totals_array1, totals_array2):
 
 
 def count_votes_by_option(votation_id, option_id):
-    conn = dbmanager.get_connection()
     ar = []
     for j in range(len(votation.WORDS)):
-        c = conn.cursor()
-        q = "select count(*) from vote where votation_id = %s and option_id = %s and jud_value = %s"
-        c.execute(q, (votation_id, option_id, j))
-        row = c.fetchone()
-        ar.append( row[0] )
-        c.close()
+        n = db.session.query(Vote).filter(Vote.votation_id == votation_id, Vote.option_id == option_id, Vote.jud_value == j).count()
+        ar.append( n )
     return ar
 
 def votation_counting(v):

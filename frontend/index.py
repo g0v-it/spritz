@@ -39,6 +39,7 @@ import vote
 import vote_maj_jud
 import vote_simple
 import voter
+from model import Votation
 if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
@@ -91,7 +92,7 @@ def logout():
 @app.route("/votation_propose", methods=['GET', 'POST'])
 @login_required
 def votation_propose():
-    v = votation.get_blank_dto()
+    v = Votation()
     message = (_("Please, insert data"),MSG_INFO)
     if request.method == 'POST':    
         #v.votation_id = request.form['votation_id']

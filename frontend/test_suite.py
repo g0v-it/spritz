@@ -4,9 +4,14 @@ import user_test
 import votation_test
 import option_test
 #import guarantor_test
-import backend_test
+#import backend_test
 import vote_test
 import voter_test
+
+#
+# WARNING!
+# This test suite don't work with SQLAlchemy
+#
 
 test_suite = unittest.TestSuite()
 test_suite.addTest(unittest.makeSuite(user_test.user_test))
