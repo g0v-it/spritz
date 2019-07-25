@@ -3,7 +3,6 @@ import voter
 import votation
 import option
 import random
-import dbmanager
 
 def insert_dto(o):
     c = conn.cursor()

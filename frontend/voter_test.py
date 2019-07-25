@@ -12,7 +12,9 @@ config.db = db
 
 import unittest
 import voter
+import voter_bo
 import votation
+import votation_bo
 import user
 from model import Votation,Voter
 from datetime import datetime
@@ -46,8 +48,8 @@ class voter_test(unittest.TestCase):
         return super().setUp()
 
     def tearDown(self):
-        votation.deltree_votation_by_id(self.__votation__.votation_id)
-        votation.deltree_votation_by_id(self.__votation_list__.votation_id)
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
+        votation_bo.deltree_votation_by_id(self.__votation_list__.votation_id)
         db.session.commit()
         return super().tearDown()
         
@@ -99,7 +101,7 @@ class voter_test(unittest.TestCase):
         u2 = "beppe"
         u3 = "carlo"
         ar = [u1,u2,u3]
-        self.assertEqual(3,voter.insert_voters_array(votation_id, ar) )
+        self.assertEqual(3,voter_bo.insert_voters_array(votation_id, ar) )
         db.session.commit()
 
     def test_insert_voters_array_1(self):
@@ -108,10 +110,10 @@ class voter_test(unittest.TestCase):
         u2 = "beppe"
         u3 = "carlo"
         ar = [u1,u2]
-        self.assertEqual(2,voter.insert_voters_array(votation_id, ar) )
+        self.assertEqual(2,voter_bo.insert_voters_array(votation_id, ar) )
         db.session.commit()
         ar = [u1,u2,u3]
-        self.assertEqual(1,voter.insert_voters_array(votation_id, ar) )
+        self.assertEqual(1,voter_bo.insert_voters_array(votation_id, ar) )
         db.session.commit()
 
     def test_insert_voters_array_0(self):
@@ -120,15 +122,15 @@ class voter_test(unittest.TestCase):
         u2 = "beppe"
         u3 = "carlo"
         ar = [u1,u2,u3]
-        self.assertEqual(3,voter.insert_voters_array(votation_id, ar) )
+        self.assertEqual(3,voter_bo.insert_voters_array(votation_id, ar) )
         db.session.commit()
-        self.assertEqual(0,voter.insert_voters_array(votation_id, ar) )
+        self.assertEqual(0,voter_bo.insert_voters_array(votation_id, ar) )
         db.session.commit()
 
     def test_insert_unknown_voter(self):
         votation_id = self.__votation__.votation_id
         ar = ["nobody",]
-        self.assertEqual(0,voter.insert_voters_array(votation_id,ar))
+        self.assertEqual(0,voter_bo.insert_voters_array(votation_id,ar))
         db.session.commit()
 
     def test_split1(self):
@@ -180,10 +182,10 @@ class voter_test(unittest.TestCase):
         o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
         # should perform insert
         self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
-        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter_bo.set_voted(o))
         self.assertTrue(voter.has_voted(o))
         # should perform update
-        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter_bo.set_voted(o))
         self.assertTrue(voter.has_voted(o))
         self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
 
@@ -197,7 +199,7 @@ class voter_test(unittest.TestCase):
 
         # run set_voted()
         self.assertFalse(voter.has_voted(o))
-        self.assertTrue(voter.set_voted(o))
+        self.assertTrue(voter_bo.set_voted(o))
         self.assertTrue(voter.has_voted(o))
 
 if __name__ == '__main__':

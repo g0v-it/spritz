@@ -11,9 +11,12 @@ config.db = db
 
 import unittest
 import votation
+import votation_bo
+import option
 from model import Votation,Option
 import random
 from datetime import datetime
+from config import MSG_INFO,MSG_OK,MSG_KO
 
 class votation_test(unittest.TestCase):
     def setUp(self):
@@ -23,7 +26,7 @@ class votation_test(unittest.TestCase):
         return super().tearDown()
 
     def test_insert(self):
-        print("VOTATION TEST")
+        #print("VOTATION TEST")
         v = Votation( \
             votation_description = 'Votation automated test ' + str(random.randint(0,500)) , \
             description_url = "" , \
@@ -37,6 +40,7 @@ class votation_test(unittest.TestCase):
         self.assertGreater(v.votation_id,0)
         v1 = votation.load_votation_by_id(v.votation_id)
         self.assertIsNotNone(v1)
+        self.assertIsNotNone(v1.promoter_user)
         self.assertEqual(v.votation_id, v1.votation_id)
         self.assertEqual(v.votation_description, v1.votation_description)
         self.assertEqual(v.votation_type, v1.votation_type)
@@ -58,8 +62,13 @@ class votation_test(unittest.TestCase):
         self.assertFalse(votation.validate_string_date("2018-02-30"))
 
     def test_insert_duplicate_description(self):
+        DESCRIPTION = "Duplicate description test"
+        ar = votation.load_votations()
+        for old_votation in ar:
+            if old_votation.votation_description == DESCRIPTION:
+                votation_bo.deltree_votation_by_id(old_votation.votation_id)
         v = Votation( \
-            votation_description = 'Duplicate description test' , \
+            votation_description = DESCRIPTION , \
             description_url = '' , \
             votation_type = votation.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
@@ -68,17 +77,20 @@ class votation_test(unittest.TestCase):
             votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR , \
             list_voters = 0)
         self.assertTrue( votation.insert_votation_dto(v) )
+        db.session.commit()
         v1 = Votation( \
-            votation_description = 'Duplicate description test' , \
-            description_url = '' , \
+            votation_description = DESCRIPTION , \
+            description_url = 'ciao' , \
             votation_type = votation.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 2 , \
-            begin_date = datetime(2018,1,1) , \
-            end_date = datetime(2018,1,15) , \
+            begin_date = datetime(2018,1,2) , \
+            end_date = datetime(2018,1,16) , \
             votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR , \
             list_voters = 0)
         self.assertFalse( votation.insert_votation_dto(v1) )
+        db.session.rollback()
         votation.delete_votation_by_id(v.votation_id)
+        db.session.commit()
 
     def test_update_end_date(self):
         v = Votation( \
@@ -92,29 +104,90 @@ class votation_test(unittest.TestCase):
             list_voters = 0)
         self.assertTrue( votation.insert_votation_dto(v) )
         new_end_date = datetime(2019,12,31,8,34)
-        votation.update_end_date(v.votation_id, new_end_date)
-        
+        votation_bo.update_end_date(v.votation_id, new_end_date)
         v2 = votation.load_votation_by_id(v.votation_id)
         self.assertEqual(new_end_date, v2.end_date)
-        votation.deltree_votation_by_id(v.votation_id)
+        votation_bo.deltree_votation_by_id(v.votation_id)
     
-    def test_insert_votation_and_options(self):
+    def test_insert_votation_and_options_1(self):
+        descr = 'Votation and options 1 automated test ' + str(random.randint(0,500))
         v = Votation( \
-            votation_description = 'Votation and options automated test ' + str(random.randint(0,500)) , \
+            votation_description = descr , \
             description_url = "" , \
-            votation_type = votation.TYPE_DRAW , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \
             votation_status = 2 , \
             list_voters = 0)
-        self.assertTrue( votation.insert_votation_dto(v) )        
-        o1 = Option(votation_id=v.votation_id,option_name = "option 1",description="")
-        o2 = Option(votation_id=v.votation_id,option_name = "option 2",description="")
-        o3 = Option(votation_id=v.votation_id,option_name = "option 3",description="")
-        ar = [o1,o2,o3]
-        self.assertTrue(votation.insert_votation_and_options(v,ar))
-        votation.deltree_votation_by_id(v.votation_id)
+        txt_options = "option_test_A\noption_test_B\n option_test_C"
+        result = votation_bo.insert_votation_with_options(v,txt_options)
+        self.assertEqual(MSG_OK,result[1])
+        ar = votation.load_votations()
+        check = False
+        for w in ar:
+            if w.votation_description == descr:
+                check = True
+        self.assertTrue(check)
+        opt_ar = option.load_options_by_votation(w.votation_id)
+        self.assertEqual(3,len(opt_ar))
+        votation_bo.deltree_votation_by_id(w.votation_id)
+
+    def test_insert_votation_and_options_2(self):
+        """Begin an end dates are in the wrong order"""
+        descr = 'Votation and options 2 automated test ' + str(random.randint(0,500))
+        v = Votation( \
+            votation_description = descr , \
+            description_url = "" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,2,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 0)
+        txt_options = "option_test_A\noption_test_B\n option_test_C"
+        result = votation_bo.insert_votation_with_options(v,txt_options)
+        self.assertEqual(MSG_KO,result[1])
+        ar = votation.load_votations()
+        check = False
+        for w in ar:
+            if w.votation_description == descr:
+                check = True
+        self.assertFalse(check)
+
+    def test_insert_votation_and_options_3(self):
+        """Duplicate description of votation"""
+        descr = 'Votation and options duplicate description ' + str(random.randint(0,500))
+        v = Votation( \
+            votation_description = descr , \
+            description_url = "" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 0)
+        votation.insert_votation_dto(v)
+        db.session.commit()
+        v = Votation( \
+            votation_description = descr , \
+            description_url = "hello" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 2 , \
+            begin_date = datetime(2018,1,2) , \
+            end_date = datetime(2018,1,28) , \
+            votation_status = 1 , \
+            list_voters = 1)
+        txt_options = "option_test_X\noption_test_Y\n option_test_Z"
+        result = votation_bo.insert_votation_with_options(v,txt_options)
+        self.assertEqual(MSG_KO,result[1])
+        ar = votation.load_votations()
+        check = False
+        for w in ar:
+            if w.votation_description == descr and w.promoter_user_id == 2:
+                check = True
+        self.assertFalse(check)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -45,16 +45,16 @@ def delete_options_by_votation(votation_id):
     return True
 
 def save_options_from_text(votation_id,text):
-    result = True
     lines = text.splitlines()
     lines = list(map(lambda l: l.strip().upper(),lines))
     lines = list(set(lines)) # removing duplicates  
     lines.sort()     
     for l in lines:
         if l.strip():
-            o = Option(votation_id=votation_id, option_name=l,description="")
-            insert_dto(o)
-    return result
+            o = Option(votation_id=votation_id, option_name=l,description=l)
+            if not insert_dto(o):
+                return False
+    return True
 
 
 

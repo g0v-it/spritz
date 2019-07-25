@@ -1,3 +1,9 @@
+#
+# This module is a DAO (data access object), only simple operations. 
+# No logic here.
+# No commit here.
+# Functions with commit are in votation_bo
+#
 import config
 #import re
 from datetime import date,datetime
@@ -85,14 +91,14 @@ def insert_votation_dto(v):
     """Insert the votation_dto into the DB"""
     try:
         db.session.add(v)
+        db.session.flush()
         v = db.session.query(Votation).filter(Votation.votation_description == v.votation_description).first()
     except Exception as e:
-        print ("Exception insert_votation_dto: " + str(e))
-        db.session.rollback()
+        print (">>>Exception insert_votation_dto: " + str(e) + "<<<")
         return False
     return True
 
-def insert_votation_and_options(v,option_array):
+""" def insert_votation_and_options(v,option_array):
     try:
         db.session.add(v)
         v = db.session.query(Votation).filter(Votation.votation_description == v.votation_description).first()
@@ -104,6 +110,7 @@ def insert_votation_and_options(v,option_array):
         db.session.rollback()
         return False
     return True
+ """
 
 def delete_votation_by_id(votation_id):
     """Delete the votation from the DB"""
@@ -119,21 +126,21 @@ def validate_dto(v):
     result = True
     errorMessage = "Data validated"
     if result:
-        if user.load_user_by_id(v.promoter_user.user_id) == None:
+        if user.load_user_by_id(v.promoter_user_id) == None:
             result = False
             errorMessage = "Promoter user id not valid"
     if result:
         if len(v.votation_description.strip()) == 0:
             result = False
             errorMessage = "Description is mandatory"
-    if result:
-        if not validate_string_date(v.begin_date):
-            result = False
-            errorMessage = "Begin date not valid"
-    if result:
-        if not validate_string_date(v.end_date):
-            result = False
-            errorMessage = "End date not valid"
+    # if result:
+    #     if not validate_string_date(v.begin_date):
+    #         result = False
+    #         errorMessage = "Begin date not valid"
+    # if result:
+    #     if not validate_string_date(v.end_date):
+    #         result = False
+    #         errorMessage = "End date not valid"
     if result:
         if v.end_date < v.begin_date:
             result = False
@@ -165,27 +172,11 @@ def update_status(votation_id, new_status):
     v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
     if v:
         v.votation_status = new_status
-        db.session.commit()
+        #db.session.commit()
         return True
     return False
 
-def update_end_date(votation_id, new_datetime):
-    v = db.session.query(Votation).filter(Votation.votation_id == votation_id).first()
-    if v:
-        v.end_date = new_datetime
-        db.session.commit()
-        return True
-    return False
 
-def deltree_votation_by_id(votation_id):
-    """Delete the votation from the DB
-    with all dependencies"""
-    vote.delete_votes_by_votation_id(votation_id)
-    voter.delete_by_votation_id(votation_id)
-    option.delete_options_by_votation(votation_id)
-    delete_votation_by_id(votation_id)
-    db.session.commit()
-    return True
 
 def votation_timing(vdto):
     # timing of votation

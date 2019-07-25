@@ -18,6 +18,7 @@ from model import Votation,Vote,Option
 from datetime import datetime
 import vote_maj_jud
 import vote_simple
+import votation_bo
 
 class vote_test(unittest.TestCase):
     def setUp(self):
@@ -50,7 +51,7 @@ class vote_test(unittest.TestCase):
         return super().setUp()
 
     def tearDown(self):
-        votation.deltree_votation_by_id(self.__votation__.votation_id)
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
         db.session.commit()
         return super().tearDown()
 

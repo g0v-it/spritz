@@ -13,6 +13,7 @@ config.db = db
 import unittest
 import option
 import votation
+import votation_bo
 from model import Option,Votation
 from datetime import datetime
 
@@ -34,7 +35,7 @@ class option_test(unittest.TestCase):
         return super().setUp()
 
     def tearDown(self):
-        votation.deltree_votation_by_id(self.__votation__.votation_id)
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
         db.session.commit()
         return super().tearDown()
 
@@ -42,7 +43,7 @@ class option_test(unittest.TestCase):
         votation_id = self.__votation__.votation_id
         u = Option(votation_id=votation_id,option_name = 'test.option',description = 'test.description')
         self.assertTrue( option.insert_dto(u))
-        self.assertIsNotNone(u.option_id)
+        self.assertGreater(u.option_id, 0)
         ar = option.load_options_by_votation(votation_id)
         self.assertEqual(1,len(ar))
         u1 = ar[0]

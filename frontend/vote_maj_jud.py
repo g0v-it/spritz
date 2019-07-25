@@ -29,6 +29,7 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
     if not b_has_voted:
         vu.voted = 1
         voter.insert_dto(vu)
+    db.session.commit()
     return True
 
 
@@ -120,7 +121,6 @@ def count_votes_by_option(votation_id, option_id):
 
 def votation_counting(v):
     option_list = option.load_options_by_votation(v.votation_id)
-    conn = dbmanager.get_connection()
     counting = []
     for o in option_list:
         ar = count_votes_by_option(v.votation_id,o.option_id)
@@ -129,6 +129,5 @@ def votation_counting(v):
         counting.append(m)
     counting.sort()       
     counting.reverse()     
-    conn.close()
     return counting
 

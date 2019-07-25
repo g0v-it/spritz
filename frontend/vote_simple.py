@@ -5,9 +5,9 @@ db = config.db
 
 import vote
 import voter
+import voter_bo
 
 def save_vote(user_id, vote_key,votation_id,option_id):
-    #print(user_id, vote_key,votation_id,option_id)
     vu = Voter(user_id = user_id, votation_id = votation_id)
     b_has_voted = voter.has_voted(vu)
     if b_has_voted:
@@ -20,7 +20,8 @@ def save_vote(user_id, vote_key,votation_id,option_id):
         option_id = option_id, \
         jud_value = 1)
     vote.insert_dto(o)
-    voter.set_voted(vu)
+    voter_bo.set_voted(vu)
+    db.session.commit()
     return True
 
 def counting_votes(votation_id):

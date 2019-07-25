@@ -30,3 +30,8 @@ AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
 # Global variables
 #
 db = None
+
+# Constants, do not edit
+MSG_INFO = 0
+MSG_OK   = 1
+MSG_KO   = 2

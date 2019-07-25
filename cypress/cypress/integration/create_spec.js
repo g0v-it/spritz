@@ -48,7 +48,7 @@ describe('Create election Test', function() {
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("cypress\nDuplicate\ndescription\nerror")
         cy.get('button').click()
-        cy.get('.alert-danger').should('contain', 'Error, election data NOT saved')
+        cy.get('.alert-danger').should('contain', 'Cannot save the election')
     })
     it('delete the duplicate', function() {
         cy.visit("/votation_list")
