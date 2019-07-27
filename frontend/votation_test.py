@@ -128,6 +128,7 @@ class votation_test(unittest.TestCase):
         for w in ar:
             if w.votation_description == descr:
                 check = True
+                break
         self.assertTrue(check)
         opt_ar = option.load_options_by_votation(w.votation_id)
         self.assertEqual(3,len(opt_ar))

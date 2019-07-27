@@ -79,7 +79,7 @@ def load_votation_by_id(votation_id):
 
 def load_votations():
     """Returns a votation_dto array"""
-    ar = db.session.query(Votation).all()
+    ar = db.session.query(Votation).order_by(Votation.votation_id).all()
     return ar
 
 def load_votations_by_promoter_user_id(promoter_user_id):

@@ -208,7 +208,6 @@ class vote_test(unittest.TestCase):
         self.assertTrue(vote.insert_dto(v))
         db.session.commit()
         d = vote_simple.counting_votes(votation_id)
-        print(d)
         self.assertEqual(1,len(d.keys()))
 
 if __name__ == '__main__':
