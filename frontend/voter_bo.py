@@ -30,10 +30,13 @@ def set_voted(o):
     result = False
     if voter.has_voted(o):
         return True
-    o.voted = 1
-    result = voter.insert_dto(o)
-    if not result:
-        result = voter.update_dto(o)
+    voter1 = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id).first()
+    if voter1:
+        voter1.voted = 1
+        result = True
+    else:
+        o.voted = 1
+        result = voter.insert_dto(o)
     db.session.commit()
     return result
 

@@ -12,15 +12,16 @@ config.db = db
 
 import unittest
 import vote
+import voter
 import option
 import votation
-from model import Votation,Vote,Option
+from model import Votation,Vote,Option,Voter
 from datetime import datetime
 import vote_maj_jud
 import vote_simple
 import votation_bo
 
-class vote_test(unittest.TestCase):
+class vote_test_no_voters(unittest.TestCase):
     def setUp(self):
         self.__votation__ = Votation( \
             votation_description = 'Votation for vote test ' + str(random.randint(0,50000)) , \
@@ -209,6 +210,49 @@ class vote_test(unittest.TestCase):
         db.session.commit()
         d = vote_simple.counting_votes(votation_id)
         self.assertEqual(1,len(d.keys()))
+
+class vote_test_voters(unittest.TestCase):
+    def setUp(self):
+        self.__votation__ = Votation( \
+            votation_description = 'Simple Votation with voters for vote test ' + str(random.randint(0,50000)) , \
+            description_url = "" , \
+            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 1)
+        self.assertTrue( votation.insert_votation_dto(self.__votation__) )
+        o1 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option1',description = 'test.description1')
+        self.assertTrue(option.insert_dto(o1))
+        o2 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option2',description = 'test.description2')
+        self.assertTrue(option.insert_dto(o2))
+        o3 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option3',description = 'test.description3')
+        self.assertTrue(option.insert_dto(o3))
+        self.__option1 =  o1
+        self.__option2 =  o2
+        self.__option3 =  o3
+        self.assertIsNotNone(o1.option_id)
+        self.assertIsNotNone(o2.option_id)
+        self.assertIsNotNone(o3.option_id)
+        voter1 = Voter(user_id = 1, votation_id = self.__votation__.votation_id, voted = 0)
+        voter.insert_dto(voter1)
+        db.session.commit()
+        return super().setUp()
+
+    def tearDown(self):
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
+        db.session.commit()
+        return super().tearDown()
+
+    def test_save_simple_ok(self):
+        votation_id = self.__votation__.votation_id
+        option_id = self.__option1.option_id
+        self.assertTrue( vote_simple.save_vote(1,"akey",votation_id,option_id) )
+
 
 if __name__ == '__main__':
     unittest.main()

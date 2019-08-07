@@ -47,6 +47,18 @@ describe('List of voters Testing', function() {
         cy.get('[data-cy=detail]').first().click()
         cy.get('[data-cy=is_voter]')
 
+        // carlo set a vote
+        cy.visit("/votation_list")
+        cy.get('[data-cy=votation_id]').first().then(($span) => {
+            const votation_id = $span.text()
+            cy.visit("/vote/" + votation_id)
+            cy.get("[data-cy=radio]").first().check()
+            cy.get("[data-cy=password]").type("aa")
+            cy.get("[data-cy=submit]").click()
+            cy.get('.alert-success').should('contain', 'Your vote has been registered')
+        })
+
+
     })
 
     it('you are not on the list', function() {        

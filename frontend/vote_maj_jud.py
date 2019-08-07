@@ -5,6 +5,7 @@ db = config.db
 
 import vote
 import voter
+import voter_bo
 import option
 import votation
 
@@ -26,9 +27,7 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
             option_id = options_list[i].option_id, \
             jud_value = vote_array[i])
         vote.insert_dto(o)
-    if not b_has_voted:
-        vu.voted = 1
-        voter.insert_dto(vu)
+    voter_bo.set_voted(vu)
     db.session.commit()
     return True
 
