@@ -1,6 +1,7 @@
 describe('Login Test', function() {
     it('login as aldo', function() {
         // login
+        cy.log("LOGIN AS ALDO")
         cy.visit('/lang/uk')  
         cy.visit('/login')  
         cy.get('#user_name').type('aldo')
@@ -28,6 +29,7 @@ describe('Login Test', function() {
 
     it('Wrong login', function() {
         // login
+        cy.log("WRONG LOGIN")
         cy.visit('/lang/uk')  
         cy.visit('/login')  
         cy.get('#user_name').type('aldo')

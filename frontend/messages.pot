@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-30 15:50+0200\n"
+"POT-Creation-Date: 2019-08-07 22:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,45 +17,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: index.py:60 index.py:335 templates/login_google_template.html:5
+#: index.py:67 index.py:335 templates/login_google_template.html:5
 #: templates/login_google_template.html:12 templates/login_template.html:5
 msgid "Main menu"
 msgstr ""
 
-#: index.py:71
+#: index.py:78
 msgid "Login successful"
 msgstr ""
 
-#: index.py:73
+#: index.py:80
 msgid "Wrong login"
 msgstr ""
 
-#: index.py:86
+#: index.py:93
 msgid "Please, insert data"
 msgstr ""
 
-#: index.py:105
-msgid "Election data saved"
-msgstr ""
-
-#: index.py:109
-msgid "Error, election data NOT saved"
-msgstr ""
-
-#: index.py:112
+#: index.py:110
 msgid "New election"
 msgstr ""
 
-#: index.py:120 templates/base_template.html:45
+#: index.py:118 templates/base_template.html:45
 msgid "Election list"
 msgstr ""
 
-#: index.py:186 index.py:201
+#: index.py:184 index.py:199
 msgid "Election details"
-msgstr ""
-
-#: index.py:221
-msgid "Election begin"
 msgstr ""
 
 #: index.py:230
@@ -90,7 +78,8 @@ msgstr ""
 msgid "Sorry, only the owner of this election can add voters"
 msgstr ""
 
-#: index.py:288 templates/votation_list_template.html:25
+#: index.py:288 templates/majority/vote_template.html:58
+#: templates/votation_list_template.html:25
 msgid "Vote"
 msgstr ""
 
@@ -106,59 +95,59 @@ msgstr ""
 msgid "Vote registering"
 msgstr ""
 
-#: votation.py:20
+#: votation.py:29
 msgid "Draw"
 msgstr ""
 
-#: votation.py:21
+#: votation.py:30
 msgid "Secure Majority Judgment"
 msgstr ""
 
-#: votation.py:23
+#: votation.py:32
 msgid "Simple Majority"
 msgstr ""
 
-#: votation.py:25
+#: votation.py:34
 msgid "Created"
 msgstr ""
 
-#: votation.py:26
+#: votation.py:35
 msgid "Voting"
 msgstr ""
 
-#: votation.py:27
+#: votation.py:36
 msgid "Working, please wait..."
 msgstr ""
 
-#: votation.py:28
+#: votation.py:37
 msgid "Ended"
 msgstr ""
 
-#: votation.py:29
+#: votation.py:38
 msgid "Failed"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "No opinion"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "Poor"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "Not enough"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "Acceptable"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "Good"
 msgstr ""
 
-#: votation.py:32
+#: votation.py:41
 msgid "Very good"
 msgstr ""
 
@@ -437,6 +426,71 @@ msgstr ""
 msgid "Ranking"
 msgstr ""
 
+#: templates/majority/vote_template.html:4
+#: templates/simple_majority/vote_template.html:4
+msgid "You cannot vote yet"
+msgstr ""
+
+#: templates/majority/vote_template.html:7
+#: templates/simple_majority/vote_template.html:7
+msgid "You cannot vote anymore"
+msgstr ""
+
+#: templates/majority/vote_template.html:12
+msgid "You must choose a judgment for each option"
+msgstr ""
+
+#: templates/majority/vote_template.html:13
+msgid "The \"No opinion\" judgment is the lowest ranking"
+msgstr ""
+
+#: templates/majority/vote_template.html:14
+msgid "You need to think up and enter a secret key, type it and keep it secret"
+msgstr ""
+
+#: templates/majority/vote_template.html:15
+msgid "You can use any word or phrase you want"
+msgstr ""
+
+#: templates/majority/vote_template.html:16
+msgid ""
+"You can change your vote later, but you MUST use the same secret key as "
+"before"
+msgstr ""
+
+#: templates/majority/vote_template.html:25
+msgid "Option"
+msgstr ""
+
+#: templates/majority/vote_template.html:26
+msgid "Judgement"
+msgstr ""
+
+#: templates/majority/vote_template.html:45
+#: templates/simple_majority/vote_template.html:32
+msgid "Secret key for this vote"
+msgstr ""
+
+#: templates/majority/vote_template.html:47
+msgid "Remember this secret key; it isn't possible to recover it"
+msgstr ""
+
+#: templates/majority/vote_template.html:55
+msgid ""
+"This secret key is for THIS election only. You can use any word you want."
+" Keep it secret and don't forget it."
+msgstr ""
+
+#: templates/majority/vote_template.html:56
+#: templates/simple_majority/vote_template.html:43
+msgid "What's this secret key?"
+msgstr ""
+
+#: templates/majority/vote_template.html:70
+#: templates/simple_majority/vote_template.html:57
+msgid "You must enter a secret key"
+msgstr ""
+
 #: templates/simple_majority/votation_detail_template.html:2
 msgid "Election results"
 msgstr ""
@@ -444,14 +498,6 @@ msgstr ""
 #: templates/simple_majority/votation_detail_template.html:13
 #: templates/simple_majority/votation_detail_template.html:15
 msgid "votes"
-msgstr ""
-
-#: templates/simple_majority/vote_template.html:4
-msgid "You cannot vote yet"
-msgstr ""
-
-#: templates/simple_majority/vote_template.html:7
-msgid "You cannot vote anymore"
 msgstr ""
 
 #: templates/simple_majority/vote_template.html:11
@@ -480,19 +526,7 @@ msgstr ""
 msgid "Choose only one option"
 msgstr ""
 
-#: templates/simple_majority/vote_template.html:32
-msgid "Secret key for this vote"
-msgstr ""
-
 #: templates/simple_majority/vote_template.html:34
 msgid "Remember this secret key; it is not possible to recover"
-msgstr ""
-
-#: templates/simple_majority/vote_template.html:43
-msgid "What's this secret key?"
-msgstr ""
-
-#: templates/simple_majority/vote_template.html:57
-msgid "You must enter a secret key"
 msgstr ""
 
