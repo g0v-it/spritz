@@ -1,4 +1,4 @@
-describe('voting simple majority Test', function() {
+describe('voting simple majority  (no voters) Test', function() {
     beforeEach(function () {
         cy.login('aldo', 'aldo')
         cy.visit('/lang/uk')
@@ -9,7 +9,7 @@ describe('voting simple majority Test', function() {
         cy.visit('/logout')
     })
 
-    it('vote a simple majority', function() {
+    it('vote a simple majority  (no voters)', function() {
         
         // go in the votation and get the first ID
         cy.visit("/votation_list")
@@ -42,7 +42,7 @@ describe('voting simple majority Test', function() {
         })
     })
 
-    it('wrong vote password', function() {
+    it('wrong vote password  (no voters)', function() {
         
         // go in the votation and get the first ID
         cy.visit("/votation_list")
@@ -65,7 +65,7 @@ describe('voting simple majority Test', function() {
         })
     })
 
-    it('vote two different users', function() {
+    it('vote two different users  (no voters)', function() {
         
         // aldo voting
         cy.visit("/votation_list")

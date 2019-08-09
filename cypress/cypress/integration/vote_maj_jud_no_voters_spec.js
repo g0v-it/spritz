@@ -1,4 +1,4 @@
-describe('voting majority judgment Test', function() {
+describe('voting majority judgment  (no voters) Test', function() {
     beforeEach(function () {
         cy.login('aldo', 'aldo')
         cy.visit('/lang/uk')
@@ -10,7 +10,7 @@ describe('voting majority judgment Test', function() {
     })
 
 
-    it('Vote a majority judgment', function() {
+    it('Vote a majority judgment (no voters)', function() {
         // go in the votation and get the first ID
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {
@@ -43,7 +43,7 @@ describe('voting majority judgment Test', function() {
         })
     })
 
-    it('Two different votes', function() {
+    it('Two different votes (no voters)', function() {
         // go in the votation and get the first ID
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {
@@ -71,7 +71,7 @@ describe('voting majority judgment Test', function() {
         })
     })
 
-    it('Wrong password', function() {
+    it('Wrong password (no voters)', function() {
         // go in the votation and get the first ID
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {

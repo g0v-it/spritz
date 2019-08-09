@@ -11,8 +11,8 @@ SECRET_KEY = b'Live long and prosper' # you really should change this, according
 #
 DBTYPE="postgresql"
 DBHOST = os.environ.get('POSTGRES_HOST')   # "localhost"
-#DBNAME = os.environ.get('POSTGRES_DBNAME') # "spritz"
-DBNAME = "prova" # just a test
+DBNAME = os.environ.get('POSTGRES_DBNAME') # "spritz"
+#DBNAME = "prova" # just a test
 DBUSER = os.environ.get('POSTGRES_USER')   # "dinogen"
 DBPWD  = os.environ.get('POSTGRES_PWD')    # "abc123"
 SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,5432,DBNAME)
