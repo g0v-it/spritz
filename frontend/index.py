@@ -66,6 +66,15 @@ def load_user(user_name):
 def index():
     return render_template('index_template.html', pagetitle=_("Main menu"))
 
+@app.route("/credits")
+def credits():
+    return render_template('docs/credits.html', pagetitle=_("Credits"))
+
+@app.route("/terms-and-conditions")
+def termsandconditions():
+    return render_template('docs/terms-and-conditions.html', pagetitle=_("Credits"))
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     message = None
