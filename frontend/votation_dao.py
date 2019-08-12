@@ -8,9 +8,9 @@ import config
 #import re
 from datetime import date,datetime
 import user
-import option
-import voter
-import vote
+import option_dao
+import voter_dao
+import vote_dao
 from model import Votation,Vote,Voter,Option
 from flask_babel import gettext
 _ = gettext
@@ -98,19 +98,7 @@ def insert_votation_dto(v):
         return False
     return True
 
-""" def insert_votation_and_options(v,option_array):
-    try:
-        db.session.add(v)
-        v = db.session.query(Votation).filter(Votation.votation_description == v.votation_description).first()
-        for o in option_array:
-            option.insert_dto(o)
-        db.session.commit()
-    except Exception as e:
-        print ("Exception insert_votation_and_options: " + str(e))
-        db.session.rollback()
-        return False
-    return True
- """
+
 
 def delete_votation_by_id(votation_id):
     """Delete the votation from the DB"""

@@ -29,14 +29,14 @@ db = SQLAlchemy(app)
 config.db = db
 
 import user
-import votation
+import votation_dao
 # import candidate
-import backend
-import option
-import vote
+#import backend
+import option_dao
+import vote_dao
 import vote_maj_jud
 import vote_simple
-import voter
+import voter_dao
 import voter_bo
 import votation_bo
 from model import Votation
@@ -111,10 +111,10 @@ def votation_propose():
         if 'list_voters' in  request.form.keys():
             v.list_voters = request.form['list_voters']
         v.promoter_user_id = current_user.u.user_id
-        if v.votation_type == votation.TYPE_DRAW:
-            v.votation_status = votation.STATUS_WAIT_FOR_CAND_AND_GUAR
+        if v.votation_type == votation_dao.TYPE_DRAW:
+            v.votation_status = votation_dao.STATUS_WAIT_FOR_CAND_AND_GUAR
         else:
-            v.votation_status = votation.STATUS_VOTING
+            v.votation_status = votation_dao.STATUS_VOTING
         message = votation_bo.insert_votation_with_options(v, request.form['votation_options'])
     return render_template('votation_propose_template.html', pagetitle=_("New election"), \
     votation_obj=v, message=message,utcnow=str(datetime.datetime.utcnow()) )
@@ -122,15 +122,15 @@ def votation_propose():
 @app.route("/votation_list")
 @login_required
 def votation_list():
-    votations_array = votation.load_votations()
+    votations_array = votation_dao.load_votations()
     votations_array.reverse()
     return render_template('votation_list_template.html', pagetitle=_("Election list"), \
-    votations_array=votations_array,states=votation.states,type_description=votation.TYPE_DESCRIPTION)
+    votations_array=votations_array,states=votation_dao.states,type_description=votation_dao.TYPE_DESCRIPTION)
 
 # @app.route("/be_a_candidate/<int:votation_id>")
 # @login_required
 # def be_a_candidate(votation_id):
-#     v = votation.load_votation_by_id(votation_id)
+#     v = votation_dao.load_votation_by_id(votation_id)
 #     return render_template('be_a_candidate_template.html', pagetitle="Candidatura", v=v)
 
 
@@ -138,7 +138,7 @@ def votation_list():
 # @login_required
 # def be_a_candidate_confirm():
 #     votation_id = int(request.args.get('votation_id'))
-#     v = votation.load_votation_by_id(votation_id)
+#     v = votation_dao.load_votation_by_id(votation_id)
 #     message = ("Ora sei un candidato",MSG_OK)
 #     o = candidate.candidate_dto()
 #     app.logger.info(o)
@@ -158,12 +158,12 @@ def votation_list():
 @app.route("/votation_detail/<int:votation_id>")
 @login_required
 def votation_detail(votation_id):
-    v = votation.load_votation_by_id(votation_id)
-    if v.votation_type == votation.TYPE_MAJORITY_JUDGMENT:
+    v = votation_dao.load_votation_by_id(votation_id)
+    if v.votation_type == votation_dao.TYPE_MAJORITY_JUDGMENT:
         return votation_detail_maj_jud(v)
-    # if v.votation_type == votation.TYPE_DRAW:
+    # if v.votation_type == votation_dao.TYPE_DRAW:
     #     return votation_detail_draw(v)
-    if v.votation_type == votation.TYPE_SIMPLE_MAJORITY:
+    if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
         return votation_detail_simple(v)
 
 
@@ -171,60 +171,60 @@ def votation_detail(votation_id):
 #     candidates_array = None
 #     counting = None
 #     candidates_array = candidate.load_candidate_by_votation(v.votation_id)
-#     # if v.votation_status > votation.STATUS_WAIT_FOR_CAND_AND_GUAR:
+#     # if v.votation_status > votation_dao.STATUS_WAIT_FOR_CAND_AND_GUAR:
 #     #     state_array = backend.election_state(votation_id)
 #     # else:
 #     #     state_array = []
 #     return render_template('draw/votation_detail_template.html', pagetitle="Election details", \
 #          v=v, candidates_array=candidates_array, \
-#          states=votation.states,  \
-#          count_voters=voter.count_voters(v.votation_id), \
-#          count_votes=vote.count_votes(v.votation_id), \
-#          votation_timing=votation.votation_timing(v),counting=counting, \
-#          words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION)
+#          states=votation_dao.states,  \
+#          count_voters=voter_dao.count_voters(v.votation_id), \
+#          count_votes=vote_dao.count_votes(v.votation_id), \
+#          votation_timing=votation_dao.votation_timing(v),counting=counting, \
+#          words=votation_dao.WORDS, type_description=votation_dao.TYPE_DESCRIPTION)
 
 
 def votation_detail_maj_jud(v):
-    options_array = option.load_options_by_votation(v.votation_id)
+    options_array = option_dao.load_options_by_votation(v.votation_id)
     counting = None
-    is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
-    if v.votation_status == votation.STATUS_ENDED:
+    is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
+    if v.votation_status == votation_dao.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
     return render_template('majority/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
-         states=votation.states, options_array=options_array, \
-         count_voters=voter.count_voters(v.votation_id), \
-         count_votes=vote.count_votes(v.votation_id), \
-         votation_timing=votation.votation_timing(v),counting=counting, \
-         words=votation.WORDS, type_description=votation.TYPE_DESCRIPTION, \
+         states=votation_dao.states, options_array=options_array, \
+         count_voters=voter_dao.count_voters(v.votation_id), \
+         count_votes=vote_dao.count_votes(v.votation_id), \
+         votation_timing=votation_dao.votation_timing(v),counting=counting, \
+         words=votation_dao.WORDS, type_description=votation_dao.TYPE_DESCRIPTION, \
          is_voter=is_voter)
 
 def votation_detail_simple(v):
-    options_array = option.load_options_by_votation(v.votation_id)
+    options_array = option_dao.load_options_by_votation(v.votation_id)
     counting = None
-    is_voter = voter.is_voter(v.votation_id, current_user.u.user_id)
-    if v.votation_status == votation.STATUS_ENDED:
+    is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
+    if v.votation_status == votation_dao.STATUS_ENDED:
         counting = vote_simple.counting_votes(v.votation_id)
     return render_template('simple_majority/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
-         states=votation.states, options_array=options_array, \
-         count_voters=voter.count_voters(v.votation_id), \
-         count_votes=vote.count_votes(v.votation_id), \
-         votation_timing=votation.votation_timing(v),counting=counting, \
-         type_description=votation.TYPE_DESCRIPTION, \
+         states=votation_dao.states, options_array=options_array, \
+         count_voters=voter_dao.count_voters(v.votation_id), \
+         count_votes=vote_dao.count_votes(v.votation_id), \
+         votation_timing=votation_dao.votation_timing(v),counting=counting, \
+         type_description=votation_dao.TYPE_DESCRIPTION, \
          is_voter=is_voter)
 
 
 # @app.route("/start_election/<int:votation_id>")
 # @login_required
 # def start_election(votation_id):
-#     v = votation.load_votation_by_id(votation_id)
+#     v = votation_dao.load_votation_by_id(votation_id)
 #     candidates_array = None
 #     if current_user.u.user_id == v.promoter_user.user_id:
 #         candidates_array = candidate.load_candidate_by_votation(votation_id)
 #         # TODO error handling
-#         backend.create_election(v.votation_id, len(candidates_array), len(votation.WORDS) )
-#         #votation.update_status(votation_id, votation.STATUS_VOTING)
+#         backend.create_election(v.votation_id, len(candidates_array), len(votation_dao.WORDS) )
+#         #votation_dao.update_status(votation_id, votation_dao.STATUS_VOTING)
 #         votation_bo.set_votation_status_voting(votation_id)
 #     return render_template('start_election_template.html', pagetitle=_("Election begin"), \
 #       v=v, candidates_array=candidates_array)
@@ -232,8 +232,8 @@ def votation_detail_simple(v):
 @app.route("/close_election/<int:votation_id>")
 @login_required
 def close_election(votation_id):
-    #v = votation.load_votation_by_id(votation_id)
-    #votation.update_status(votation_id,votation.STATUS_ENDED)
+    #v = votation_dao.load_votation_by_id(votation_id)
+    #votation_dao.update_status(votation_id,votation_dao.STATUS_ENDED)
     votation_bo.set_votation_status_ended(votation_id)
     return render_template('thank_you_template.html', \
     pagetitle=_("Election closed"), \
@@ -256,10 +256,10 @@ def delete_election(votation_id):
 @login_required
 def add_voters():
     votation_id = request.form['votation_id']
-    v = votation.load_votation_by_id(votation_id)
+    v = votation_dao.load_votation_by_id(votation_id)
     if v.promoter_user.user_id == current_user.u.user_id: 
         list_voters = request.form['list_voters']
-        ar = voter.split_string_remove_dup(list_voters)
+        ar = voter_dao.split_string_remove_dup(list_voters)
         n = voter_bo.insert_voters_array(votation_id,ar)
         return render_template('thank_you_template.html', \
         pagetitle=_("Voter"), \
@@ -281,21 +281,21 @@ def unauthorized():
 @app.route("/vote/<int:votation_id>",  methods=['GET', 'POST'])
 @login_required
 def vote_(votation_id):
-    v = votation.load_votation_by_id(votation_id)
-    if votation.votation_timing(v) != 0:
+    v = votation_dao.load_votation_by_id(votation_id)
+    if votation_dao.votation_timing(v) != 0:
         return redirect('/votation_detail/'+str(votation_id))
-    if voter.is_voter(votation_id, current_user.u.user_id) == False:
+    if voter_dao.is_voter(votation_id, current_user.u.user_id) == False:
         return redirect('/votation_detail/'+str(votation_id))
-    if v.votation_type == votation.TYPE_MAJORITY_JUDGMENT:
+    if v.votation_type == votation_dao.TYPE_MAJORITY_JUDGMENT:
         return votemajjud(v)
-    if v.votation_type == votation.TYPE_SIMPLE_MAJORITY:
+    if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
         return votesimplemaj(v)
         
 def votemajjud(v):
-    options_array = option.load_options_by_votation(v.votation_id)
+    options_array = option_dao.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
         return render_template('majority/vote_template.html', pagetitle=_("Vote"), \
-        v=v, options_array=options_array,words_array=votation.WORDS) 
+        v=v, options_array=options_array,words_array=votation_dao.WORDS) 
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]
         vote_array = []
@@ -310,7 +310,7 @@ def votemajjud(v):
         return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
 
 def votesimplemaj(v):
-    options_array = option.load_options_by_votation(v.votation_id)
+    options_array = option_dao.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
         return render_template('simple_majority/vote_template.html', pagetitle="Vota", \
         v=v, options_array=options_array) 
@@ -327,7 +327,7 @@ def votesimplemaj(v):
 @app.route("/update_end_date/<int:votation_id>",  methods=['GET',])
 @login_required
 def update_end_date(votation_id):
-    v = votation.load_votation_by_id(votation_id)
+    v = votation_dao.load_votation_by_id(votation_id)
     if current_user.u.user_id == v.promoter_user.user_id:
         end_date = request.args.get('end_date')
         end_time = request.args.get('end_time')

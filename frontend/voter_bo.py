@@ -6,7 +6,7 @@ from model import Voter
 
 db = config.db
 
-import voter
+import voter_dao
 import user
 
 def insert_voters_array(votation_id, ar):
@@ -18,7 +18,7 @@ def insert_voters_array(votation_id, ar):
             n = db.session.query(Voter).filter(Voter.user_id == u.user_id,Voter.votation_id==votation_id).count() 
             if n == 0:
                 o = Voter(votation_id = votation_id, user_id = u.user_id, voted = 0)
-                if voter.insert_dto(o):
+                if voter_dao.insert_dto(o):
                     count += 1
     if count > 0:
         db.session.commit()
@@ -28,7 +28,7 @@ def insert_voters_array(votation_id, ar):
 def set_voted(o):
     """insert or update the voter record"""
     result = False
-    if voter.has_voted(o):
+    if voter_dao.has_voted(o):
         return True
     voter1 = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id).first()
     if voter1:
@@ -36,7 +36,7 @@ def set_voted(o):
         result = True
     else:
         o.voted = 1
-        result = voter.insert_dto(o)
+        result = voter_dao.insert_dto(o)
     db.session.commit()
     return result
 

@@ -3,23 +3,23 @@ from model import Vote,Voter
 from sqlalchemy import func,desc
 db = config.db
 
-import vote
-import voter
+import vote_dao
+import voter_dao
 import voter_bo
 
 def save_vote(user_id, vote_key,votation_id,option_id):
     vu = Voter(user_id = user_id, votation_id = votation_id)
-    b_has_voted = voter.has_voted(vu)
+    b_has_voted = voter_dao.has_voted(vu)
     if b_has_voted:
-        votes = vote.load_vote_by_key(vote_key)
+        votes = vote_dao.load_vote_by_key(vote_key)
         if len(votes) == 0:
             return False
-        vote.delete_votes_by_key(vote_key)
+        vote_dao.delete_votes_by_key(vote_key)
     o = Vote(vote_key = vote_key, \
         votation_id = votation_id, \
         option_id = option_id, \
         jud_value = 1)
-    vote.insert_dto(o)
+    vote_dao.insert_dto(o)
     voter_bo.set_voted(vu)
     db.session.commit()
     return True

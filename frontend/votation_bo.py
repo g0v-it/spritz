@@ -4,10 +4,10 @@
 #
 import config
 from datetime import date,datetime
-import option
-import voter
-import vote
-import votation
+import option_dao
+import voter_dao
+import vote_dao
+import votation_dao
 from config import MSG_INFO,MSG_OK,MSG_KO
 from model import Votation,Vote,Voter,Option
 from flask_babel import gettext
@@ -20,11 +20,11 @@ def insert_votation_with_options(v,options_text):
     Options_text is a string like "A\nB\nC"
     Returns a couple (string,int) -> ('Saved', MSG_OK) or (error description, MSG_KO) 
     """
-    bok,errmsg = votation.validate_dto(v)
+    bok,errmsg = votation_dao.validate_dto(v)
     if bok:
         result = ("Election data saved", MSG_OK)
-        if votation.insert_votation_dto(v):
-            if option.save_options_from_text(v.votation_id,options_text):
+        if votation_dao.insert_votation_dto(v):
+            if option_dao.save_options_from_text(v.votation_id,options_text):
                 pass
             else:
                 result = ('Cannot save options',MSG_KO)
@@ -39,11 +39,11 @@ def insert_votation_with_options(v,options_text):
     return result
 
 def set_votation_status_voting(votation_id):
-    votation.update_status(votation_id, votation.STATUS_VOTING)
+    votation_dao.update_status(votation_id, votation_dao.STATUS_VOTING)
     db.session.commit()
 
 def set_votation_status_ended(votation_id):
-    votation.update_status(votation_id, votation.STATUS_ENDED)
+    votation_dao.update_status(votation_id, votation_dao.STATUS_ENDED)
     db.session.commit()
 
 def update_end_date(votation_id, new_datetime):
@@ -57,10 +57,10 @@ def update_end_date(votation_id, new_datetime):
 def deltree_votation_by_id(votation_id):
     """Delete the votation from the DB
     with all dependencies"""
-    vote.delete_votes_by_votation_id(votation_id)
-    voter.delete_by_votation_id(votation_id)
-    option.delete_options_by_votation(votation_id)
-    votation.delete_votation_by_id(votation_id)
+    vote_dao.delete_votes_by_votation_id(votation_id)
+    voter_dao.delete_by_votation_id(votation_id)
+    option_dao.delete_options_by_votation(votation_id)
+    votation_dao.delete_votation_by_id(votation_id)
     db.session.commit()
     return True
 
@@ -70,9 +70,9 @@ def deltree_votation_by_id(votation_id):
 #     """Save votation and options.
 #     Returns a couple (string,int). 
 #     """
-#     bOk, message = votation.validate_dto(v)
+#     bOk, message = votation_dao.validate_dto(v)
 #     if bOk:
-#         bOk = votation.insert_votation_dto(v)
+#         bOk = votation_dao.insert_votation_dto(v)
 #     else:
 #         return (message,MSG_KO)
 #     if bOk:

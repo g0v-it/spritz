@@ -3,7 +3,7 @@ import config
 import re
 from datetime import date
 import user
-import votation
+import votation_dao
 
 class candidate_dto:
     """DTO class for the database table"""
@@ -101,7 +101,7 @@ def validate_dto(o):
         if u == None:
             result = 3
     if result==0:
-        u = votation.load_votation_by_id(o.votation_id)
+        u = votation_dao.load_votation_by_id(o.votation_id)
         if u == None:
             result = 4
     if result==0:

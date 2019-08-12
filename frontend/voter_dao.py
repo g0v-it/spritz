@@ -6,9 +6,9 @@ from model import Voter,Option,VotingUser,Votation
 
 db = config.db
 
-import option
+#import option_dao
 import user
-import votation
+import votation_dao
 
 # class voter_dto:
 #     """DTO class for the database table"""
@@ -22,7 +22,7 @@ def insert_dto(o):
     try:
         db.session.add(o)
     except Exception as e:
-        print ("Exception voter.insert_dto: " + str(e))
+        print ("Exception voter_dao.insert_dto: " + str(e))
         return False
     return True
 
@@ -73,7 +73,7 @@ def split_string_remove_dup(text):
 def is_voter(votation_id,user_id):
     """Have you the right to vote?"""
     result = False
-    v = votation.load_votation_by_id(votation_id)
+    v = votation_dao.load_votation_by_id(votation_id)
     if not v:
         return False
     #if votation_id == v.promoter_user.user_id: NO GOOD

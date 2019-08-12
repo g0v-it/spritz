@@ -11,9 +11,9 @@ db = SQLAlchemy(app)
 config.db = db
 
 import unittest
-import voter
+import voter_dao
 import voter_bo
-import votation
+import votation_dao
 import votation_bo
 import user
 from model import Votation,Voter
@@ -27,23 +27,23 @@ class voter_test(unittest.TestCase):
         self.__votation__ = Votation( \
             votation_description = 'Votation for voter test ' + str(random.randint(0,50000)) , \
             description_url = "" , \
-            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            votation_type = votation_dao.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \
             votation_status = 2 , \
             list_voters = 0)
-        self.assertTrue( votation.insert_votation_dto(self.__votation__) )
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
         self.__votation_list__ = Votation( \
             votation_description = 'Votation for voter test (list) ' + str(random.randint(0,500)) , \
             description_url = "" , \
-            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            votation_type = votation_dao.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \
             votation_status = 2 , \
             list_voters = 1)
-        self.assertTrue( votation.insert_votation_dto(self.__votation_list__) )
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation_list__) )
         db.session.commit()
         return super().setUp()
 
@@ -55,46 +55,46 @@ class voter_test(unittest.TestCase):
         
     def test_insert(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=1)
-        voter.delete_dto(o)
-        self.assertFalse(voter.has_voted(o))
-        voter.insert_dto(o)
-        self.assertTrue(voter.has_voted(o))
-        voter.delete_dto(o)
-        self.assertFalse(voter.has_voted(o))
+        voter_dao.delete_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
+        voter_dao.insert_dto(o)
+        self.assertTrue(voter_dao.has_voted(o))
+        voter_dao.delete_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
     def test_insert2(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
-        voter.delete_dto(o)
-        self.assertFalse(voter.has_voted(o))
-        voter.insert_dto(o)
-        self.assertFalse(voter.has_voted(o))
-        voter.delete_dto(o)
-        self.assertFalse(voter.has_voted(o))
+        voter_dao.delete_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
+        voter_dao.insert_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
+        voter_dao.delete_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
     def test_insert3(self):
         o1 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         o2 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
-        voter.delete_dto(o1)
-        self.assertTrue( voter.insert_dto(o1))
-        #self.assertFalse(voter.insert_dto(o2)) this don't thrown errors in sqlalchemy
-        voter.delete_dto(o1)
+        voter_dao.delete_dto(o1)
+        self.assertTrue( voter_dao.insert_dto(o1))
+        #self.assertFalse(voter_dao.insert_dto(o2)) this don't thrown errors in sqlalchemy
+        voter_dao.delete_dto(o1)
     def test_count_voters1(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=1)
-        voter.insert_dto(o)
-        self.assertEqual(1, voter.count_voters(o.votation_id) )
-        voter.delete_dto(o)
+        voter_dao.insert_dto(o)
+        self.assertEqual(1, voter_dao.count_voters(o.votation_id) )
+        voter_dao.delete_dto(o)
     def test_count_voters2(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
-        voter.insert_dto(o)
-        self.assertEqual(0, voter.count_voters(o.votation_id) )
-        voter.delete_dto(o)
+        voter_dao.insert_dto(o)
+        self.assertEqual(0, voter_dao.count_voters(o.votation_id) )
+        voter_dao.delete_dto(o)
     def test_update_dto1(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
-        voter.delete_dto(o)
-        voter.insert_dto(o)
-        self.assertFalse(voter.has_voted(o))
+        voter_dao.delete_dto(o)
+        voter_dao.insert_dto(o)
+        self.assertFalse(voter_dao.has_voted(o))
         o.voted = 1
-        voter.update_dto(o) 
-        self.assertTrue(voter.has_voted(o))
-        voter.delete_dto(o)
+        voter_dao.update_dto(o) 
+        self.assertTrue(voter_dao.has_voted(o))
+        voter_dao.delete_dto(o)
     def test_insert_voters_array_3(self):
         votation_id = self.__votation__.votation_id
         u1 = "aldo"
@@ -135,35 +135,35 @@ class voter_test(unittest.TestCase):
 
     def test_split1(self):
         expected = ["a","b","c"]
-        actual = voter.split_string_remove_dup("""a
+        actual = voter_dao.split_string_remove_dup("""a
         b
         c""")
         self.assertEqual(set(expected), set(actual)  )
     def test_split2(self):
         expected = []
-        actual = voter.split_string_remove_dup("")
+        actual = voter_dao.split_string_remove_dup("")
         self.assertEqual(set(expected), set(actual)  )
     def test_split3(self):
         expected = ["a","b","c"]
-        actual = voter.split_string_remove_dup("""a
+        actual = voter_dao.split_string_remove_dup("""a
         
         b 
         c""")
         self.assertEqual(set(expected), set(actual)  )
     def test_split4(self):
         expected = ["a","b","c"]
-        actual = voter.split_string_remove_dup("""a
+        actual = voter_dao.split_string_remove_dup("""a
         b
         c 
         b""")
         self.assertEqual(set(expected), set(actual)  )
     def test_split5(self):
         expected = []
-        actual = voter.split_string_remove_dup("")
+        actual = voter_dao.split_string_remove_dup("")
         self.assertEqual(set(expected), set(actual)  )
     def test_split6(self):
         expected = []
-        actual = voter.split_string_remove_dup("""
+        actual = voter_dao.split_string_remove_dup("""
           
              
              """)
@@ -171,36 +171,36 @@ class voter_test(unittest.TestCase):
 
     def test_is_voter(self):
         o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
-        voter.delete_dto(o)
-        voter.insert_dto(o)
-        self.assertTrue(voter.is_voter(o.votation_id,o.user_id))
-        voter.delete_dto(o)
+        voter_dao.delete_dto(o)
+        voter_dao.insert_dto(o)
+        self.assertTrue(voter_dao.is_voter(o.votation_id,o.user_id))
+        voter_dao.delete_dto(o)
 
 
     def test_set_voted_no_list(self):
         # run set_voted
         o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
         # should perform insert
-        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+        self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
         self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter.has_voted(o))
+        self.assertTrue(voter_dao.has_voted(o))
         # should perform update
         self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter.has_voted(o))
-        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+        self.assertTrue(voter_dao.has_voted(o))
+        self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
 
 
     def test_set_voted_with_list(self):
         # insert a voter 
         o = Voter(user_id=2, votation_id=self.__votation_list__.votation_id, voted=0)
-        self.assertFalse(voter.is_voter(o.votation_id, o.user_id))
-        voter.insert_dto(o)
-        self.assertTrue(voter.is_voter(o.votation_id, o.user_id))
+        self.assertFalse(voter_dao.is_voter(o.votation_id, o.user_id))
+        voter_dao.insert_dto(o)
+        self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
 
         # run set_voted()
-        self.assertFalse(voter.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o))
         self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter.has_voted(o))
+        self.assertTrue(voter_dao.has_voted(o))
 
 if __name__ == '__main__':
     unittest.main()

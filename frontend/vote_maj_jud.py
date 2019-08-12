@@ -3,30 +3,30 @@ from model import Vote,Voter,Option,Votation
 from sqlalchemy import func,desc
 db = config.db
 
-import vote
-import voter
+import vote_dao
+import voter_dao
 import voter_bo
-import option
-import votation
+import option_dao
+import votation_dao
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
     vu = Voter( \
         user_id = user_id, \
         votation_id = votation_id)
-    b_has_voted = voter.has_voted(vu)
+    b_has_voted = voter_dao.has_voted(vu)
     if b_has_voted:
-        votes = vote.load_vote_by_key(vote_key)
+        votes = vote_dao.load_vote_by_key(vote_key)
         if len(votes) == 0:
             return False
-        vote.delete_votes_by_key(vote_key)
-    options_list = option.load_options_by_votation(votation_id)
+        vote_dao.delete_votes_by_key(vote_key)
+    options_list = option_dao.load_options_by_votation(votation_id)
     for i in range(len(vote_array)):
         o = Vote(  \
             vote_key = vote_key, \
             votation_id = votation_id, \
             option_id = options_list[i].option_id, \
             jud_value = vote_array[i])
-        vote.insert_dto(o)
+        vote_dao.insert_dto(o)
     voter_bo.set_voted(vu)
     db.session.commit()
     return True
@@ -113,13 +113,13 @@ def maj_jud_compare(totals_array1, totals_array2):
 
 def count_votes_by_option(votation_id, option_id):
     ar = []
-    for j in range(len(votation.WORDS)):
+    for j in range(len(votation_dao.WORDS)):
         n = db.session.query(Vote).filter(Vote.votation_id == votation_id, Vote.option_id == option_id, Vote.jud_value == j).count()
         ar.append( n )
     return ar
 
 def votation_counting(v):
-    option_list = option.load_options_by_votation(v.votation_id)
+    option_list = option_dao.load_options_by_votation(v.votation_id)
     counting = []
     for o in option_list:
         ar = count_votes_by_option(v.votation_id,o.option_id)

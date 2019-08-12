@@ -2,7 +2,7 @@
 import unittest
 import candidate
 import user
-import votation
+import votation_dao
 import random
 
 class candidate_test(unittest.TestCase):
@@ -33,26 +33,26 @@ class candidate_test(unittest.TestCase):
         o.u.user_id = 1
         self.assertEqual(4,candidate.validate_dto(o))
     def test_insert_1(self):
-        v = votation.votation_dto()
+        v = votation_dao.votation_dto()
         v.votation_description = 'Cand automated test ' + str(random.randint(1,500))
         v.votation_type = 'random'
         v.promoter_user.user_id = 1
         v.begin_date = '2018-01-01'
         v.end_date = '2018-01-15'
         v.votation_status = 1
-        votation.insert_votation_dto(v)
+        votation_dao.insert_votation_dto(v)
         o = candidate.candidate_dto()
         o.votation_id = v.votation_id
         o.u.user_id = 1
     def test_load_1(self):
-        v = votation.votation_dto()
+        v = votation_dao.votation_dto()
         v.votation_description = 'Guar automated test ' + str(random.randint(1,500))
         v.votation_type = 'random'
         v.promoter_user.user_id = 1
         v.begin_date = '2018-01-01'
         v.end_date = '2018-01-15'
         v.votation_status = 1
-        votation.insert_votation_dto(v)
+        votation_dao.insert_votation_dto(v)
 
         o1 = candidate.candidate_dto()
         o1.votation_id = v.votation_id
@@ -72,14 +72,14 @@ class candidate_test(unittest.TestCase):
         self.assertEqual(2,ar[1].order_n)
 
     def test_load_2(self):
-        v = votation.votation_dto()
+        v = votation_dao.votation_dto()
         v.votation_description = 'Guar automated test ' + str(random.randint(1,500))
         v.votation_type = 'random'
         v.promoter_user.user_id = 1
         v.begin_date = '2018-01-01'
         v.end_date = '2018-01-15'
         v.votation_status = 1
-        votation.insert_votation_dto(v)
+        votation_dao.insert_votation_dto(v)
 
         o1 = candidate.candidate_dto()
         o1.votation_id = v.votation_id

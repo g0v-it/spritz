@@ -3,7 +3,7 @@ import config
 import re
 from datetime import date
 import user
-import votation
+import votation_dao
 
 class guarantor_dto:
     """DTO class for the database table"""

@@ -3,18 +3,10 @@ from model import Vote,Votation
 
 db = config.db
 
-import option
-import voter
-import votation
+#import option_dao
+import voter_dao
+import votation_dao
 
-
-# class vote_dto:
-#     """DTO class for the database table"""
-#     def __init__(self):
-#         self.vote_key    = None
-#         self.votation_id = None
-#         self.option_id   = None
-#         self.jud_value   = None
 
 
 def insert_dto(o):

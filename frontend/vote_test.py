@@ -11,10 +11,10 @@ db = SQLAlchemy(app)
 config.db = db
 
 import unittest
-import vote
-import voter
-import option
-import votation
+import vote_dao
+import voter_dao
+import option_dao
+import votation_dao
 from model import Votation,Vote,Option,Voter
 from datetime import datetime
 import vote_maj_jud
@@ -26,22 +26,22 @@ class vote_test_no_voters(unittest.TestCase):
         self.__votation__ = Votation( \
             votation_description = 'Votation for vote test ' + str(random.randint(0,50000)) , \
             description_url = "" , \
-            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            votation_type = votation_dao.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \
             votation_status = 2 , \
             list_voters = 0)
-        self.assertTrue( votation.insert_votation_dto(self.__votation__) )
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
         o1 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option1',description = 'test.description1')
-        self.assertTrue(option.insert_dto(o1))
+        self.assertTrue(option_dao.insert_dto(o1))
         o2 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option2',description = 'test.description2')
-        self.assertTrue(option.insert_dto(o2))
+        self.assertTrue(option_dao.insert_dto(o2))
         o3 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option3',description = 'test.description3')
-        self.assertTrue(option.insert_dto(o3))
+        self.assertTrue(option_dao.insert_dto(o3))
         self.__option1 =  o1
         self.__option2 =  o2
         self.__option3 =  o3
@@ -61,8 +61,8 @@ class vote_test_no_voters(unittest.TestCase):
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option1.option_id, \
             jud_value = 5)
-        self.assertTrue(vote.insert_dto(u))
-        ar = vote.load_vote_by_key("vote_key123")
+        self.assertTrue(vote_dao.insert_dto(u))
+        ar = vote_dao.load_vote_by_key("vote_key123")
         self.assertEqual(1,len(ar))
         u1 = ar[0]
         self.assertIsNotNone(u1)
@@ -70,8 +70,8 @@ class vote_test_no_voters(unittest.TestCase):
         self.assertEqual(u.vote_key, u1.vote_key)
         self.assertEqual(u.option_id, u1.option_id)
         self.assertEqual(u.jud_value, u1.jud_value)
-        vote.delete_votes_by_key("vote_key123")
-        ar = vote.load_vote_by_key("vote_key123")
+        vote_dao.delete_votes_by_key("vote_key123")
+        ar = vote_dao.load_vote_by_key("vote_key123")
         self.assertEqual(0,len(ar))
 
     def test_median_calc3(self):
@@ -138,11 +138,11 @@ class vote_test_no_voters(unittest.TestCase):
         for i in range(10):
             u = Vote(votation_id = votation_id, option_id = option_id, \
                 vote_key="vote_key1_" + str(i),jud_value=1)
-            self.assertTrue(vote.insert_dto(u))
+            self.assertTrue(vote_dao.insert_dto(u))
         for i in range(20):
             u = Vote(votation_id = votation_id, option_id = option_id, \
                 vote_key="vote_key2_" + str(i),jud_value=3)
-            self.assertTrue(vote.insert_dto(u))
+            self.assertTrue(vote_dao.insert_dto(u))
         db.session.commit()
         self.assertEqual([0,10,0,20,0,0], vote_maj_jud.count_votes_by_option(votation_id,option_id))
     def test_mio(self):
@@ -176,7 +176,7 @@ class vote_test_no_voters(unittest.TestCase):
             votation_id = votation_id, \
             option_id = self.__option1.option_id, \
             jud_value = 1)
-        self.assertTrue(vote.insert_dto(v))
+        self.assertTrue(vote_dao.insert_dto(v))
         db.session.commit()
         n = vote_simple.counting_votes(votation_id)
         self.assertEqual({self.__option1.option_id:1,},n)
@@ -186,12 +186,12 @@ class vote_test_no_voters(unittest.TestCase):
             votation_id = votation_id, \
             option_id = self.__option1.option_id, \
             jud_value = 1)
-        self.assertTrue(vote.insert_dto(v))
+        self.assertTrue(vote_dao.insert_dto(v))
         v = Vote(vote_key = "vote_key2", \
             votation_id = votation_id, \
             option_id = self.__option2.option_id, \
             jud_value = 1)
-        self.assertTrue(vote.insert_dto(v))
+        self.assertTrue(vote_dao.insert_dto(v))
         db.session.commit()
         d = vote_simple.counting_votes(votation_id)
         self.assertEqual(2,len(d.keys()))
@@ -201,12 +201,12 @@ class vote_test_no_voters(unittest.TestCase):
             votation_id = votation_id, \
             option_id = self.__option1.option_id, \
             jud_value = 1)
-        self.assertTrue(vote.insert_dto(v))
+        self.assertTrue(vote_dao.insert_dto(v))
         v = Vote(vote_key = "vote_key2", \
             votation_id = votation_id, \
             option_id = self.__option1.option_id, \
             jud_value = 1)
-        self.assertTrue(vote.insert_dto(v))
+        self.assertTrue(vote_dao.insert_dto(v))
         db.session.commit()
         d = vote_simple.counting_votes(votation_id)
         self.assertEqual(1,len(d.keys()))
@@ -216,22 +216,22 @@ class vote_test_voters(unittest.TestCase):
         self.__votation__ = Votation( \
             votation_description = 'Simple Votation with voters for vote test ' + str(random.randint(0,50000)) , \
             description_url = "" , \
-            votation_type = votation.TYPE_SIMPLE_MAJORITY , \
+            votation_type = votation_dao.TYPE_SIMPLE_MAJORITY , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \
             votation_status = 2 , \
             list_voters = 1)
-        self.assertTrue( votation.insert_votation_dto(self.__votation__) )
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
         o1 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option1',description = 'test.description1')
-        self.assertTrue(option.insert_dto(o1))
+        self.assertTrue(option_dao.insert_dto(o1))
         o2 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option2',description = 'test.description2')
-        self.assertTrue(option.insert_dto(o2))
+        self.assertTrue(option_dao.insert_dto(o2))
         o3 = Option(votation_id=self.__votation__.votation_id, \
              option_name = 'test.option3',description = 'test.description3')
-        self.assertTrue(option.insert_dto(o3))
+        self.assertTrue(option_dao.insert_dto(o3))
         self.__option1 =  o1
         self.__option2 =  o2
         self.__option3 =  o3
@@ -239,7 +239,7 @@ class vote_test_voters(unittest.TestCase):
         self.assertIsNotNone(o2.option_id)
         self.assertIsNotNone(o3.option_id)
         voter1 = Voter(user_id = 1, votation_id = self.__votation__.votation_id, voted = 0)
-        voter.insert_dto(voter1)
+        voter_dao.insert_dto(voter1)
         db.session.commit()
         return super().setUp()
 
