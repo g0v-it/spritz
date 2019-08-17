@@ -192,7 +192,7 @@ def votation_detail_maj_jud(v):
     is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation_dao.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
-    return render_template('majority/votation_detail_template.html', pagetitle=_("Election details"), \
+    return render_template('majority_jud/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
          states=votation_dao.states, options_array=options_array,juds_array=juds_array, \
          count_voters=voter_dao.count_voters(v.votation_id), \
@@ -216,20 +216,6 @@ def votation_detail_simple(v):
          type_description=votation_dao.TYPE_DESCRIPTION, \
          is_voter=is_voter)
 
-
-# @app.route("/start_election/<int:votation_id>")
-# @login_required
-# def start_election(votation_id):
-#     v = votation_dao.load_votation_by_id(votation_id)
-#     candidates_array = None
-#     if current_user.u.user_id == v.promoter_user.user_id:
-#         candidates_array = candidate.load_candidate_by_votation(votation_id)
-#         # TODO error handling
-#         backend.create_election(v.votation_id, len(candidates_array), len(votation_dao.WORDS) )
-#         #votation_dao.update_status(votation_id, votation_dao.STATUS_VOTING)
-#         votation_bo.set_votation_status_voting(votation_id)
-#     return render_template('start_election_template.html', pagetitle=_("Election begin"), \
-#       v=v, candidates_array=candidates_array)
 
 @app.route("/close_election/<int:votation_id>")
 @login_required
@@ -296,7 +282,7 @@ def vote_(votation_id):
 def votemajjud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
-        return render_template('majority/vote_template.html', pagetitle=_("Vote"), \
+        return render_template('majority_jud/vote_template.html', pagetitle=_("Vote"), \
         v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id)) 
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]

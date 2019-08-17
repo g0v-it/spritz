@@ -196,7 +196,6 @@ class voter_test(unittest.TestCase):
         self.assertFalse(voter_dao.is_voter(o.votation_id, o.user_id))
         voter_dao.insert_dto(o)
         self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
-
         # run set_voted()
         self.assertFalse(voter_dao.has_voted(o))
         self.assertTrue(voter_bo.set_voted(o))

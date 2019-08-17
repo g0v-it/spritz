@@ -23,6 +23,8 @@ def insert_votation_with_options(v,options_text,judgement_text):
     Returns a couple (string,int) -> ('Saved', MSG_OK) or (error description, MSG_KO) 
     """
     bok,errmsg = votation_dao.validate_dto(v)
+    if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
+        judgement_text = "VOTED\nNOT VOTED"
     if bok:
         result = ("Election data saved", MSG_OK)
         if votation_dao.insert_votation_dto(v):
