@@ -8,6 +8,7 @@ import option_dao
 import voter_dao
 import vote_dao
 import votation_dao
+import judgement_dao
 from config import MSG_INFO,MSG_OK,MSG_KO
 from model import Votation,Vote,Voter,Option
 from flask_babel import gettext
@@ -15,9 +16,10 @@ _ = gettext
 
 db = config.db
 
-def insert_votation_with_options(v,options_text):
+def insert_votation_with_options(v,options_text,judgement_text):
     """Save votation and options.
     Options_text is a string like "A\nB\nC"
+    Judgement_text is a string like "A\nB\nC" as well
     Returns a couple (string,int) -> ('Saved', MSG_OK) or (error description, MSG_KO) 
     """
     bok,errmsg = votation_dao.validate_dto(v)
@@ -25,7 +27,10 @@ def insert_votation_with_options(v,options_text):
         result = ("Election data saved", MSG_OK)
         if votation_dao.insert_votation_dto(v):
             if option_dao.save_options_from_text(v.votation_id,options_text):
-                pass
+                if judgement_dao.save_judgements_from_text(v.votation_id,judgement_text):
+                    pass
+                else:
+                    result = ('Cannot save judgements',MSG_KO)
             else:
                 result = ('Cannot save options',MSG_KO)
         else:
@@ -60,32 +65,10 @@ def deltree_votation_by_id(votation_id):
     vote_dao.delete_votes_by_votation_id(votation_id)
     voter_dao.delete_by_votation_id(votation_id)
     option_dao.delete_options_by_votation(votation_id)
+    judgement_dao.delete_judgements_by_votation(votation_id)
     votation_dao.delete_votation_by_id(votation_id)
     db.session.commit()
     return True
 
 
 
-# def insert_votation_with_options(v,options_text):
-#     """Save votation and options.
-#     Returns a couple (string,int). 
-#     """
-#     bOk, message = votation_dao.validate_dto(v)
-#     if bOk:
-#         bOk = votation_dao.insert_votation_dto(v)
-#     else:
-#         return (message,MSG_KO)
-#     if bOk:
-#         bOk = option.save_options_from_text(v.votation_id, options_text)
-#     else:
-#         message = "Error while insert votation"
-#         return (message,MSG_KO)
-#     if bOk:
-#         db.session.commit()
-#         message = "Saved"
-#         result = MSG_OK
-#     else:
-#         message = "Error while saving options"
-#         db.session.rollback()
-#         result = MSG_KO
-#     return (message,result)

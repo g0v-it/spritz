@@ -11,12 +11,10 @@
         <small class="form-text text-muted">{{_("Address of a page describing the election. As an example, a Facebook post or a blog post")}}.</small>
     </div>
     <div class="form-group">
-        <label for="votation_type">{{_("election type")}}:</label>
+        <label for="votation_type">{{_("Election type")}}:</label>
         <select class="form-control"  id="votation_type" name="votation_type">
+            <option value="maj_jud" selected>{{_("Majority judgment")}}</option>
             <option value="simple_maj">{{_("Simple majority")}}</option>
-            <option value="maj_jud">{{_("Majority judgment")}}</option>
-            <!-- <option value="maj_jud_sec">Majority judgment sicuro</option> -->
-            <!-- <option value="draw">Sorteggio</option> -->
         </select>
     </div>
 
@@ -47,6 +45,24 @@
         <textarea class="form-control text-uppercase" type="text" id="votation_options" name="votation_options" rows="5"></textarea>
         <small class="form-text text-muted">{{_("One option each row")}}</small>
     </div>
+    
+    <div class="form-group" id="votation_juds_group">
+        <label for="votation_juds">{{_("Judgement list")}}:</label>
+        <textarea class="form-control text-uppercase" 
+                  type="text" 
+                  id="votation_juds" 
+                  name="votation_juds" 
+                  rows="7">
+{{_("Very good")}}
+{{_("Good")}}
+{{_("Acceptable")}}
+{{_("Not enough")}}
+{{_("Poor")}}
+{{_("No opinion")}}
+        </textarea>
+        <small class="form-text text-muted">{{_("One judgement each row, best on top")}}</small>
+    </div>
+    
     <div class="form-check mb-4">
         <input class="form-check-input" type="checkbox" value="1" id="list_voters" name="list_voters" />
         <label class="form-check-label" for="list_voters">{{_("Add voters")}}</label>
@@ -69,6 +85,17 @@ $(function () {
             }
         }
     );
+    $("#votation_type").change(
+        function() {
+            if ($("#votation_type").val() != "maj_jud") {
+                $("#votation_juds_group").hide();
+            }
+            else {
+                $("#votation_juds_group").show();
+            }
+        }
+    );
+
 
     // set date today
     var d = new Date();
@@ -98,11 +125,18 @@ $(function () {
             alert("Add a description of this votation");
             return false;
         }
-        var l = $("#votation_options").val().trim();
+        l = $("#votation_options").val().trim();
         if(!l) {
-            alert("Add options");
+            alert("Please, add options");
             return false;
         }
+
+        l = $("#votation_juds").val().trim();
+        if(!l) {
+            alert("Please, add Judgements");
+            return false;
+        }
+
 
         return true;
     });

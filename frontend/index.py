@@ -33,6 +33,7 @@ import votation_dao
 # import candidate
 #import backend
 import option_dao
+import judgement_dao
 import vote_dao
 import vote_maj_jud
 import vote_simple
@@ -115,7 +116,7 @@ def votation_propose():
             v.votation_status = votation_dao.STATUS_WAIT_FOR_CAND_AND_GUAR
         else:
             v.votation_status = votation_dao.STATUS_VOTING
-        message = votation_bo.insert_votation_with_options(v, request.form['votation_options'])
+        message = votation_bo.insert_votation_with_options(v, request.form['votation_options'], request.form['votation_juds'])
     return render_template('votation_propose_template.html', pagetitle=_("New election"), \
     votation_obj=v, message=message,utcnow=str(datetime.datetime.utcnow()) )
 
@@ -186,17 +187,18 @@ def votation_detail(votation_id):
 
 def votation_detail_maj_jud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
+    juds_array = judgement_dao.load_judgement_by_votation(v.votation_id)
     counting = None
     is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation_dao.STATUS_ENDED:
         counting = vote_maj_jud.votation_counting(v)
     return render_template('majority/votation_detail_template.html', pagetitle=_("Election details"), \
          v=v,  \
-         states=votation_dao.states, options_array=options_array, \
+         states=votation_dao.states, options_array=options_array,juds_array=juds_array, \
          count_voters=voter_dao.count_voters(v.votation_id), \
          count_votes=vote_dao.count_votes(v.votation_id), \
          votation_timing=votation_dao.votation_timing(v),counting=counting, \
-         words=votation_dao.WORDS, type_description=votation_dao.TYPE_DESCRIPTION, \
+         type_description=votation_dao.TYPE_DESCRIPTION, \
          is_voter=is_voter)
 
 def votation_detail_simple(v):
@@ -295,7 +297,7 @@ def votemajjud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
     if request.method == 'GET':    
         return render_template('majority/vote_template.html', pagetitle=_("Vote"), \
-        v=v, options_array=options_array,words_array=votation_dao.WORDS) 
+        v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id)) 
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]
         vote_array = []

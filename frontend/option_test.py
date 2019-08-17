@@ -100,8 +100,5 @@ class option_test(unittest.TestCase):
         self.assertEqual("TEST ROW 3", ar[2].option_name)
         option_dao.delete_options_by_votation(votation_id)
 
-
-
-
 if __name__ == '__main__':
     unittest.main()

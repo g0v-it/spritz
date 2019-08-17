@@ -8,8 +8,14 @@ import voter_dao
 import voter_bo
 import option_dao
 import votation_dao
+import judgement_dao
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
+    """
+    vote_array is an array of judgement values, integers.
+    vote_array is like [4,5,6] where option 1 has 4 as judgment,
+    option 2 has 4 and option 3 has 6. 
+    """
     vu = Voter( \
         user_id = user_id, \
         votation_id = votation_id)
@@ -60,13 +66,14 @@ def maj_jud_median_calc(totals_array):
             break
     return result
 
-# def trim(totals_array):
-#     if sum(totals_array) == 0:
-#         return totals_array
-#     l = len(totals_array)
-
-
 class maj_jud_result:
+    """The total_array contains totals for every judgment.
+    An array like [12,32,45,67] means: 
+    12 votes of 0
+    32 votes of 1
+    45 votes of 2
+    67 votes of 3
+    """
     def __init__(self, option_id, ar):
         self.totals_array = ar
         self.option_id = option_id
@@ -86,11 +93,18 @@ def maj_jud_compare(totals_array1, totals_array2):
     """returns +1 f the totals_array1 has a better result than totals_array2.
     returns 0 if the results are the same.
     returns -1 if the totals_array2 has a better result than totals_array1.
+    
+    The array contains totals for every judgment.
+    An array like [12,32,45,67] means: 
+    12 votes of 0
+    32 votes of 1
+    45 votes of 2
+    67 votes of 3
     """
     if totals_array1 == totals_array2:
         return 0
-    t1 = totals_array1[:]
-    t2 = totals_array2[:]
+    t1 = totals_array1[:] # make a copy
+    t2 = totals_array2[:] # make a copy
     #l1 = len(t1)
     #l2 = len(t2)
     median1 = maj_jud_median_calc(t1)
@@ -108,21 +122,29 @@ def maj_jud_compare(totals_array1, totals_array2):
         return -1
     return 0
 
-
-
-
 def count_votes_by_option(votation_id, option_id):
     ar = []
-    for j in range(len(votation_dao.WORDS)):
+    jud_array = judgement_dao.load_judgement_by_votation(votation_id)
+    for j in range(len(jud_array)):
         n = db.session.query(Vote).filter(Vote.votation_id == votation_id, Vote.option_id == option_id, Vote.jud_value == j).count()
         ar.append( n )
     return ar
 
 def votation_counting(v):
-    option_list = option_dao.load_options_by_votation(v.votation_id)
+    results = vote_dao.counts_votes_by_votation(v.votation_id)
+    """
+    Results:
+    {option_id_1 : {jud_value1: count1, jud_value2: count2, ... }, option_id_2: ...}
+    Example {123: {0:23, 1:34, 2:10}, 
+             124: {0:18, 1:21, 2:43} }
+    """
     counting = []
+    option_list = option_dao.load_options_by_votation(v.votation_id)
+    jud_list = judgement_dao.load_judgement_by_votation(v.votation_id)
     for o in option_list:
-        ar = count_votes_by_option(v.votation_id,o.option_id)
+        ar = []
+        for j in jud_list:
+            ar.append(results[o.option_id][j.jud_value])
         m = maj_jud_result(o.option_id,ar)
         m.option_name = o.option_name
         counting.append(m)

@@ -38,7 +38,7 @@ states = [
     _("Failed"),
 ]
 
-WORDS = [_('No opinion'), _('Poor'), _('Not enough'), _('Acceptable'), _('Good'), _('Very good')]
+# WORDS = [_('No opinion'), _('Poor'), _('Not enough'), _('Acceptable'), _('Good'), _('Very good')]
 
 
 # class votation_dto:

@@ -12,8 +12,8 @@
                     <li class="mb-1">
                         {{r.option_name}}
                         <div class="row">
-                            {% for i in range(words|count) %} 
-                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25">{{r.totals_array[i]}}</span> {{words[i]}}</div>                                                  
+                            {% for i in range(juds_array|count) %} 
+                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25">{{r.totals_array[i]}}</span> {{juds_array[i].jud_name}}</div>                                                  
                             {% endfor %}
                         </div> 
                     </li>
@@ -38,8 +38,8 @@
           function drawChart() {
     
             var data = google.visualization.arrayToDataTable([
-            [ "Judge",
-            {% for w in words %}"{{w}}", {% endfor %}
+            [ "Judgement",
+            {% for w in juds_array %}"{{w.jud_name}}", {% endfor %}
             { role: 'annotation' } ],
             {% for r in counting %}
                 ["{{r.option_name}}",

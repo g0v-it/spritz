@@ -1,7 +1,6 @@
 import os.path
 import os
 
-SECRET_KEY = b'Live long and prosper' # you really should change this, according to Flask user guide
 #BASEPATH = os.path.join("/opt","voting")
 #BINPATH = os.path.join(BASEPATH, "bin")
 #ELECTIONPATH = os.path.join(BASEPATH,"elections")

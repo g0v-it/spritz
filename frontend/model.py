@@ -55,3 +55,11 @@ class Voter(db.Model):
     votation = relationship(Votation)
     voted = Column(Integer)
 
+class Judgement(db.Model):
+    __tablename__ = 'judgement'
+    __table_args__ = (PrimaryKeyConstraint('votation_id','jud_value'), )
+    votation_id = Column(Integer, ForeignKey('votation.votation_id'))
+    votation = relationship(Votation)
+    jud_value = Column(Integer, nullable=False)
+    jud_name = Column(String(50),nullable=False)
+    

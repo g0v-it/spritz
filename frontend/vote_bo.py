@@ -8,6 +8,7 @@ import voter_dao
 import voter_bo
 import option_dao
 import votation_dao
+import judgement_dao
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
     """
@@ -43,8 +44,9 @@ def count_votes_by_option(votation_id, option_id):
     It returns an array of counts.
     The array contains one count for each rank for one option.
     """
+    jud_array = judgement_dao.load_judgement_by_votation(votation_id)
     ar = []
-    for j in range(len(votation.WORDS)):
+    for j in range(len(jud_array)):
         n = db.session.query(Vote).filter(Vote.votation_id == votation_id, Vote.option_id == option_id, Vote.jud_value == j).count()
         ar.append( n )
     return ar

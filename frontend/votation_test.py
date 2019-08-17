@@ -13,6 +13,7 @@ import unittest
 import votation_dao
 import votation_bo
 import option_dao
+import judgement_dao
 from model import Votation,Option
 import random
 from datetime import datetime
@@ -121,7 +122,8 @@ class votation_test(unittest.TestCase):
             votation_status = 2 , \
             list_voters = 0)
         txt_options = "option_test_A\noption_test_B\n option_test_C"
-        result = votation_bo.insert_votation_with_options(v,txt_options)
+        txt_judgements = "judgment_test_A\njudgment_test_B\n judgment_test_C"
+        result = votation_bo.insert_votation_with_options(v,txt_options,txt_judgements)
         self.assertEqual(MSG_OK,result[1])
         ar = votation_dao.load_votations()
         check = False
@@ -132,6 +134,8 @@ class votation_test(unittest.TestCase):
         self.assertTrue(check)
         opt_ar = option_dao.load_options_by_votation(w.votation_id)
         self.assertEqual(3,len(opt_ar))
+        jud_ar = judgement_dao.load_judgement_by_votation(w.votation_id)
+        self.assertEqual(3,len(jud_ar))
         votation_bo.deltree_votation_by_id(w.votation_id)
 
     def test_insert_votation_and_options_2(self):
@@ -147,7 +151,8 @@ class votation_test(unittest.TestCase):
             votation_status = 2 , \
             list_voters = 0)
         txt_options = "option_test_A\noption_test_B\n option_test_C"
-        result = votation_bo.insert_votation_with_options(v,txt_options)
+        txt_judgements = "judgment_test_A\njudgment_test_B\n judgment_test_C"
+        result = votation_bo.insert_votation_with_options(v,txt_options,txt_judgements)
         self.assertEqual(MSG_KO,result[1])
         ar = votation_dao.load_votations()
         check = False
@@ -180,7 +185,8 @@ class votation_test(unittest.TestCase):
             votation_status = 1 , \
             list_voters = 1)
         txt_options = "option_test_X\noption_test_Y\n option_test_Z"
-        result = votation_bo.insert_votation_with_options(v,txt_options)
+        txt_judgements = "judgment_test_A\njudgment_test_B\n judgment_test_C"
+        result = votation_bo.insert_votation_with_options(v,txt_options,txt_judgements)
         self.assertEqual(MSG_KO,result[1])
         ar = votation_dao.load_votations()
         check = False

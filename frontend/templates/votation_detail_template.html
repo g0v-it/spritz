@@ -66,6 +66,15 @@
     </ul>
     {% endif %}
 
+    {% if v.votation_type == "maj_jud"  %}
+    <h3>{{_("Judgements")}}:</h3>
+    <ul>
+        {% for c in juds_array %}
+            <li>[{{c.jud_value}}] {{c.jud_name}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     
     {% if v.votation_status == 4 %}
         <h3>{{_("Election Result")}}</h3>
