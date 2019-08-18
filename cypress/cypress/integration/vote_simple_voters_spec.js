@@ -90,7 +90,7 @@ describe('voting simple majority Test  (voters)', function() {
             cy.visit('/lang/uk')
             // beppe set a vote 
             cy.visit("/vote/" + votation_id)
-            cy.get("[data-cy=radio]").first().check()
+            cy.get("[data-cy=radio]").eq(1).check()
             cy.get("[data-cy=password]").type("bb")
             cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
@@ -115,6 +115,18 @@ describe('voting simple majority Test  (voters)', function() {
             // close the votation
             cy.get('[data-cy=close]').click()        
             cy.get('.alert-success').should('contain', 'Election closed')
+
+            cy.log("Check if the votes are right")
+            cy.visit("/votation_list")
+            cy.get('[data-cy=detail]').first().click()
+
+            // A: 2 votes
+            // B: 0 votes
+            // C: 0 votes
+            cy.get('[data-cy=option_counting').first().should('contain', 'BIRD: 1 votes')
+            cy.get('[data-cy=option_counting').eq(1).should('contain', 'CAT: 1 votes')
+            cy.get('[data-cy=option_counting').eq(2).should('contain', 'DOG: 0 votes')
+            cy.get('[data-cy=option_counting').eq(3).should('contain', 'FISH: 0 votes')
 
         })
     })

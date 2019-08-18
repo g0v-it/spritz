@@ -10,9 +10,9 @@
             <ul>
                 {% for o in options_array %}
                   {% if o.option_id in counting.keys() %}
-                    <li>{{o.option_name}}: {{counting[o.option_id]}} {{_("votes")}}</li>
+                    <li data-cy="option_counting">{{o.option_name}}: {{counting[o.option_id]}} {{_("votes")}}</li>
                   {% else %}
-                    <li>{{o.option_name}}: 0 {{_("votes")}}</li>
+                    <li data-cy="option_counting">{{o.option_name}}: 0 {{_("votes")}}</li>
                   {% endif %}
                 {% endfor %}
             </ul>

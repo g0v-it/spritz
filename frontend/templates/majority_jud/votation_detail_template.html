@@ -13,7 +13,7 @@
                         {{r.option_name}}
                         <div class="row">
                             {% for i in range(juds_array|count) %} 
-                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25">{{r.totals_array[i]}}</span> {{juds_array[i].jud_name}}</div>                                                  
+                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25" data-cy="word{{i}}">{{r.totals_array[i]}}</span> {{juds_array[i].jud_name}}</div>                                                  
                             {% endfor %}
                         </div> 
                     </li>

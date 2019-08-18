@@ -10,6 +10,8 @@ class VotingUser(db.Model):
     user_id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     user_name = Column(String(200), unique=True, nullable=False)
     pass_word = Column(String(200), nullable=False)
+    email = Column(String(200), nullable=True)
+    verified = Column(Integer, nullable=True )
 
 
 class Votation(db.Model):
