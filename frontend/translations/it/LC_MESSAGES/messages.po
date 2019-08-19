@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-07 22:39+0200\n"
+"POT-Creation-Date: 2019-08-18 19:36+0200\n"
 "PO-Revision-Date: 2019-04-24 17:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,158 +18,138 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: index.py:67 index.py:335 templates/login_google_template.html:5
+#: index.py:68 index.py:332 templates/login_google_template.html:5
 #: templates/login_google_template.html:12 templates/login_template.html:5
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: index.py:78
+#: index.py:72 index.py:76
+msgid "Credits"
+msgstr ""
+
+#: index.py:88
 msgid "Login successful"
 msgstr "Login eseguito"
 
-#: index.py:80
+#: index.py:90
 msgid "Wrong login"
 msgstr "Login errato"
 
-#: index.py:93
+#: index.py:103
 msgid "Please, insert data"
 msgstr "Inserire dati"
 
-#: index.py:110
+#: index.py:120
 msgid "New election"
 msgstr "Crea una elezione"
 
-#: index.py:118 templates/base_template.html:45
+#: index.py:128 templates/base_template.html:47
 msgid "Election list"
 msgstr "Lista delle elezioni"
 
-#: index.py:184 index.py:199
+#: index.py:195 index.py:210
 msgid "Election details"
 msgstr "Dettagli dell'elezione"
 
-#: index.py:230
+#: index.py:227
 msgid "Election closed"
 msgstr "Elezione chiusa"
 
-#: index.py:231
+#: index.py:228
 msgid "Election closed, please, check results"
 msgstr "Elezione chiusa, controlla i risultati"
 
-#: index.py:239 index.py:243
+#: index.py:236 index.py:240
 msgid "Delete"
 msgstr "Cancellazione"
 
-#: index.py:240
+#: index.py:237
 msgid "Election deleted"
 msgstr "Elezione cancellata"
 
-#: index.py:256
+#: index.py:253
 msgid "Voter"
 msgstr "Avente diritto"
 
-#: index.py:257
+#: index.py:254
 msgid "{} voters being added"
 msgstr "{} aventi diritto sono stati aggiunti"
 
-#: index.py:260 templates/votation_detail_template.html:30
+#: index.py:257 templates/votation_detail_template.html:30
 msgid "Voters"
 msgstr "Votanti"
 
-#: index.py:261
+#: index.py:258
 msgid "Sorry, only the owner of this election can add voters"
 msgstr "Solo il promotore dell'elezione può aggiungere aventi diritto"
 
-#: index.py:288 templates/majority/vote_template.html:58
+#: index.py:285 templates/majority_jud/vote_template.html:58
 #: templates/votation_list_template.html:25
 msgid "Vote"
 msgstr "Voto"
 
-#: index.py:298 index.py:313
+#: index.py:295 index.py:310
 msgid "Your vote has been registered"
 msgstr "Voto registrato"
 
-#: index.py:300 index.py:315
+#: index.py:297 index.py:312
 msgid "Error. Vote NOT registered. Wrong Password?"
 msgstr "Errore. Voto NON registrato. Password sbagliata?"
 
-#: index.py:301 index.py:316
+#: index.py:298 index.py:313
 msgid "Vote registering"
 msgstr "Votazione"
 
-#: votation.py:29
+#: votation_dao.py:29
 msgid "Draw"
 msgstr "Sorteggio"
 
-#: votation.py:30
+#: votation_dao.py:30
 msgid "Secure Majority Judgment"
 msgstr "Majority Judgment Sicuro"
 
-#: votation.py:32
+#: votation_dao.py:32
 msgid "Simple Majority"
 msgstr "Maggioranza semplice"
 
-#: votation.py:34
+#: votation_dao.py:34
 msgid "Created"
 msgstr "Creata"
 
-#: votation.py:35
+#: votation_dao.py:35
 msgid "Voting"
 msgstr "Voto"
 
-#: votation.py:36
+#: votation_dao.py:36
 msgid "Working, please wait..."
 msgstr "Elaborazione, attendere"
 
-#: votation.py:37
+#: votation_dao.py:37
 msgid "Ended"
 msgstr "Terminata"
 
-#: votation.py:38
+#: votation_dao.py:38
 msgid "Failed"
 msgstr "Fallita"
 
-#: votation.py:41
-msgid "No opinion"
-msgstr "Non so"
-
-#: votation.py:41
-msgid "Poor"
-msgstr "Scadente"
-
-#: votation.py:41
-msgid "Not enough"
-msgstr "Insufficiente"
-
-#: votation.py:41
-msgid "Acceptable"
-msgstr "Accettabile"
-
-#: votation.py:41
-msgid "Good"
-msgstr "Buono"
-
-#: votation.py:41
-msgid "Very good"
-msgstr "Ottimo"
-
-#: templates/base_template.html:30 templates/login_google_template.html:4
+#: templates/base_template.html:32 templates/login_google_template.html:4
 #: templates/login_template.html:4
 msgid "Welcome"
 msgstr "Benvenuto"
 
-#: templates/base_template.html:39
+#: templates/base_template.html:41
 msgid "Main Menu"
 msgstr "Menu principale"
 
-#: templates/base_template.html:42
+#: templates/base_template.html:44
 msgid "Create a New election"
 msgstr "Crea una nuova elezione"
 
-#: templates/base_template.html:49
+#: templates/base_template.html:51
 msgid "Logoff"
 msgstr "Esci"
 
-#: templates/base_template.html:53
+#: templates/base_template.html:55
 msgid "Login"
 msgstr "Entra"
 
@@ -192,6 +172,10 @@ msgstr "Crea una Nuova Elezione"
 #: templates/index_template.html:11
 msgid "Election List"
 msgstr "Lista delle elezioni"
+
+#: templates/index_template.html:16
+msgid "How it works"
+msgstr "Come funziona"
 
 #: templates/login_google_template.html:5 templates/login_template.html:5
 msgid "Go to"
@@ -222,6 +206,7 @@ msgid "Election ID"
 msgstr "ID elezione"
 
 #: templates/votation_detail_template.html:3
+#: templates/votation_propose_template.html:14
 msgid "Election type"
 msgstr "Tipo elezione"
 
@@ -296,29 +281,33 @@ msgstr "Inizia l'elezione"
 msgid "Options"
 msgstr "Opzioni"
 
-#: templates/majority/votation_detail_template.html:2
-#: templates/votation_detail_template.html:71
+#: templates/votation_detail_template.html:70
+msgid "Judgements"
+msgstr "Giudizi"
+
+#: templates/majority_jud/votation_detail_template.html:2
+#: templates/votation_detail_template.html:80
 msgid "Election Result"
 msgstr "Risultato dell'elezione"
 
-#: templates/votation_detail_template.html:72
+#: templates/votation_detail_template.html:81
 msgid "The election is failed"
 msgstr "Elezione fallita"
 
-#: templates/votation_detail_template.html:83
+#: templates/votation_detail_template.html:92
 msgid "Voters list"
 msgstr "Lista degli aventi diritto"
 
-#: templates/votation_detail_template.html:87
-#: templates/votation_propose_template.html:52
+#: templates/votation_detail_template.html:96
+#: templates/votation_propose_template.html:68
 msgid "Add voters"
 msgstr "Aggiungi aventi diritto"
 
-#: templates/votation_detail_template.html:89
+#: templates/votation_detail_template.html:98
 msgid "Write an username each row"
 msgstr "Scrivi una username per riga"
 
-#: templates/votation_detail_template.html:91
+#: templates/votation_detail_template.html:100
 msgid "Add"
 msgstr "Aggiungi"
 
@@ -366,131 +355,158 @@ msgstr "Diventa un Candidato"
 msgid ""
 "Address of a page describing the election. As an example, a Facebook post"
 " or a blog post"
-msgstr "Indirizzo di una pagina che descriva l'elezione. Per esempio un post su Facebook o l'articolo di un blog"
-"Indirizzo di una pagina che descrive l'elezione. Per esempio una pagina "
-"Facebook o un post di un blog"
-
-#: templates/votation_propose_template.html:14
-msgid "election type"
-msgstr "tipo di elezione"
+msgstr ""
+"Indirizzo di una pagina che descriva l'elezione. Per esempio un post su "
+"Facebook o l'articolo di un blog"
 
 #: templates/votation_propose_template.html:16
-msgid "Simple majority"
-msgstr "Maggioranza Semplice"
-
-#: templates/votation_propose_template.html:17
 msgid "Majority judgment"
 msgstr "Scelta Maggioritaria"
 
-#: templates/votation_propose_template.html:25
+#: templates/votation_propose_template.html:17
+msgid "Simple majority"
+msgstr "Maggioranza Semplice"
+
+#: templates/votation_propose_template.html:23
 msgid "Begin date"
 msgstr "Data di inizio"
 
-#: templates/votation_propose_template.html:29
+#: templates/votation_propose_template.html:27
 msgid "Begin time"
 msgstr "Orario di inizio"
 
-#: templates/votation_propose_template.html:36
+#: templates/votation_propose_template.html:34
 msgid "End date"
 msgstr "Data di fine"
 
-#: templates/votation_propose_template.html:40
+#: templates/votation_propose_template.html:38
 msgid "End time"
 msgstr "Orario di fine"
 
-#: templates/votation_propose_template.html:46
+#: templates/votation_propose_template.html:44
 msgid "Option or candidate list"
 msgstr "Opzioni o lista dei candidati"
 
-#: templates/votation_propose_template.html:48
+#: templates/votation_propose_template.html:46
 msgid "One option each row"
 msgstr "Ona opzione per riga"
 
-#: templates/votation_propose_template.html:55
+#: templates/votation_propose_template.html:50
+msgid "Judgement list"
+msgstr "Lista dei giudizi"
+
+#: templates/votation_propose_template.html:56
+msgid "Very good"
+msgstr "Ottimo"
+
+#: templates/votation_propose_template.html:57
+msgid "Good"
+msgstr "Buono"
+
+#: templates/votation_propose_template.html:58
+msgid "Acceptable"
+msgstr "Accettabile"
+
+#: templates/votation_propose_template.html:59
+msgid "Not enough"
+msgstr "Insufficiente"
+
+#: templates/votation_propose_template.html:60
+msgid "Poor"
+msgstr "Scadente"
+
+#: templates/votation_propose_template.html:61
+msgid "No opinion"
+msgstr "Non so"
+
+#: templates/votation_propose_template.html:63
+msgid "One judgement each row, best on top"
+msgstr "Un giudizio per riga, il migliore in alto"
+
+#: templates/votation_propose_template.html:71
 msgid "Save"
 msgstr "Salva"
 
-#: templates/majority/start_election_template.html:3
-msgid "Election is ongoing"
-msgstr "L'elezione &egrave; in corso"
-
-#: templates/majority/votation_detail_template.html:4
+#: templates/majority_jud/votation_detail_template.html:4
 #: templates/simple_majority/votation_detail_template.html:4
 msgid "The number of votes and the number of voters match"
 msgstr "Il numero di voti e di votanti corrisponde"
 
-#: templates/majority/votation_detail_template.html:6
+#: templates/majority_jud/votation_detail_template.html:6
 #: templates/simple_majority/votation_detail_template.html:6
 msgid "The number of votes and the number of voters do not match"
 msgstr "Il numero di voti e di votanti non corrisponde"
 
-#: templates/majority/votation_detail_template.html:8
+#: templates/majority_jud/votation_detail_template.html:8
 #: templates/simple_majority/votation_detail_template.html:8
 msgid "Ranking"
 msgstr "Classifica"
 
-#: templates/majority/vote_template.html:4
+#: templates/majority_jud/vote_template.html:4
 #: templates/simple_majority/vote_template.html:4
 msgid "You cannot vote yet"
 msgstr "Non puoi ancora votare"
 
-#: templates/majority/vote_template.html:7
+#: templates/majority_jud/vote_template.html:7
 #: templates/simple_majority/vote_template.html:7
 msgid "You cannot vote anymore"
 msgstr "Non puoi votare pi&ugrave;"
 
-#: templates/majority/vote_template.html:12
+#: templates/majority_jud/vote_template.html:12
 msgid "You must choose a judgment for each option"
 msgstr "Devi indicare un giudizio for ogni opzione"
 
-#: templates/majority/vote_template.html:13
+#: templates/majority_jud/vote_template.html:13
 msgid "The \"No opinion\" judgment is the lowest ranking"
 msgstr "Il giudizio \"Non So\" &egrave; il voto più basso"
 
-#: templates/majority/vote_template.html:14
+#: templates/majority_jud/vote_template.html:14
 msgid "You need to think up and enter a secret key, type it and keep it secret"
 msgstr "Pensa e scrivi una frase segreta, tienila segreta"
 
-#: templates/majority/vote_template.html:15
+#: templates/majority_jud/vote_template.html:15
 msgid "You can use any word or phrase you want"
 msgstr "Puoi usare la parola o la frase che vuoi"
 
-#: templates/majority/vote_template.html:16
+#: templates/majority_jud/vote_template.html:16
 msgid ""
 "You can change your vote later, but you MUST use the same secret key as "
 "before"
-msgstr "Potrai cambiare il tuo voto pi&ugrave; tardi, ma dovrai usare la stessa frase di prima"
+msgstr ""
+"Potrai cambiare il tuo voto pi&ugrave; tardi, ma dovrai usare la stessa "
+"frase di prima"
 
-#: templates/majority/vote_template.html:25
+#: templates/majority_jud/vote_template.html:25
 msgid "Option"
 msgstr "Opzione"
 
-#: templates/majority/vote_template.html:26
+#: templates/majority_jud/vote_template.html:26
 msgid "Judgement"
 msgstr "Giudizio"
 
-#: templates/majority/vote_template.html:45
+#: templates/majority_jud/vote_template.html:45
 #: templates/simple_majority/vote_template.html:32
 msgid "Secret key for this vote"
 msgstr "Chiave segreta per questo voto"
 
-#: templates/majority/vote_template.html:47
+#: templates/majority_jud/vote_template.html:47
 msgid "Remember this secret key; it isn't possible to recover it"
 msgstr "Ricorda questa frase segreta. Non sar&agrave; possibile recuperarla"
 
-#: templates/majority/vote_template.html:55
+#: templates/majority_jud/vote_template.html:55
 msgid ""
-
 "This secret key is for THIS election only. You can use any word you want."
 " Keep it secret and don't forget it."
-msgstr "Questa frase segreta vale solo per QUESTA elezione. Puoi usare ogni parola che vuoi. Tienila segreta e non dimenticarla."
+msgstr ""
+"Questa frase segreta vale solo per QUESTA elezione. Puoi usare ogni "
+"parola che vuoi. Tienila segreta e non dimenticarla."
 
-#: templates/majority/vote_template.html:56
+#: templates/majority_jud/vote_template.html:56
 #: templates/simple_majority/vote_template.html:43
 msgid "What's this secret key?"
 msgstr "Cosa &egrave; questo?"
 
-#: templates/majority/vote_template.html:70
+#: templates/majority_jud/vote_template.html:70
 #: templates/simple_majority/vote_template.html:57
 msgid "You must enter a secret key"
 msgstr "Devi scrivere una chiave segreta"
@@ -595,4 +611,10 @@ msgstr "Ricordati questa chiave segreta; non sar&agrave; possibile recuperarla"
 
 #~ msgid "Election begin"
 #~ msgstr "Inizio elezione"
+
+#~ msgid "election type"
+#~ msgstr "tipo di elezione"
+
+#~ msgid "Election is ongoing"
+#~ msgstr "L'elezione &egrave; in corso"
 
