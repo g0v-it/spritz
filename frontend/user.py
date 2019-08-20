@@ -6,6 +6,8 @@ if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
     import auth_google as auth
+if config.AUTH == 'superauth':
+    import auth_superauth as auth
 if config.AUTH == 'test':
     import auth_test as auth
     
@@ -18,10 +20,10 @@ class User(UserMixin):
         self.u = load_user_by_username(user_name)    
     def get_id(self):
         return str(self.user_name) # must be unicode
-    def try_to_authenticate(self, pass_word):
-        if self.u:
-            return auth.auth(self.user_name, pass_word)
-        return False
+    # def try_to_authenticate(self, pass_word):
+    #     if self.u:
+    #         return auth.auth(self.user_name, pass_word)
+    #     return False
     def is_valid(self):
         return self.u != None
 

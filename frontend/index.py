@@ -45,6 +45,8 @@ if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
     import auth_google as auth
+if config.AUTH == 'superauth':
+    import auth_superauth as auth
 if config.AUTH == 'test':
     import auth_test as auth
 
@@ -79,11 +81,10 @@ def termsandconditions():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     message = None
-    if request.method == 'POST':    
-        user_name = request.form['user_name']
-        pass_word = request.form['pass_word']
-        u = user.User(user_name)
-        if u.try_to_authenticate(pass_word):
+    if request.method == 'POST': 
+        auth_data = auth.get_auth_data(request)
+        if auth.auth(auth_data):
+            u = user.User(auth_data['username'])
             login_user(u)
             message = (_("Login successful"),MSG_OK)
         else:
@@ -95,6 +96,9 @@ def login():
 def logout():
     logout_user()
     return render_template('logout_template.html', pagetitle="Logout")
+
+
+
 
 @app.route("/votation_propose", methods=['GET', 'POST'])
 @login_required
