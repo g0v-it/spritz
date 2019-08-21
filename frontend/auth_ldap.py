@@ -25,10 +25,16 @@ def get_ldap_connection():
     conn = ldap.initialize(LDAP_URL)
     return conn
 
-def auth(user_name,token):
+def get_auth_data(request):
+    user_name = request.form['user_name']
+    pass_word = request.form['pass_word']
+    auth_data = {'username': user_name, 'password': pass_word}
+    return auth_data
+
+def auth(auth_data):
     try: 
         conn = get_ldap_connection()
-        conn.simple_bind_s(LDAP_BIND.format(user_name),token)
+        conn.simple_bind_s(LDAP_BIND.format(auth_data['username']),auth_data['password'])
         return True
     except:
         return False
