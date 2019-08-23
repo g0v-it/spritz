@@ -1,4 +1,4 @@
-import os.path
+# import os.path
 import os
 
 #BASEPATH = os.path.join("/opt","voting")
@@ -20,10 +20,10 @@ SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBP
 #
 # Authentication
 #
-# AUTH = 'ldap' # ldap auth
-AUTH = 'google' # google auth
-# AUTH = 'superauth' # www.superauth.com
 # AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
+# AUTH = 'ldap' # ldap auth
+# AUTH = 'google' # google auth
+AUTH = 'superauth' # www.superauth.com
 # AUTH = os.environ.get('SPRITZ_AUTH')
 
 #

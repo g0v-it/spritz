@@ -5,6 +5,8 @@ the login is successful.
 """
 import os
 import user
+from flask_babel import gettext
+_ = gettext
 
 LOGIN_TEMPLATE = 'login_template.html'
 CLIENT_ID = ''
@@ -18,9 +20,15 @@ def get_auth_data(request):
     return auth_data
 
 def auth(auth_data):
-    u = user.load_user_by_username(auth_data['username'])
-    if u.pass_word == auth_data['password']:
-        return True
-    return False
-
+    message = _('Login failed')
+    return_code = False
+    user_name = auth_data['username']
+    u = user.load_user_by_username(user_name)
+    if u and u.pass_word == auth_data['password']:
+        return_code = True
+        message = _('Login successful')
+    else:
+        message = _('Wrong user or password')
+    auth_result = {'username': user_name, 'message': message, 'logged_in': return_code}
+    return auth_result
 

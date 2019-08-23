@@ -8,7 +8,11 @@
     <div class="mb-4">
       {{_("After logging in by this button, please go to")}} <a href="/">{{_("Main menu")}}</a>
     </div>
-    <a href="https://superauth.com/spritz_localhost?state=abc123" class="btn btn-warning">Login with SuperAuth</a>
+    <a href="https://superauth.com/{{CLIENT_ID}}?state=abc123" class="btn btn-warning">Login with SuperAuth</a>
+  </div>
+  <div>You need to signup with <a href="https://superauth.com/">
+    https://superauth.com/
+    <img src="https://cdn.superauth.com/webasset/index_asset_v1/img/icons/SuperAuthLogo.png" alt="Superauth" width="25px" height="25px" /></a>
   </div>
 {% endif %} 
 {% endblock %}

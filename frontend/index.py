@@ -81,15 +81,30 @@ def termsandconditions():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     message = None
+    print(auth.CLIENT_ID)
     if request.method == 'POST': 
         auth_data = auth.get_auth_data(request)
-        if auth.auth(auth_data):
-            u = user.User(auth_data['username'])
+        auth_result = auth.auth(auth_data)
+        if auth_result['logged_in']:
+            u = user.User(auth_result['username'])
             login_user(u)
-            message = (_("Login successful"),MSG_OK)
+            message = (auth_result['message'],MSG_OK)
         else:
-            message = (_("Wrong login"),MSG_KO)
-    return render_template(auth.LOGIN_TEMPLATE, pagetitle="Login",message=message, CLIENT_ID=auth.CLIENT_ID)
+            message = (auth_result['message'],MSG_KO)
+    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
+
+@app.route("/superauthcallback", methods=['GET',])
+def superauth_callback():
+    message = None
+    auth_data = auth.get_auth_data(request)
+    auth_result = auth.auth(auth_data)
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+    else:
+        message = (auth_result['message'],MSG_KO)
+    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login result"),message=message)
 
 @app.route("/logout")
 @login_required

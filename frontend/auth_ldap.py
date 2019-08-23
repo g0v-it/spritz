@@ -2,6 +2,8 @@
 """
 import os
 import ldap
+from flask_babel import gettext
+_ = gettext
 
 LDAP_SERVER_HOST = os.environ.get('LDAP_SERVER_HOST') # ldap.forumsys.com
 LDAP_SERVER_PORT = os.environ.get('LDAP_SERVER_PORT') # 389
@@ -32,12 +34,18 @@ def get_auth_data(request):
     return auth_data
 
 def auth(auth_data):
+    message = _('Login failed')
+    return_code = False
+    user_name = auth_data['username']
     try: 
         conn = get_ldap_connection()
         conn.simple_bind_s(LDAP_BIND.format(auth_data['username']),auth_data['password'])
-        return True
+        return_code = True
+        message = _('Login successful')
     except:
-        return False
-    return False
+        return_code = False
+        message = _('Wrong user or password')
+    auth_result = {'username': user_name, 'message': message, 'logged_in': return_code}
+    return auth_result
 
 

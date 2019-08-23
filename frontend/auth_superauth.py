@@ -1,19 +1,21 @@
 """Authentication module for superauth
 """
 import os
+import user
 import urllib.request
 import hashlib 
 import json
+from flask_babel import gettext
+_ = gettext
 
 ADD_UNKNOWN_USER = True
 LOGIN_TEMPLATE = 'login_superauth_template.html'
-CLIENT_ID='spritz_localhost'
-CLIENT_SECRET='faec19ef7fcf49de960b8f44803d98dbb2dffd5e1e124ba9847947006b806209'
-RETURN_URL = 'https://superauth.com/spritz_localhost'
+CLIENT_ID=os.environ.get('SUPERAUTH_LOGIN_CLIENT_ID')
+CLIENT_SECRET=os.environ.get('SUPERAUTH_LOGIN_CLIENT_SECRET')
 
 def get_auth_data(request):
-    token = request.args().get('token', None)
-    state = request.args().get('state', None)
+    token = request.args.get('token', None)
+    state = request.args.get('state', None)
     return {'token': token, 'state': state}
 
 
@@ -36,10 +38,11 @@ def auth(auth_data):
         j = json.loads(contents)
         if "user" in j.keys():
             user_name = j["user"]["email"]
-            message = "Login successful"
+            message = _("Login successful")
+            u = user.load_user_by_username(user_name)
             return_code = True
         else:
-            message = "Login not successful, (no username)"
-    return {'username': user_name, 'message': message, 'return_code': return_code}
+            message = _("Login not successful, (no username)")
+    return {'username': user_name, 'message': message, 'logged_in': return_code}
 
 
