@@ -9,7 +9,6 @@ db = config.db
 #         self.option_id = None
 #         self.votation_id = None
 #         self.option_name = None
-#         self.description = None
 
 def load_options_by_votation(votation_id):
     """Returns a option_dto array"""
@@ -51,7 +50,7 @@ def save_options_from_text(votation_id,text):
     lines.sort()     
     for l in lines:
         if l.strip():
-            o = Option(votation_id=votation_id, option_name=l,description=l)
+            o = Option(votation_id=votation_id, option_name=l)
             if not insert_dto(o):
                 return False
     return True

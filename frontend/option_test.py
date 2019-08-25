@@ -41,7 +41,7 @@ class option_test(unittest.TestCase):
 
     def test_insert(self):
         votation_id = self.__votation__.votation_id
-        u = Option(votation_id=votation_id,option_name = 'test.option',description = 'test.description')
+        u = Option(votation_id=votation_id,option_name = 'test.option')
         self.assertTrue( option_dao.insert_dto(u))
         self.assertGreater(u.option_id, 0)
         ar = option_dao.load_options_by_votation(votation_id)
@@ -50,7 +50,6 @@ class option_test(unittest.TestCase):
         self.assertIsNotNone(u1)
         self.assertEqual(u.votation_id, u1.votation_id)
         self.assertEqual(u.option_name, u1.option_name)
-        self.assertEqual(u.description, u1.description)
         self.assertTrue(option_dao.delete_dto(u1))
         ar = option_dao.load_options_by_votation(votation_id)
         self.assertEqual(0,len(ar))

@@ -115,7 +115,7 @@ class votation_test(unittest.TestCase):
         v = Votation( \
             votation_description = descr , \
             description_url = "" , \
-            votation_type = votation_dao.TYPE_SIMPLE_MAJORITY , \
+            votation_type = votation_dao.TYPE_MAJORITY_JUDGMENT , \
             promoter_user_id = 1 , \
             begin_date = datetime(2018,1,1) , \
             end_date = datetime(2018,1,15) , \

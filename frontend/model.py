@@ -61,7 +61,6 @@ class Option(db.Model):
     votation_id = Column(Integer, ForeignKey('votation.votation_id'))
     votation = relationship(Votation)
     option_name = Column(String(50),nullable=False)
-    description = Column(String(250),nullable=False, default="")
 
 class Judgement(db.Model):
     """

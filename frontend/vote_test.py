@@ -36,13 +36,13 @@ class vote_test_no_voters(unittest.TestCase):
         self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
         # set options
         o1 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option1',description = 'test.description1')
+             option_name = 'test.option1')
         self.assertTrue(option_dao.insert_dto(o1))
         o2 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option2',description = 'test.description2')
+             option_name = 'test.option2')
         self.assertTrue(option_dao.insert_dto(o2))
         o3 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option3',description = 'test.description3')
+             option_name = 'test.option3')
         self.assertTrue(option_dao.insert_dto(o3))
         self.__option1 =  o1
         self.__option2 =  o2
@@ -300,13 +300,13 @@ class vote_test_voters(unittest.TestCase):
             list_voters = 1)
         self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
         o1 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option1',description = 'test.description1')
+             option_name = 'test.option1')
         self.assertTrue(option_dao.insert_dto(o1))
         o2 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option2',description = 'test.description2')
+             option_name = 'test.option2')
         self.assertTrue(option_dao.insert_dto(o2))
         o3 = Option(votation_id=self.__votation__.votation_id, \
-             option_name = 'test.option3',description = 'test.description3')
+             option_name = 'test.option3')
         self.assertTrue(option_dao.insert_dto(o3))
         self.__option1 =  o1
         self.__option2 =  o2

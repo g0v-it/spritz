@@ -20,10 +20,10 @@ SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBP
 #
 # Authentication
 #
-# AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
+AUTH = 'test' # fake login base on voting_user sql table, testing pourpose
 # AUTH = 'ldap' # ldap auth
 # AUTH = 'google' # google auth
-AUTH = 'superauth' # www.superauth.com
+# AUTH = 'superauth' # www.superauth.com
 # AUTH = os.environ.get('SPRITZ_AUTH')
 
 #
