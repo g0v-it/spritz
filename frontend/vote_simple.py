@@ -5,11 +5,9 @@ db = config.db
 
 import vote_dao
 import voter_dao
-import voter_bo
 
 def save_vote(user_id, vote_key,votation_id,option_id):
-    vu = Voter(user_id = user_id, votation_id = votation_id)
-    b_has_voted = voter_dao.has_voted(vu)
+    b_has_voted = voter_dao.has_voted(user_id, votation_id)
     if b_has_voted:
         votes = vote_dao.load_vote_by_key(vote_key)
         if len(votes) == 0:
@@ -20,7 +18,7 @@ def save_vote(user_id, vote_key,votation_id,option_id):
         option_id = option_id, \
         jud_value = 1)
     vote_dao.insert_dto(o)
-    voter_bo.set_voted(vu)
+    voter_dao.set_voted(user_id, votation_id)
     db.session.commit()
     return True
 

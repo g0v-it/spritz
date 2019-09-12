@@ -5,10 +5,11 @@ db = config.db
 
 import vote_dao
 import voter_dao
-import voter_bo
 import option_dao
 import votation_dao
 import judgement_dao
+import user
+
 
 def save_votes(user_id, vote_key,votation_id,vote_array):
     """
@@ -18,26 +19,21 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
     Every option need a vote.
     Also, the voter is set as voted.
     """
-    vu = Voter( \
-        user_id = user_id, \
-        votation_id = votation_id)
-    b_has_voted = voter_dao.has_voted(vu)
-    if b_has_voted:
-        votes = vote_dao.load_vote_by_key(vote_key)
-        if len(votes) == 0:
+    u = user.load_user_by_id(user_id)
+    if not u:
+        return False
+    if voter_dao.has_voted(user_id, votation_id):
+        ar = vote_dao.load_vote_by_key(vote_key)
+        if len(ar) == 0:
             return False
         vote_dao.delete_votes_by_key(vote_key)
-    options_list = option_dao.load_options_by_votation(votation_id)
-    for i in range(len(vote_array)):
-        o = Vote(  \
-            vote_key = vote_key, \
-            votation_id = votation_id, \
-            option_id = options_list[i].option_id, \
-            jud_value = vote_array[i])
-        vote_dao.insert_dto(o)
-    voter_bo.set_voted(vu)
-    db.session.commit()
-    return True
+    if vote_dao.save_vote(votation_id=votation_id, vote_key=vote_key, array_judgements=vote_array):
+        if voter_dao.set_voted(user_id,votation_id):
+            db.session.commit() 
+            return True
+    db.session.rollback()
+    return False
+
 
 def count_votes_by_option(votation_id, option_id):
     """

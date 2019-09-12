@@ -33,12 +33,28 @@ def update_dto(o):
         return True
     return False
 
-def has_voted(o):
+
+def has_voted(user_id, votation_id):
     result = False
-    n = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id, Voter.voted==1).count()
+    n = db.session.query(Voter).filter(Voter.votation_id == votation_id, Voter.user_id == user_id, Voter.voted==1).count()
     if n == 1:
         result = True
     return result
+
+def set_voted(user_id, votation_id):
+    """insert or update the voter record"""
+    result = False
+    if has_voted(user_id, votation_id):
+        return True
+    voter1 = db.session.query(Voter).filter(Voter.votation_id == votation_id, Voter.user_id == user_id).first()
+    if voter1:
+        voter1.voted = 1
+        result = True
+    else:
+        o = Voter(votation_id = votation_id, user_id=user_id, voted=1)
+        result = insert_dto(o)
+    return result
+
 
 def delete_dto(o):
     result = False

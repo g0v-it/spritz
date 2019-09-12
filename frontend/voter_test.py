@@ -56,19 +56,19 @@ class voter_test(unittest.TestCase):
     def test_insert(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=1)
         voter_dao.delete_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
         voter_dao.insert_dto(o)
-        self.assertTrue(voter_dao.has_voted(o))
+        self.assertTrue(voter_dao.has_voted(o.user_id, o.votation_id))
         voter_dao.delete_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
     def test_insert2(self):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         voter_dao.delete_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
         voter_dao.insert_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
         voter_dao.delete_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
     def test_insert3(self):
         o1 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         o2 = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
@@ -90,10 +90,10 @@ class voter_test(unittest.TestCase):
         o = Voter(user_id=1, votation_id=self.__votation__.votation_id, voted=0)
         voter_dao.delete_dto(o)
         voter_dao.insert_dto(o)
-        self.assertFalse(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
         o.voted = 1
         voter_dao.update_dto(o) 
-        self.assertTrue(voter_dao.has_voted(o))
+        self.assertTrue(voter_dao.has_voted(o.user_id, o.votation_id))
         voter_dao.delete_dto(o)
     def test_insert_voters_array_3(self):
         votation_id = self.__votation__.votation_id
@@ -179,15 +179,16 @@ class voter_test(unittest.TestCase):
 
     def test_set_voted_no_list(self):
         # run set_voted
-        o = Voter(user_id=2, votation_id=self.__votation__.votation_id, voted=0)
+        user_id=2
+        votation_id=self.__votation__.votation_id
         # should perform insert
-        self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
-        self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter_dao.has_voted(o))
+        self.assertTrue(voter_dao.is_voter(votation_id, user_id))
+        self.assertTrue(voter_dao.set_voted(user_id, votation_id))
+        self.assertTrue(voter_dao.has_voted(user_id, votation_id))
         # should perform update
-        self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter_dao.has_voted(o))
-        self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
+        self.assertTrue(voter_dao.set_voted(user_id, votation_id))
+        self.assertTrue(voter_dao.has_voted(user_id, votation_id))
+        self.assertTrue(voter_dao.is_voter(votation_id, user_id))
 
 
     def test_set_voted_with_list(self):
@@ -197,9 +198,9 @@ class voter_test(unittest.TestCase):
         voter_dao.insert_dto(o)
         self.assertTrue(voter_dao.is_voter(o.votation_id, o.user_id))
         # run set_voted()
-        self.assertFalse(voter_dao.has_voted(o))
-        self.assertTrue(voter_bo.set_voted(o))
-        self.assertTrue(voter_dao.has_voted(o))
+        self.assertFalse(voter_dao.has_voted(o.user_id, o.votation_id))
+        self.assertTrue(voter_dao.set_voted(o.user_id, o.votation_id))
+        self.assertTrue(voter_dao.has_voted(o.user_id, o.votation_id))
 
 if __name__ == '__main__':
     unittest.main()

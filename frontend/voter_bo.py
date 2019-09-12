@@ -25,18 +25,4 @@ def insert_voters_array(votation_id, ar):
     return count
         
 
-def set_voted(o):
-    """insert or update the voter record"""
-    result = False
-    if voter_dao.has_voted(o):
-        return True
-    voter1 = db.session.query(Voter).filter(Voter.votation_id == o.votation_id, Voter.user_id == o.user_id).first()
-    if voter1:
-        voter1.voted = 1
-        result = True
-    else:
-        o.voted = 1
-        result = voter_dao.insert_dto(o)
-    db.session.commit()
-    return result
 

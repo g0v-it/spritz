@@ -12,6 +12,7 @@ config.db = db
 
 import unittest
 import vote_dao
+import vote_bo
 import voter_dao
 import option_dao
 import votation_dao
@@ -328,6 +329,215 @@ class vote_test_voters(unittest.TestCase):
         votation_id = self.__votation__.votation_id
         option_id = self.__option1.option_id
         self.assertTrue( vote_simple.save_vote(1,"akey",votation_id,option_id) )
+
+class vote_test_new_save_DAO(unittest.TestCase):
+    def setUp(self):
+        self.__votation__ = Votation( \
+            votation_description = 'Votation for vote test new save ' + str(random.randint(0,50000)) , \
+            description_url = "" , \
+            votation_type = votation_dao.TYPE_MAJORITY_JUDGMENT , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 0)
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
+        # set options
+        o1 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option1')
+        self.assertTrue(option_dao.insert_dto(o1))
+        o2 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option2')
+        self.assertTrue(option_dao.insert_dto(o2))
+        o3 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option3')
+        self.assertTrue(option_dao.insert_dto(o3))
+        self.__option1 =  o1
+        self.__option2 =  o2
+        self.__option3 =  o3
+        self.assertIsNotNone(o1.option_id)
+        self.assertIsNotNone(o2.option_id)
+        self.assertIsNotNone(o3.option_id)
+        # set juds
+        j1 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 1, jud_name = "bad")
+        j2 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 2, jud_name = "medium")
+        j3 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 3, jud_name = "good")
+        judgement_dao.insert_dto(j1)
+        judgement_dao.insert_dto(j2)
+        judgement_dao.insert_dto(j3)
+        db.session.commit()
+        jud_array = judgement_dao.load_judgement_by_votation(self.__votation__.votation_id)
+        self.__jud1 = jud_array[0]
+        self.__jud2 = jud_array[1]
+        self.__jud3 = jud_array[2]
+        return super().setUp()
+
+    def tearDown(self):
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
+        db.session.commit()
+        return super().tearDown()
+
+    def test_save_ok(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertTrue( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,3]) )
+        ar = vote_dao.load_vote_by_key(vote_key)
+        self.assertEqual(3,len(ar))
+        check = True
+        for v in ar:
+            if (v.option_id == self.__option1.option_id and \
+                v.jud_value == 1) or \
+               (v.option_id == self.__option2.option_id and \
+               v.jud_value == 2) or \
+               (v.option_id == self.__option3.option_id and \
+               v.jud_value == 3): 
+                check = True
+            else:
+                check = False
+        self.assertTrue(check)
+    def test_save_ok2(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertTrue( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,2]) )
+        ar = vote_dao.load_vote_by_key(vote_key)
+        self.assertEqual(3,len(ar))
+        check = True
+        for v in ar:
+            if (v.option_id == self.__option1.option_id and \
+                v.jud_value == 1) or \
+               (v.option_id == self.__option2.option_id and \
+               v.jud_value == 2) or \
+               (v.option_id == self.__option3.option_id and \
+               v.jud_value == 2): 
+                check = True
+            else:
+                check = False
+        self.assertTrue(check)
+    def test_save_wrong_array(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2]) )
+        self.assertFalse( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,3,4]) )
+    def test_save_wrong_jud(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,100]) )
+    def test_save_null(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,None]) )
+    def test_save_wrong_votation_id(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_dao.save_vote(333333, vote_key, [3,2,1]) )
+
+class vote_test_new_save_BO(unittest.TestCase):
+    def setUp(self):
+        self.__votation__ = Votation( \
+            votation_description = 'Votation for vote test new save ' + str(random.randint(0,50000)) , \
+            description_url = "" , \
+            votation_type = votation_dao.TYPE_MAJORITY_JUDGMENT , \
+            promoter_user_id = 1 , \
+            begin_date = datetime(2018,1,1) , \
+            end_date = datetime(2018,1,15) , \
+            votation_status = 2 , \
+            list_voters = 0)
+        self.assertTrue( votation_dao.insert_votation_dto(self.__votation__) )
+        # set options
+        o1 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option1')
+        self.assertTrue(option_dao.insert_dto(o1))
+        o2 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option2')
+        self.assertTrue(option_dao.insert_dto(o2))
+        o3 = Option(votation_id=self.__votation__.votation_id, \
+             option_name = 'test.option3')
+        self.assertTrue(option_dao.insert_dto(o3))
+        self.__option1 =  o1
+        self.__option2 =  o2
+        self.__option3 =  o3
+        self.assertIsNotNone(o1.option_id)
+        self.assertIsNotNone(o2.option_id)
+        self.assertIsNotNone(o3.option_id)
+        # set juds
+        j1 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 1, jud_name = "bad")
+        j2 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 2, jud_name = "medium")
+        j3 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 3, jud_name = "good")
+        judgement_dao.insert_dto(j1)
+        judgement_dao.insert_dto(j2)
+        judgement_dao.insert_dto(j3)
+        db.session.commit()
+        jud_array = judgement_dao.load_judgement_by_votation(self.__votation__.votation_id)
+        self.__jud1 = jud_array[0]
+        self.__jud2 = jud_array[1]
+        self.__jud3 = jud_array[2]
+        return super().setUp()
+
+    def tearDown(self):
+        votation_bo.deltree_votation_by_id(self.__votation__.votation_id)
+        db.session.commit()
+        return super().tearDown()
+
+    def test_save_ok(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertTrue( vote_bo.save_votes(user_id = 1, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,2,3]) )
+        ar = vote_dao.load_vote_by_key(vote_key)
+        self.assertEqual(3, len(ar) )
+        self.assertTrue(voter_dao.has_voted(1,self.__votation__.votation_id))
+
+    def test_save_twice(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        # first vote
+        self.assertTrue( vote_bo.save_votes(user_id = 1, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,1,1]) )
+        ar = vote_dao.load_vote_by_key(vote_key)
+        self.assertEqual(3, len(ar) )
+        self.assertTrue(voter_dao.has_voted(1,self.__votation__.votation_id))
+        # second vote
+        self.assertTrue( vote_bo.save_votes(user_id = 1, \
+                            vote_key=vote_key, \
+                            votation_id=self.__votation__.votation_id, \
+                            vote_array=[2,2,2]) )
+
+    def test_save_wrong_key(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        # first vote
+        self.assertTrue( vote_bo.save_votes(user_id = 1, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,1,1]) )
+        ar = vote_dao.load_vote_by_key(vote_key)
+        self.assertEqual(3, len(ar) )
+        self.assertTrue(voter_dao.has_voted(1,self.__votation__.votation_id))
+        # second vote
+        self.assertFalse( vote_bo.save_votes(user_id = 1, \
+                            vote_key="WRONG KEY", \
+                            votation_id=self.__votation__.votation_id, \
+                            vote_array=[1,3,1]) )
+
+    def test_save_wrong_array(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_bo.save_votes(user_id = 1, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,2]) )
+        self.assertFalse( vote_bo.save_votes(user_id = 1, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,2,3,4]) )
+
+    def test_save_wrong_user(self):
+        vote_key = 'vote_key' + str(random.randint(0,50000)) 
+        self.assertFalse( vote_bo.save_votes(user_id = 999, \
+                                            vote_key=vote_key, \
+                                            votation_id=self.__votation__.votation_id, \
+                                            vote_array=[1,2,2]) )
+
 
 if __name__ == '__main__':
     unittest.main()
