@@ -30,7 +30,6 @@ CREATE TABLE public.judgement (
 );
 
 
-ALTER TABLE public.judgement OWNER TO dinogen;
 
 --
 -- Name: option; Type: TABLE; Schema: public; Owner: dinogen
@@ -39,12 +38,10 @@ ALTER TABLE public.judgement OWNER TO dinogen;
 CREATE TABLE public.option (
     option_id integer NOT NULL,
     votation_id integer,
-    option_name character varying(50) NOT NULL,
-    description character varying(250) NOT NULL
+    option_name character varying(50) NOT NULL
 );
 
 
-ALTER TABLE public.option OWNER TO dinogen;
 
 --
 -- Name: option_id_seq; Type: SEQUENCE; Schema: public; Owner: dinogen
@@ -58,7 +55,6 @@ CREATE SEQUENCE public.option_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.option_id_seq OWNER TO dinogen;
 
 --
 -- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: dinogen
@@ -72,7 +68,6 @@ CREATE SEQUENCE public.user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_id_seq OWNER TO dinogen;
 
 --
 -- Name: votation; Type: TABLE; Schema: public; Owner: dinogen
@@ -91,7 +86,6 @@ CREATE TABLE public.votation (
 );
 
 
-ALTER TABLE public.votation OWNER TO dinogen;
 
 --
 -- Name: votation_id_seq; Type: SEQUENCE; Schema: public; Owner: dinogen
@@ -105,7 +99,6 @@ CREATE SEQUENCE public.votation_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.votation_id_seq OWNER TO dinogen;
 
 --
 -- Name: vote; Type: TABLE; Schema: public; Owner: dinogen
@@ -119,7 +112,6 @@ CREATE TABLE public.vote (
 );
 
 
-ALTER TABLE public.vote OWNER TO dinogen;
 
 --
 -- Name: voter; Type: TABLE; Schema: public; Owner: dinogen
@@ -132,7 +124,6 @@ CREATE TABLE public.voter (
 );
 
 
-ALTER TABLE public.voter OWNER TO dinogen;
 
 --
 -- Name: votinguser; Type: TABLE; Schema: public; Owner: dinogen
@@ -146,82 +137,6 @@ CREATE TABLE public.votinguser (
     verified integer
 );
 
-
-ALTER TABLE public.votinguser OWNER TO dinogen;
-
---
--- Data for Name: judgement; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.judgement (votation_id, jud_value, jud_name) FROM stdin;
-\.
-
-
---
--- Data for Name: option; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.option (option_id, votation_id, option_name, description) FROM stdin;
-\.
-
-
---
--- Data for Name: votation; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.votation (votation_id, promoter_user_id, votation_description, description_url, begin_date, end_date, votation_type, votation_status, list_voters) FROM stdin;
-\.
-
-
---
--- Data for Name: vote; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.vote (vote_key, votation_id, option_id, jud_value) FROM stdin;
-\.
-
-
---
--- Data for Name: voter; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.voter (user_id, votation_id, voted) FROM stdin;
-\.
-
-
---
--- Data for Name: votinguser; Type: TABLE DATA; Schema: public; Owner: dinogen
---
-
-COPY public.votinguser (user_id, user_name, pass_word, email, verified) FROM stdin;
-1	aldo	aldo	\N	\N
-2	beppe	beppe	\N	\N
-3	carlo	carlo	\N	\N
-4	dario	dario	\N	\N
-5	ernesto	ernesto	\N	\N
-6	fabio	fabio	\N	\N
-\.
-
-
---
--- Name: option_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dinogen
---
-
-SELECT pg_catalog.setval('public.option_id_seq', 1, false);
-
-
---
--- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dinogen
---
-
-SELECT pg_catalog.setval('public.user_id_seq', 6, true);
-
-
---
--- Name: votation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dinogen
---
-
-SELECT pg_catalog.setval('public.votation_id_seq', 1, false);
 
 
 --

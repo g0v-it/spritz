@@ -13,6 +13,7 @@ LOGIN_TEMPLATE = 'login_superauth_template.html'
 CLIENT_ID=os.environ.get('SUPERAUTH_LOGIN_CLIENT_ID')
 CLIENT_SECRET=os.environ.get('SUPERAUTH_LOGIN_CLIENT_SECRET')
 
+
 def get_auth_data(request):
     token = request.args.get('token', None)
     state = request.args.get('state', None)

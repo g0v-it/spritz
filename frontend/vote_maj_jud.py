@@ -4,6 +4,7 @@ from sqlalchemy import func,desc
 db = config.db
 
 import vote_dao
+import vote_bo
 import voter_dao
 import option_dao
 import votation_dao
@@ -15,23 +16,7 @@ def save_votes(user_id, vote_key,votation_id,vote_array):
     vote_array is like [4,5,6] where option 1 has 4 as judgment,
     option 2 has 4 and option 3 has 6. 
     """
-    b_has_voted = voter_dao.has_voted(user_id, votation_id)
-    if b_has_voted:
-        votes = vote_dao.load_vote_by_key(vote_key)
-        if len(votes) == 0:
-            return False
-        vote_dao.delete_votes_by_key(vote_key)
-    options_list = option_dao.load_options_by_votation(votation_id)
-    for i in range(len(vote_array)):
-        o = Vote(  \
-            vote_key = vote_key, \
-            votation_id = votation_id, \
-            option_id = options_list[i].option_id, \
-            jud_value = vote_array[i])
-        vote_dao.insert_dto(o)
-    voter_dao.set_voted(user_id, votation_id)
-    db.session.commit()
-    return True
+    return vote_bo.save_votes(user_id, vote_key, votation_id, vote_array)
 
 
 def maj_jud_median_calc(totals_array):

@@ -3,24 +3,24 @@ from model import Vote,Voter
 from sqlalchemy import func,desc
 db = config.db
 
-import vote_dao
+import vote_bo
 import voter_dao
+import option_dao
 
 def save_vote(user_id, vote_key,votation_id,option_id):
-    b_has_voted = voter_dao.has_voted(user_id, votation_id)
-    if b_has_voted:
-        votes = vote_dao.load_vote_by_key(vote_key)
-        if len(votes) == 0:
-            return False
-        vote_dao.delete_votes_by_key(vote_key)
-    o = Vote(vote_key = vote_key, \
-        votation_id = votation_id, \
-        option_id = option_id, \
-        jud_value = 1)
-    vote_dao.insert_dto(o)
-    voter_dao.set_voted(user_id, votation_id)
-    db.session.commit()
-    return True
+    """
+    User choose only one option
+    The jud is always 1
+    Insert an array of zeros with only one 1.
+    """
+    option_list = option_dao.load_options_by_votation(votation_id)
+    ar = []
+    for o in option_list:
+        if o.option_id == option_id:
+            ar.append(1)
+        else:
+            ar.append(0)
+    return vote_bo.save_votes(user_id, vote_key, votation_id, ar)
 
 def counting_votes(votation_id):
     """ Return a dict
