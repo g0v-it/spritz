@@ -81,7 +81,7 @@ def termsandconditions():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     message = None
-    print(auth.CLIENT_ID)
+    #print(auth.CLIENT_ID)
     if request.method == 'POST': 
         auth_data = auth.get_auth_data(request)
         auth_result = auth.auth(auth_data)

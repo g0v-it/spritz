@@ -53,11 +53,11 @@ class vote_test_no_voters(unittest.TestCase):
         self.assertIsNotNone(o3.option_id)
         # set juds
         j1 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 1, jud_name = "bad")
+            jud_value = 0, jud_name = "bad")
         j2 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 2, jud_name = "medium")
+            jud_value = 1, jud_name = "medium")
         j3 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 3, jud_name = "good")
+            jud_value = 2, jud_name = "good")
         judgement_dao.insert_dto(j1)
         judgement_dao.insert_dto(j2)
         judgement_dao.insert_dto(j3)
@@ -231,61 +231,61 @@ class vote_test_no_voters(unittest.TestCase):
         u = Vote(vote_key = "vote_key1", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option1.option_id, \
-            jud_value = 1)
+            jud_value = 0)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key1", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option2.option_id, \
-            jud_value = 2)
+            jud_value = 1)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key1", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option3.option_id, \
-            jud_value = 3)
+            jud_value = 2)
         self.assertTrue(vote_dao.insert_dto(u))
         db.session.commit()
         actual = vote_dao.counts_votes_by_votation(self.__votation__.votation_id)
-        expected = {self.__option1.option_id: {1:1, 2:0, 3:0}, \
-                    self.__option2.option_id: {1:0, 2:1, 3:0}, \
-                    self.__option3.option_id: {1:0, 2:0, 3:1} }
+        expected = {self.__option1.option_id: {0:1, 1:0, 2:0}, \
+                    self.__option2.option_id: {0:0, 1:1, 2:0}, \
+                    self.__option3.option_id: {0:0, 1:0, 2:1} }
         self.assertEqual(expected, actual)
     def test_counts_votes_by_votation_2(self):
         u = Vote(vote_key = "vote_key2", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option1.option_id, \
-            jud_value = 1)
+            jud_value = 0)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key2", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option2.option_id, \
-            jud_value = 2)
+            jud_value = 1)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key2", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option3.option_id, \
-            jud_value = 3)
+            jud_value = 2)
         self.assertTrue(vote_dao.insert_dto(u))
 
         u = Vote(vote_key = "vote_key3", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option1.option_id, \
-            jud_value = 1)
+            jud_value = 0)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key3", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option2.option_id, \
-            jud_value = 1)
+            jud_value = 0)
         self.assertTrue(vote_dao.insert_dto(u))
         u = Vote(vote_key = "vote_key3", \
             votation_id = self.__votation__.votation_id, \
             option_id = self.__option3.option_id, \
-            jud_value = 1)
+            jud_value = 0)
         self.assertTrue(vote_dao.insert_dto(u))
         db.session.commit()
         actual = vote_dao.counts_votes_by_votation(self.__votation__.votation_id)
-        expected = {self.__option1.option_id: {1:2, 2:0, 3:0}, \
-                    self.__option2.option_id: {1:1, 2:1, 3:0}, \
-                    self.__option3.option_id: {1:1, 2:0, 3:1} }
+        expected = {self.__option1.option_id: {0:2, 1:0, 2:0}, \
+                    self.__option2.option_id: {0:1, 1:1, 2:0}, \
+                    self.__option3.option_id: {0:1, 1:0, 2:1} }
         self.assertEqual(expected, actual)
 
 class vote_test_voters(unittest.TestCase):
@@ -315,6 +315,21 @@ class vote_test_voters(unittest.TestCase):
         self.assertIsNotNone(o1.option_id)
         self.assertIsNotNone(o2.option_id)
         self.assertIsNotNone(o3.option_id)
+        # set juds
+        j1 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 0, jud_name = "bad")
+        j2 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 1, jud_name = "medium")
+        j3 = Judgement(votation_id = self.__votation__.votation_id, \
+            jud_value = 2, jud_name = "good")
+        judgement_dao.insert_dto(j1)
+        judgement_dao.insert_dto(j2)
+        judgement_dao.insert_dto(j3)
+        db.session.commit()
+        jud_array = judgement_dao.load_judgement_by_votation(self.__votation__.votation_id)
+        self.__jud1 = jud_array[0]
+        self.__jud2 = jud_array[1]
+        self.__jud3 = jud_array[2]
         voter1 = Voter(user_id = 1, votation_id = self.__votation__.votation_id, voted = 0)
         voter_dao.insert_dto(voter1)
         db.session.commit()
@@ -328,6 +343,7 @@ class vote_test_voters(unittest.TestCase):
     def test_save_simple_ok(self):
         votation_id = self.__votation__.votation_id
         option_id = self.__option1.option_id
+        #def save_vote(user_id, vote_key,votation_id,option_id):
         self.assertTrue( vote_simple.save_vote(1,"akey",votation_id,option_id) )
 
 class vote_test_new_save_DAO(unittest.TestCase):
@@ -360,11 +376,11 @@ class vote_test_new_save_DAO(unittest.TestCase):
         self.assertIsNotNone(o3.option_id)
         # set juds
         j1 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 1, jud_name = "bad")
+            jud_value = 0, jud_name = "bad")
         j2 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 2, jud_name = "medium")
+            jud_value = 1, jud_name = "medium")
         j3 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 3, jud_name = "good")
+            jud_value = 2, jud_name = "good")
         judgement_dao.insert_dto(j1)
         judgement_dao.insert_dto(j2)
         judgement_dao.insert_dto(j3)
@@ -382,17 +398,17 @@ class vote_test_new_save_DAO(unittest.TestCase):
 
     def test_save_ok(self):
         vote_key = 'vote_key' + str(random.randint(0,50000)) 
-        self.assertTrue( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [1,2,3]) )
+        self.assertTrue( vote_dao.save_vote(self.__votation__.votation_id, vote_key, [0,1,2]) )
         ar = vote_dao.load_vote_by_key(vote_key)
         self.assertEqual(3,len(ar))
         check = True
         for v in ar:
             if (v.option_id == self.__option1.option_id and \
-                v.jud_value == 1) or \
+                v.jud_value == 0) or \
                (v.option_id == self.__option2.option_id and \
-               v.jud_value == 2) or \
+               v.jud_value == 1) or \
                (v.option_id == self.__option3.option_id and \
-               v.jud_value == 3): 
+               v.jud_value == 2): 
                 check = True
             else:
                 check = False
@@ -458,11 +474,11 @@ class vote_test_new_save_BO(unittest.TestCase):
         self.assertIsNotNone(o3.option_id)
         # set juds
         j1 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 1, jud_name = "bad")
+            jud_value = 0, jud_name = "bad")
         j2 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 2, jud_name = "medium")
+            jud_value = 1, jud_name = "medium")
         j3 = Judgement(votation_id = self.__votation__.votation_id, \
-            jud_value = 3, jud_name = "good")
+            jud_value = 2, jud_name = "good")
         judgement_dao.insert_dto(j1)
         judgement_dao.insert_dto(j2)
         judgement_dao.insert_dto(j3)
@@ -483,7 +499,7 @@ class vote_test_new_save_BO(unittest.TestCase):
         self.assertTrue( vote_bo.save_votes(user_id = 1, \
                                             vote_key=vote_key, \
                                             votation_id=self.__votation__.votation_id, \
-                                            vote_array=[1,2,3]) )
+                                            vote_array=[0,1,2]) )
         ar = vote_dao.load_vote_by_key(vote_key)
         self.assertEqual(3, len(ar) )
         self.assertTrue(voter_dao.has_voted(1,self.__votation__.votation_id))
