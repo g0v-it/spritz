@@ -344,7 +344,15 @@ class vote_test_voters(unittest.TestCase):
         votation_id = self.__votation__.votation_id
         option_id = self.__option1.option_id
         #def save_vote(user_id, vote_key,votation_id,option_id):
-        self.assertTrue( vote_simple.save_vote(1,"akey",votation_id,option_id) )
+        self.assertTrue( vote_simple.save_vote(1,"akey123",votation_id,option_id) )
+        ar = vote_dao.load_vote_by_key("akey123")
+        for v in ar:
+            if v.option_id == option_id:
+                self.assertEqual(1, v.jud_value)
+            else:
+                self.assertEqual(0, v.jud_value)
+        
+
 
 class vote_test_new_save_DAO(unittest.TestCase):
     def setUp(self):

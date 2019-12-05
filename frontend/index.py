@@ -324,7 +324,7 @@ def votesimplemaj(v):
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]
         my_vote = request.form["my_vote"]
-        result = vote_simple.save_vote(current_user.u.user_id, vote_key, v.votation_id,my_vote)
+        result = vote_simple.save_vote(current_user.u.user_id, vote_key, v.votation_id,int(my_vote))
         if result:
             message = (_("Your vote has been registered"), MSG_OK)
         else:

@@ -61,6 +61,8 @@ class Option(db.Model):
     votation_id = Column(Integer, ForeignKey('votation.votation_id'))
     votation = relationship(Votation)
     option_name = Column(String(50),nullable=False)
+    def __repr__(self):
+        return "<Option %d,%d,%s>" % (self.votation_id, self.option_id, self.option_name)
 
 class Judgement(db.Model):
     """
@@ -106,6 +108,8 @@ class Vote(db.Model):
     option_id = Column(Integer,ForeignKey('option.option_id'),nullable=False)
     option = relationship(Option)
     jud_value = Column(Integer, nullable=False)
+    def __repr__(self):
+        return "<Vote %d,%d,%d>" % (self.votation_id, self.option_id, self.jud_value)
     
 class Voter(db.Model):
     """
