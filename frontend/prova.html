@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>prova UTC</title>
+    </head>
+    <body>
+        <p>The input is <span id="d1"></span></p>
+        <p>I will save <span id="d2"></span></p>
+        <p>I read <span id="d3"></span></p>
+        <p>I display <span id="d4"></span></p>
+
+        <script lang="javascript">
+var dt = new Date(2020,0,29,21,30);
+var dtUTC = new Date(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDay(), dt.getUTCHours(), dt.getUTCMinutes());
+var d1 = document.getElementById("d1");
+var d2 = document.getElementById("d2");
+d1.innerText = dt.toString();
+d2.innerText = dtUTC.toString();
+
+var dtRead = new Date(2020,0,29,20,30);
+var dtLoc = new Date();
+
+dtLoc.setUTCHours(dtRead.getHours());
+dtLoc.setUTCMinutes(dtRead.getMinutes());
+
+var d3 = document.getElementById("d3");
+var d4 = document.getElementById("d4");
+d3.innerText = dtRead.toString();
+d4.innerText = dtLoc.toString();
+        </script>
+    </body>
+</html>
