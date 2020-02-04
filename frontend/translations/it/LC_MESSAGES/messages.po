@@ -93,8 +93,8 @@ msgid "Your vote has been registered"
 msgstr "Voto registrato"
 
 #: index.py:297 index.py:312
-msgid "Error. Vote NOT registered. Wrong Password?"
-msgstr "Errore. Voto NON registrato. Password sbagliata?"
+msgid "Error. Vote NOT registered. Wrong key?"
+msgstr "Errore. Voto NON registrato. Chiave sbagliata?"
 
 #: index.py:298 index.py:313
 msgid "Vote registering"
@@ -454,11 +454,11 @@ msgstr "Non puoi votare pi&ugrave;"
 
 #: templates/majority_jud/vote_template.html:12
 msgid "You must choose a judgment for each option"
-msgstr "Devi indicare un giudizio for ogni opzione"
+msgstr "Devi indicare un giudizio per ogni opzione"
 
 #: templates/majority_jud/vote_template.html:13
 msgid "The \"No opinion\" judgment is the lowest ranking"
-msgstr "Il giudizio \"Non So\" &egrave; il voto più basso"
+msgstr "Il giudizio \"Non So\" &egrave; il voto pi&ugrave; basso"
 
 #: templates/majority_jud/vote_template.html:14
 msgid "You need to think up and enter a secret key, type it and keep it secret"
@@ -498,7 +498,7 @@ msgid ""
 "This secret key is for THIS election only. You can use any word you want."
 " Keep it secret and don't forget it."
 msgstr ""
-"Questa frase segreta vale solo per QUESTA elezione. Puoi usare ogni "
+"Questa chiave segreta vale solo per QUESTA elezione. Puoi usare ogni "
 "parola che vuoi. Tienila segreta e non dimenticarla."
 
 #: templates/majority_jud/vote_template.html:56
