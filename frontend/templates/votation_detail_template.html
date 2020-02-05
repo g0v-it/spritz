@@ -89,7 +89,7 @@
 
     {% if current_user.u.user_id == v.promoter_user.user_id  %}
         {% if v.votation_status <= 1 and votation_timing <= 1 and v.list_voters == 1 and v.votation_type != "draw" %}
-            <h3>{{_("Voters list")}}</h3>
+            <h3>{{_("Add Voters")}}</h3>
             <form action="/add_voters" method="post" id="list_voters_form">
                 <input type="hidden" name="votation_id" value="{{v.votation_id}}">
                 <div class="form-group">
@@ -102,6 +102,22 @@
             </form>
         {% endif %}
     {% endif %}
+
+    {% if current_user.u.user_id == v.promoter_user.user_id  %}
+        {% if v.list_voters == 1 and v.votation_type != "draw" %}
+            <h3>{{_("Voters List")}}</h3>
+            <ol>
+                {% for a_voter in voters_array %}
+                    {% if a_voter.voted  %}
+                        <li><span >{{a_voter.user.user_name}}</span> has voted</li>
+                    {% else %}
+                        <li><span >{{a_voter.user.user_name}}</span></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+                {% endif %}
+    {% endif %}
+
 
 
 {% endblock %}

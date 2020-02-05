@@ -9,7 +9,7 @@ db = config.db
 #import option_dao
 import user
 import votation_dao
-
+from sqlalchemy import desc
 # class voter_dto:
 #     """DTO class for the database table"""
 #     def __init__(self):
@@ -17,6 +17,9 @@ import votation_dao
 #         self.votation_id = None
 #         self.voted = None
 
+def load_voters_list(votation_id):
+    return db.session.query(Voter).filter(Voter.votation_id == votation_id).order_by(desc(Voter.voted)).all()
+    
 
 def insert_dto(o):
     try:

@@ -179,12 +179,16 @@ def votation_list():
 @login_required
 def votation_detail(votation_id):
     v = votation_dao.load_votation_by_id(votation_id)
+    options_array = option_dao.load_options_by_votation(v.votation_id)
+    voters_array = None
+    if v.list_voters:
+        voters_array = voter_dao.load_voters_list(votation_id)
     if v.votation_type == votation_dao.TYPE_MAJORITY_JUDGMENT:
-        return votation_detail_maj_jud(v)
+        return votation_detail_maj_jud(v,options_array, voters_array)
     # if v.votation_type == votation_dao.TYPE_DRAW:
     #     return votation_detail_draw(v)
     if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
-        return votation_detail_simple(v)
+        return votation_detail_simple(v, options_array, voters_array)
 
 
 # def votation_detail_draw(v):
@@ -204,8 +208,7 @@ def votation_detail(votation_id):
 #          words=votation_dao.WORDS, type_description=votation_dao.TYPE_DESCRIPTION)
 
 
-def votation_detail_maj_jud(v):
-    options_array = option_dao.load_options_by_votation(v.votation_id)
+def votation_detail_maj_jud(v, options_array, voters_array):
     juds_array = judgement_dao.load_judgement_by_votation(v.votation_id)
     counting = None
     is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
@@ -218,10 +221,9 @@ def votation_detail_maj_jud(v):
          count_votes=vote_dao.count_votes(v.votation_id), \
          votation_timing=votation_dao.votation_timing(v),counting=counting, \
          type_description=votation_dao.TYPE_DESCRIPTION, \
-         is_voter=is_voter)
+         is_voter=is_voter, voters_array=voters_array)
 
-def votation_detail_simple(v):
-    options_array = option_dao.load_options_by_votation(v.votation_id)
+def votation_detail_simple(v, options_array, voters_array):
     counting = None
     is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
     if v.votation_status == votation_dao.STATUS_ENDED:
@@ -233,7 +235,7 @@ def votation_detail_simple(v):
          count_votes=vote_dao.count_votes(v.votation_id), \
          votation_timing=votation_dao.votation_timing(v),counting=counting, \
          type_description=votation_dao.TYPE_DESCRIPTION, \
-         is_voter=is_voter)
+         is_voter=is_voter, voters_array=voters_array)
 
 
 @app.route("/close_election/<int:votation_id>")
