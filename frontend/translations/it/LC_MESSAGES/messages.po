@@ -86,7 +86,7 @@ msgstr "Solo il promotore dell'elezione può aggiungere aventi diritto"
 #: index.py:285 templates/majority_jud/vote_template.html:58
 #: templates/votation_list_template.html:25
 msgid "Vote"
-msgstr "Voto"
+msgstr "Vota"
 
 #: index.py:295 index.py:310
 msgid "Your vote has been registered"

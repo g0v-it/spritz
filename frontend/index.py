@@ -313,7 +313,7 @@ def votemajjud(v):
         if result:
             message = (_("Your vote has been registered"), MSG_OK)
         else:
-            message = (_("Error. Vote NOT registered. Wrong Password?"),MSG_KO)
+            message = (_("Error. Vote NOT registered. Wrong key?"),MSG_KO)
         return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
 
 def votesimplemaj(v):
