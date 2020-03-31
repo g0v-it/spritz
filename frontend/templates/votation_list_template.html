@@ -17,8 +17,8 @@
         <div class="col border m-1 ">{{v.votation_description}}</div>
         <div class="col border m-1"><span class="font-italic">{{states[v.votation_status]}}</span></div>
         <div class="w-100"></div>
-        <div class="col border m-1 text-nowrap "><span class="font-weight-bold">{{_("Begin")}}:</span> {{v.begin_date}}</div>
-        <div class="col border m-1 text-nowrap " ><span class="font-weight-bold">{{_("End")}}:</span> {{v.end_date}}</div>
+        <div class="col border m-1 text-nowrap "><span class="font-weight-bold">{{_("Begin")}}:</span> {{v.begin_date.year}}-{{v.begin_date.month}}-{{v.begin_date.day}}</div>
+        <div class="col border m-1 text-nowrap " ><span class="font-weight-bold">{{_("End")}}:</span> {{v.end_date.year}}-{{v.end_date.month}}-{{v.end_date.day}}</div>
         <div class="w-100"></div>
         <div class="col m-1">
             {% if v.votation_status == 1 %}
