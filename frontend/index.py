@@ -124,8 +124,8 @@ def votation_propose():
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
         v.description_url = request.form['description_url']
-        v.begin_date = request.form['begin_date'] + " " + request.form['begin_time']
-        v.end_date = request.form['end_date'] + " " + request.form['end_time']
+        v.begin_date = request.form['utc_begin_date']
+        v.end_date = request.form['utc_end_date']
         v.votation_type = request.form['votation_type']
         v.list_voters = 0
         if 'list_voters' in  request.form.keys():

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2019 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-18 19:36+0200\n"
+"POT-Creation-Date: 2020-03-31 19:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,86 +17,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: index.py:68 index.py:332 templates/login_google_template.html:5
-#: templates/login_google_template.html:12 templates/login_template.html:5
-msgid "Main menu"
+#: auth_google.py:24 auth_google.py:38 auth_ldap.py:37 auth_test.py:23
+msgid "Login failed"
 msgstr ""
 
-#: index.py:72 index.py:76
-msgid "Credits"
-msgstr ""
-
-#: index.py:88
+#: auth_google.py:48 auth_ldap.py:44 auth_superauth.py:42 auth_test.py:29
 msgid "Login successful"
 msgstr ""
 
-#: index.py:90
-msgid "Wrong login"
+#: auth_ldap.py:47 auth_test.py:31
+msgid "Wrong user or password"
 msgstr ""
 
-#: index.py:103
+#: auth_superauth.py:46
+msgid "Login not successful, (no username)"
+msgstr ""
+
+#: index.py:70 index.py:353 templates/login_google_template.html:5
+#: templates/login_google_template.html:12
+#: templates/login_superauth_template.html:5
+#: templates/login_superauth_template.html:9 templates/login_template.html:5
+msgid "Main menu"
+msgstr ""
+
+#: index.py:74 index.py:78
+msgid "Credits"
+msgstr ""
+
+#: index.py:94 templates/base_template.html:55
+msgid "Login"
+msgstr ""
+
+#: index.py:107
+msgid "Login result"
+msgstr ""
+
+#: index.py:122
 msgid "Please, insert data"
 msgstr ""
 
-#: index.py:120
+#: index.py:139
 msgid "New election"
 msgstr ""
 
-#: index.py:128 templates/base_template.html:47
+#: index.py:147 templates/base_template.html:47
 msgid "Election list"
 msgstr ""
 
-#: index.py:195 index.py:210
+#: index.py:217 index.py:231
 msgid "Election details"
 msgstr ""
 
-#: index.py:227
+#: index.py:248
 msgid "Election closed"
 msgstr ""
 
-#: index.py:228
+#: index.py:249
 msgid "Election closed, please, check results"
 msgstr ""
 
-#: index.py:236 index.py:240
+#: index.py:257 index.py:261
 msgid "Delete"
 msgstr ""
 
-#: index.py:237
+#: index.py:258
 msgid "Election deleted"
 msgstr ""
 
-#: index.py:253
+#: index.py:274
 msgid "Voter"
 msgstr ""
 
-#: index.py:254
+#: index.py:275
 msgid "{} voters being added"
 msgstr ""
 
-#: index.py:257 templates/votation_detail_template.html:30
+#: index.py:278 templates/votation_detail_template.html:30
 msgid "Voters"
 msgstr ""
 
-#: index.py:258
+#: index.py:279
 msgid "Sorry, only the owner of this election can add voters"
 msgstr ""
 
-#: index.py:285 templates/majority_jud/vote_template.html:58
+#: index.py:306 templates/majority_jud/vote_template.html:58
 #: templates/votation_list_template.html:25
 msgid "Vote"
 msgstr ""
 
-#: index.py:295 index.py:310
+#: index.py:316 index.py:331
 msgid "Your vote has been registered"
 msgstr ""
 
-#: index.py:297 index.py:312
-msgid "Error. Vote NOT registered. Wrong Password?"
+#: index.py:318
+msgid "Error. Vote NOT registered. Wrong key?"
 msgstr ""
 
-#: index.py:298 index.py:313
+#: index.py:319 index.py:334
 msgid "Vote registering"
+msgstr ""
+
+#: index.py:333
+msgid "Error. Vote NOT registered. Wrong Password?"
 msgstr ""
 
 #: votation_dao.py:29
@@ -132,7 +154,7 @@ msgid "Failed"
 msgstr ""
 
 #: templates/base_template.html:32 templates/login_google_template.html:4
-#: templates/login_template.html:4
+#: templates/login_superauth_template.html:4 templates/login_template.html:4
 msgid "Welcome"
 msgstr ""
 
@@ -146,10 +168,6 @@ msgstr ""
 
 #: templates/base_template.html:51
 msgid "Logoff"
-msgstr ""
-
-#: templates/base_template.html:55
-msgid "Login"
 msgstr ""
 
 #: templates/confirmation_template.html:3
@@ -176,11 +194,13 @@ msgstr ""
 msgid "How it works"
 msgstr ""
 
-#: templates/login_google_template.html:5 templates/login_template.html:5
+#: templates/login_google_template.html:5
+#: templates/login_superauth_template.html:5 templates/login_template.html:5
 msgid "Go to"
 msgstr ""
 
 #: templates/login_google_template.html:12
+#: templates/login_superauth_template.html:9
 msgid "After logging in by this button, please go to"
 msgstr ""
 
@@ -294,7 +314,7 @@ msgid "The election is failed"
 msgstr ""
 
 #: templates/votation_detail_template.html:92
-msgid "Voters list"
+msgid "Add Voters"
 msgstr ""
 
 #: templates/votation_detail_template.html:96
@@ -308,6 +328,10 @@ msgstr ""
 
 #: templates/votation_detail_template.html:100
 msgid "Add"
+msgstr ""
+
+#: templates/votation_detail_template.html:108
+msgid "Voters List"
 msgstr ""
 
 #: templates/votation_list_template.html:4
@@ -420,7 +444,7 @@ msgstr ""
 msgid "One judgement each row, best on top"
 msgstr ""
 
-#: templates/votation_propose_template.html:71
+#: templates/votation_propose_template.html:74
 msgid "Save"
 msgstr ""
 
