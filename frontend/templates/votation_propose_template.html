@@ -68,26 +68,14 @@
         <label class="form-check-label" for="list_voters">{{_("Add voters")}}</label>
     </div>
 
+    <input type="hidden" name="utc_begin_date" id="utc_begin_date" />
+    <input type="hidden" name="utc_end_date" id="utc_end_date" />
+
     <button type="submit" class="btn btn-primary">{{_("Save")}}</button>
 </form>
 <div class="font-weight-light mt-4 mb-2">UTC time: {{utcnow}}</div>
 
 <script>
-    function formatDate(d) {
-        month = d.getMonth()+1;
-        day = d.getDate();
-        formatted_date = d.getFullYear() + '-' +
-            (month<10 ? '0' : '') + month + '-' +
-            (day<10 ? '0' : '') + day;    
-        return formatted_date;
-    }
-
-    function formatTime(d) {
-        var formatted_time = (d.getHours()<10 ? '0' : '') + d.getHours() + ':' + 
-        (d.getMinutes()<10 ? '0' : '') + d.getMinutes();
-        return formatted_time;
-    }
-
 $(function () {
     // show and hide of options
     $("#votation_type").change(
@@ -142,15 +130,12 @@ $(function () {
 
         // Convert time in UTC
         var local_date = new Date($("#begin_date").val() + " " + $("#begin_time").val());
-        var utc_date = new Date(local_date.getUTCFullYear(),local_date.getUTCMonth(),local_date.getUTCDay(),local_date.getUTCHours(),local_date.getUTCMinutes()); 
-        $("#begin_date").val(formatDate(utc_date));
-        $("#begin_time").val(formatTime(utc_date));
+        var utc_date = local_to_utc(local_date);
+        $("#utc_begin_date").val(formatDateTime(utc_date));
 
         local_date = new Date($("#end_date").val() + " " + $("#end_time").val());
-        utc_date = new Date(local_date.getUTCFullYear(),local_date.getUTCMonth(),local_date.getUTCDay(),local_date.getUTCHours(),local_date.getUTCMinutes()); 
-        $("#end_date").val(formatDate(utc_date));
-        $("#end_time").val(formatTime(utc_date));
-
+        utc_date = local_to_utc(local_date);
+        $("#utc_end_date").val(formatDateTime(utc_date));
 
         return true;
     });

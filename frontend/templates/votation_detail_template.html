@@ -13,18 +13,18 @@
     <div class="container">
         {% if votation_timing == -1 %}
         <p class="font-weight-bold">{{_("Election is not started yet")}}.</p>
-        <p><span class="font-weight-bold">{{_("Will begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
+        <p><span class="font-weight-bold">{{_("Will begin at")}}:</span> <span id="begin_date"></span>  </p>
+        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> <span id="end_date"></span>  </p>    
         {% endif %}
         {% if votation_timing == +1 %}
         <p class="font-weight-bold">{{_("Election is over")}}.</p>
-        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">{{_("Ended at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
+        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> <span id="begin_date"></span>  </p>
+        <p><span class="font-weight-bold">{{_("Ended at")}}:</span> <span id="end_date"></span> </p>
         {% endif %}
         {% if votation_timing == 0 %}
         <p class="font-weight-bold">Election is ongoing.</p>
-        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> {{v.begin_date}} {{v.begin_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>
-        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> {{v.end_date}} {{v.end_time}} <a href="https://time.is/it/UTC" target="utc">UTC</a></p>    
+        <p><span class="font-weight-bold">{{_("Begin at")}}:</span> <span id="begin_date"></span>  </p>
+        <p><span class="font-weight-bold">{{_("Will end at")}}:</span> <span id="end_date"></span> </p>    
         {% endif %}
     </div>
     <p data-cy="count_voters"><span class="font-weight-bold">{{_("Voters")}} :</span> {{count_voters}}</p>
@@ -103,5 +103,11 @@
         {% endif %}
     {% endif %}
 
+    <script>
+        var d1 = new Date("{{v.begin_date}}");
+        var d2 = new Date("{{v.end_date}}");
+        $("#begin_date").text(formatDateTime(utc_to_local(d1)));
+        $("#end_date").text(formatDateTime(utc_to_local(d2)));
+    </script>
 
 {% endblock %}

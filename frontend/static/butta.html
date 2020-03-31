@@ -1,0 +1,26 @@
+<html>
+    <body>
+
+
+        <script src="copernico.js"></script>
+
+
+        <p>Data loc: <span id="d1"></span></p>
+        <p>Data UTC: <span id="d2"></span></p> <hr>
+        <p>Data UTC: <span id="d3"></span></p>
+        <p>Data loc: <span id="d4"></span></p>
+
+
+
+        <script>
+            var mydate = new Date("2020-03-29T15:00:00");
+            document.getElementById("d1").innerText = mydate;
+            document.getElementById("d2").innerText = local_to_utc(mydate);
+
+            var mydateutc = new Date("2020-03-29T15:00:00");
+            document.getElementById("d3").innerText = mydateutc;
+            document.getElementById("d4").innerText = utc_to_local(mydateutc);
+        </script>
+
+    </body>
+</html> 
