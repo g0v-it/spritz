@@ -1,0 +1,93 @@
+{% extends "base_template.html" %} {% block body %}
+    <div><h4>{{v.votation_description}}</h4></div>
+    {% if  v.votation_status == 0 %}
+        <p>{{_("You cannot vote yet")}}.</p>
+    {% endif %}
+    {% if  v.votation_status > 1 %}
+        <p>{{_("You cannot vote anymore")}}.</p>
+    {% endif %}
+    {% if  v.votation_status == 1 %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Set your vote.</strong> 
+            {{_("You must choose a color for each option")}}. &nbsp;
+            {{_("Your choice will be used to randomize the list.")}}. &nbsp;
+            {{_("You need to think up and enter a secret key, type it and keep it secret")}}. &nbsp; 
+            {{_("You can use any word or phrase you want")}}. &nbsp;
+            {{_("You can change your vote later, but you MUST use the same secret key as before")}}. &nbsp;
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
+            <table class="table table-bordered">
+            <tr>
+                <th>{{_("Option")}}</th>
+                <th>{{_("Colors")}}</th>
+            </tr>
+            {% for c in options_array %}
+            <tr>
+                <td>{{c.option_name}}</td>
+                <td>
+                {% for i in range(words_array|count) %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" 
+                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} data-cy="word{{i}}" />
+                        <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i].jud_name}}</label>
+                    </div>
+                {% endfor %}
+                </td> 
+            </tr>
+            {% endfor %}
+
+            </table>
+            <div class="form-group">
+                <label for="secret_key_{{v.votation_id}}">{{_("Secret key for this vote")}}:</label>
+                <input data-cy="password" type="password" id="secret_key_{{v.votation_id}}" name="secret_key_{{v.votation_id}}" autocomplete="off" />
+                <small class="form-text text-muted">{{_("Remember this secret key; it isn't possible to recover it")}}</small>
+            </div>
+            <div class="form-group">
+                    <a data-toggle="popover" 
+                    tabindex="0"
+                    data-trigger="focus"
+                    data-placement="top"
+                    title="Think up a secret key" 
+                    data-content='{{_("This secret key is for THIS election only. You can use any word you want. Keep it secret and don't forget it.")}}'>
+                    {{_("What's this secret key?")}}</a> 
+            </div>
+        <button class="btn btn-warning" type="submit" id="sub_button" data-cy="submit">{{_("Vote")}}</button>
+        <input type="hidden" id="vote_key" name="vote_key" value="xxx"  />
+    </form>
+    {% endif %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js"></script>
+<script>
+
+    $("#vote_form").submit(function( event ){
+        var pass_word = $("#secret_key_{{v.votation_id}}").val().trim();
+        if (!pass_word) {
+            alert('{{_("You must enter a secret key")}}');
+            return false;
+        }
+        var md = forge.md.sha256.create();
+        var vote_key = "{{current_user.u.user_id}}-" + "{{v.votation_id}}-" + $("#secret_key_{{v.votation_id}}").val();
+        md.update(vote_key);
+        console.log("vote_key " + vote_key);
+        $("#vote_key").val(md.digest().toHex());
+        return true;
+    });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })    
+
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    })
+
+
+
+</script>
+
+{% endblock %}

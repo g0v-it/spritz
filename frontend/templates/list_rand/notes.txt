@@ -1,0 +1,43 @@
+List randomizer logic:
+
+an election is a list of options
+
+46 cat
+47 dog
+48 bird
+49 snake
+
+Judges are a list of colors
+
+100 RED  
+101 GREEN 
+102 BLUE 
+
+People assign a color to every options
+The results is a random string
+
+The first number is the alfanumeric order of the option, then the count of red green and blue.
+1 2,0,1
+2 1,1,1
+3 0,1,2
+4 1,0,2
+
+Every random string is hashed by SHA256 algorithm. 
+1 2,0,1 -> 5cfdb16dc03cbea36387380142125b4631a5afcae77e7bb1f6d899ce9455ff25
+2 1,1,1 -> 2a462121bc7727292304ce011aa60e7d0cd9d5ad4cf0303de70ca30db27a4ab4
+3 0,1,2 -> f6912b1ba3ef2d283dbcf2d9f88f918729ae945e131b4846200638f871cbec53
+4 1,0,2 -> 23643e792fb52c31d254af86e7c0abbacf27c75dad9591e85b305cc14b23e356
+
+The order of the hash si the list randomization
+
+4 1,0,2 -> 23643e792fb52c31d254af86e7c0abbacf27c75dad9591e85b305cc14b23e356 
+2 1,1,1 -> 2a462121bc7727292304ce011aa60e7d0cd9d5ad4cf0303de70ca30db27a4ab4 
+1 2,0,1 -> 5cfdb16dc03cbea36387380142125b4631a5afcae77e7bb1f6d899ce9455ff25
+3 0,1,2 -> f6912b1ba3ef2d283dbcf2d9f88f918729ae945e131b4846200638f871cbec53
+
+This is the result
+1. snake
+2. dog
+3. cat
+4. bird
+

@@ -189,6 +189,8 @@ def votation_detail(votation_id):
     #     return votation_detail_draw(v)
     if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
         return votation_detail_simple(v, options_array, voters_array)
+    if v.votation_type == votation_dao.TYPE_LIST_RAND:
+        return votation_detail_list_rand(v, options_array, voters_array)
 
 
 # def votation_detail_draw(v):
@@ -236,6 +238,23 @@ def votation_detail_simple(v, options_array, voters_array):
          votation_timing=votation_dao.votation_timing(v),counting=counting, \
          type_description=votation_dao.TYPE_DESCRIPTION, \
          is_voter=is_voter, voters_array=voters_array)
+
+def votation_detail_list_rand(v, options_array,voters_array):
+    import vote_list_rand
+    juds_array = judgement_dao.load_judgement_by_votation(v.votation_id)
+    counting = None
+    is_voter = voter_dao.is_voter(v.votation_id, current_user.u.user_id)
+    if v.votation_status == votation_dao.STATUS_ENDED:
+        counting = vote_maj_jud.votation_counting(v)
+        randomized_list = vote_list_rand.randomized_list(v,options_array)
+    return render_template('list_rand/votation_detail_template.html', pagetitle=_("Election details"), \
+         v=v,  \
+         states=votation_dao.states, options_array=options_array,juds_array=juds_array, \
+         count_voters=voter_dao.count_voters(v.votation_id), \
+         count_votes=vote_dao.count_votes(v.votation_id), \
+         votation_timing=votation_dao.votation_timing(v),counting=counting, \
+         type_description=votation_dao.TYPE_DESCRIPTION, \
+         is_voter=is_voter, voters_array=voters_array, randomized_list=randomized_list)
 
 
 @app.route("/close_election/<int:votation_id>")
@@ -299,6 +318,8 @@ def vote_(votation_id):
         return votemajjud(v)
     if v.votation_type == votation_dao.TYPE_SIMPLE_MAJORITY:
         return votesimplemaj(v)
+    if v.votation_type == votation_dao.TYPE_LIST_RAND:
+        return votelistrand(v)
         
 def votemajjud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
@@ -332,6 +353,25 @@ def votesimplemaj(v):
         else:
             message = (_("Error. Vote NOT registered. Wrong Password?"),MSG_KO)
         return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
+
+def votelistrand(v):
+    options_array = option_dao.load_options_by_votation(v.votation_id)
+    if request.method == 'GET':    
+        return render_template('list_rand/vote_template.html', pagetitle=_("Vote"), \
+        v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id)) 
+    if request.method == 'POST':  
+        vote_key = request.form["vote_key"]
+        vote_array = []
+        for c in options_array:
+            param = "v_" + str(c.option_id)
+            vote_array.append(int(request.form[param]))
+        result = vote_maj_jud.save_votes(current_user.u.user_id, vote_key, v.votation_id, vote_array )
+        if result:
+            message = (_("Your vote has been registered"), MSG_OK)
+        else:
+            message = (_("Error. Vote NOT registered. Wrong key?"),MSG_KO)
+        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
+
 
 @app.route("/update_end_date/<int:votation_id>",  methods=['GET',])
 @login_required

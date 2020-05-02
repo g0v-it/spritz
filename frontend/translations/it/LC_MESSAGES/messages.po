@@ -413,7 +413,7 @@ msgstr "Opzioni o lista dei candidati"
 
 #: templates/votation_propose_template.html:46
 msgid "One option each row"
-msgstr "Ona opzione per riga"
+msgstr "Una opzione per riga"
 
 #: templates/votation_propose_template.html:50
 msgid "Judgement list"

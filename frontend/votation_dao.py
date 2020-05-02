@@ -26,10 +26,12 @@ TYPE_DRAW = 'draw'
 TYPE_MAJORITY_JUDGMENT = 'maj_jud'
 TYPE_MAJORITY_JUDGMENT_SECURE = 'maj_jud_sec'
 TYPE_SIMPLE_MAJORITY = 'simple_maj'
+TYPE_LIST_RAND = 'list_rand'
 TYPE_DESCRIPTION={TYPE_DRAW:_("Draw"), \
     TYPE_MAJORITY_JUDGMENT_SECURE: _("Secure Majority Judgment"), \
     TYPE_MAJORITY_JUDGMENT: "Majority Judgment", \
-    TYPE_SIMPLE_MAJORITY: _("Simple Majority")}
+    TYPE_SIMPLE_MAJORITY: _("Simple Majority"), \
+    TYPE_LIST_RAND: _("List Randomizer")}
 states = [
     _("Created"),
     _("Voting"),
@@ -134,7 +136,11 @@ def validate_dto(v):
             result = False
             errorMessage = "Begin and End dates are not in sequence"
     if result:
-        if v.votation_type != TYPE_DRAW and v.votation_type != TYPE_MAJORITY_JUDGMENT and v.votation_type != TYPE_MAJORITY_JUDGMENT_SECURE and v.votation_type != TYPE_SIMPLE_MAJORITY:
+        if v.votation_type != TYPE_DRAW and \
+           v.votation_type != TYPE_MAJORITY_JUDGMENT and \
+           v.votation_type != TYPE_MAJORITY_JUDGMENT_SECURE and \
+           v.votation_type != TYPE_SIMPLE_MAJORITY and \
+           v.votation_type != TYPE_LIST_RAND:
             result = False
             errorMessage = "Votation Type not valid"
     if result:

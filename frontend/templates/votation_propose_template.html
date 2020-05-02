@@ -15,6 +15,7 @@
         <select class="form-control"  id="votation_type" name="votation_type">
             <option value="maj_jud" selected>{{_("Majority judgment")}}</option>
             <option value="simple_maj">{{_("Simple majority")}}</option>
+            <option value="list_rand">{{_("List randomizer")}}</option>
         </select>
     </div>
 
@@ -80,21 +81,19 @@ $(function () {
     // show and hide of options
     $("#votation_type").change(
         function() {
-            if ($("#votation_type").val() == "draw") {
-                $("#votation_options_group").hide();
-            }
-            else {
+            if ($("#votation_type").val() == "maj_jud") {
                 $("#votation_options_group").show();
+                $("#votation_juds_group").show();
+                $("#votation_juds").val('{{_("Very good")}}\n{{_("Good")}}\n{{_("Acceptable")}}\n{{_("Not enough")}}\n{{_("Poor")}}\n{{_("No opinion")}}')
             }
-        }
-    );
-    $("#votation_type").change(
-        function() {
-            if ($("#votation_type").val() != "maj_jud") {
+            if ($("#votation_type").val() == "simple_maj") {
+                $("#votation_options_group").show();
                 $("#votation_juds_group").hide();
             }
-            else {
-                $("#votation_juds_group").show();
+            if ($("#votation_type").val() == "list_rand") {
+                $("#votation_options_group").show();
+                $("#votation_juds_group").hide();
+                $("#votation_juds").val('{{_("RED")}}\n{{_("BLUE")}}\n{{_("GREEN")}}\n')
             }
         }
     );
