@@ -270,4 +270,9 @@ ALTER TABLE ONLY public.voter
 --
 -- PostgreSQL database dump complete
 --
+insert into  public.votinguser(user_id,user_name,pass_word,email,verified) values (0,'aldo','aldo','',1);
+insert into  public.votinguser(user_id,user_name,pass_word,email,verified) values (1,'beppe','beppe','',1);
+insert into  public.votinguser(user_id,user_name,pass_word,email,verified) values (2,'carlo','carlo','',1);
+insert into  public.votinguser(user_id,user_name,pass_word,email,verified) values (3,'dario','dario','',1);
+insert into  public.votinguser(user_id,user_name,pass_word,email,verified) values (4,'ezio','ezio','',1);
 

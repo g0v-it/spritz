@@ -41,22 +41,22 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
     const random_number = Math.trunc( Math.random() * 10000 ) 
     var begin_date,begin_time,end_date,end_time
     if (when == 'before') {
-        begin_date = Cypress.moment().utc().format("YYYY-MM-DD")
+        begin_date = Cypress.moment().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().utc().add(  delay_minutes,'m').format("HH:mm")
-        end_time   = Cypress.moment().utc().add(2*delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.moment().add(  delay_minutes,'m').format("HH:mm")
+        end_time   = Cypress.moment().add(2*delay_minutes,'m').format("HH:mm")
     }
     if (when == 'during') {
-        begin_date = Cypress.moment().utc().format("YYYY-MM-DD")
+        begin_date = Cypress.moment().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().utc().subtract(delay_minutes,'m').format("HH:mm")
-        end_time = Cypress.moment().utc().add(delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.moment().subtract(delay_minutes,'m').format("HH:mm")
+        end_time = Cypress.moment().add(delay_minutes,'m').format("HH:mm")
     }
     if (when == 'after') {
-        begin_date = Cypress.moment().utc().format("YYYY-MM-DD")
+        begin_date = Cypress.moment().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().utc().subtract(2*delay_minutes,'m').format("HH:mm")
-        end_time = Cypress.moment().utc().subtract(delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.moment().subtract(2*delay_minutes,'m').format("HH:mm")
+        end_time = Cypress.moment().subtract(delay_minutes,'m').format("HH:mm")
     }
     cy.get('#votation_description').type('cypress' + random_number)
     if (type == 'simple') {
@@ -64,6 +64,9 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
     }
     if (type == 'maj_jud') {
         cy.get('#votation_type').select('maj_jud')
+    }
+    if (type == 'list_rand') {
+        cy.get('#votation_type').select('list_rand')
     }
     cy.get('#begin_date').type(begin_date)
     cy.get('#begin_time').type(begin_time)
@@ -80,10 +83,11 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
 Cypress.Commands.add("deletefirstvotation", () => {
             // delete the first votation in the list
             cy.visit("/votation_list")
-            cy.get('[data-cy=detail]').first().click()
-            cy.get("[data-cy=delete_votation]").click()
-            cy.get("[data-cy=confirm_delete]").click()
-            cy.get('.alert-success').should('contain', 'Election deleted')
+            cy.get('[data-cy=votation_id]').first().then(($span) => {
+                const votation_id = $span.text()
+                cy.visit("/delete_election/" + votation_id + "?confirm=yes")
+                cy.get('.alert-success').should('contain', 'Election deleted')
+            })
 })
 
 Cypress.Commands.add("updateenddate", (votation_id,new_end_date,new_end_time) => {
