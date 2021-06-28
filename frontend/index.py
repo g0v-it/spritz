@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os
-from flask import Flask, render_template,request,redirect,url_for
+from flask import Flask, render_template,request,redirect,url_for,jsonify
 from flask_login import LoginManager, login_required, current_user,login_user,logout_user
 from flask_babel import Babel,gettext
 from flask_sqlalchemy import SQLAlchemy
@@ -392,6 +392,43 @@ def lang(lang_code):
     global current_language
     current_language = lang_code
     return render_template('index_template.html', pagetitle=_("Main menu"))
+
+@app.route("/api/login", methods=['POST',])
+def api_login():
+    j = request.json
+    user_name = j["username"]
+    pass_word = j["password"]
+    auth_data = {'username': user_name, 'password': pass_word}
+    auth_result = auth.auth(auth_data)
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        result = {"rc":True, "username": u.u.user_name, "user_id": u.u.user_id }
+    else:
+        result = {"rc":False }
+    return jsonify(result), 201
+
+
+
+@app.route("/api/votation", methods=['POST',])
+def api_votation_insert():
+    j = request.json
+    v = Votation()
+    v.promoter_user_id     = j["promoter_user_id"]   
+    v.votation_description = j["votation_description"]
+    v.description_url      = j["description_url"]
+    v.begin_date           = j["begin_date"]
+    v.end_date             = j["end_date"]
+    v.votation_type        = j["votation_type"]
+    v.votation_status      = j["votation_status"]
+    v.list_voters          = j["list_voters"]
+    options_text           = j["options_text"]
+    judgement_text         = j["judgement_text"]
+    errmsg, msg_ok = votation_bo.insert_votation_with_options(v, options_text, judgement_text)
+    result = {"rc":msg_ok, "error_message": errmsg }
+
+    return jsonify(result), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0') 
