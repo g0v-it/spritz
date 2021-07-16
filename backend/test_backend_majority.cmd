@@ -1,2 +1,0 @@
-test_backend_majority.py
-pause

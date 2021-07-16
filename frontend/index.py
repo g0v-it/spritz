@@ -7,6 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 import config 
 import datetime
 from config import MSG_INFO,MSG_OK,MSG_KO
+#per abilitare CORS
+from flask_cors import CORS, cross_origin
 
 LANGUAGES = {
     'en': 'English',
@@ -15,6 +17,11 @@ LANGUAGES = {
 current_language = None
 
 app = Flask(__name__)
+# per abilitare CORS
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+# fine CORS
+
 app.secret_key = os.urandom(24) 
 # flask-login initialization
 login_manager = LoginManager()
