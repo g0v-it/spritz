@@ -77,6 +77,7 @@ describe('voting list randomize  (no voters) Test', function() {
             cy.get("[data-cy=password]").type("aa")
             cy.get("[data-cy=submit]").click()
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
+            cy.visit('/logout')
 
             cy.log("change user")
             cy.login('beppe', 'beppe')
