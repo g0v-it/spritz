@@ -42,10 +42,6 @@ import votation_bo
 from model import Votation
 if config.AUTH == 'ldap':
     import auth_ldap as auth
-if config.AUTH == 'google':
-    import auth_google as auth
-if config.AUTH == 'superauth':
-    import auth_superauth as auth
 if config.AUTH == 'test':
     import auth_test as auth
 
@@ -58,52 +54,13 @@ def load_user(user_name):
 
 
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    message = None
-    #print(auth.CLIENT_ID)
-    if request.method == 'POST': 
-        auth_data = auth.get_auth_data(request)
-        auth_result = auth.auth(auth_data)
-        if auth_result['logged_in']:
-            u = user.User(auth_result['username'])
-            login_user(u)
-            message = (auth_result['message'],MSG_OK)
-        else:
-            message = (auth_result['message'],MSG_KO)
-    return render_template(auth.LOGIN_TEMPLATE, pagetitle="Login",message=message, CLIENT_ID=auth.CLIENT_ID)
-
-@app.route("/superauthcallback", methods=['GET',])
-def superauth_callback():
-    message = None
-    auth_data = auth.get_auth_data(request)
-    auth_result = auth.auth(auth_data)
-    if auth_result['logged_in']:
-        u = user.User(auth_result['username'])
-        login_user(u)
-        message = (auth_result['message'],MSG_OK)
-    else:
-        message = (auth_result['message'],MSG_KO)
-    return render_template(auth.LOGIN_TEMPLATE, pagetitle="Login result",message=message)
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return render_template('logout_template.html', pagetitle="Logout")
 
 
 
 
-
-
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    return redirect(url_for('login'))
-
-
-
+# @login_manager.unauthorized_handler
+# def unauthorized():
+#     return redirect(url_for('login'))
 
 @app.route("/update_end_date/<int:votation_id>",  methods=['GET',])
 @login_required
@@ -116,7 +73,9 @@ def update_end_date(votation_id):
             votation_bo.update_end_date(votation_id, end_date + " " + end_time)
             return "OK"
     return "KO"
-
+#
+######################### A P I ####################################
+#
 
 @app.route("/api/login", methods=['POST',])
 def api_login():
@@ -135,32 +94,57 @@ def api_login():
 
 
 
-@app.route("/api/votation", methods=['POST',])
-@login_required
-def api_votation_insert():
-    j = request.json
-    v = Votation()
-    v.promoter_user_id     = j["promoter_user_id"]   
-    v.votation_description = j["votation_description"]
-    v.description_url      = j["description_url"]
-    v.begin_date           = j["begin_date"]
-    v.end_date             = j["end_date"]
-    v.votation_type        = j["votation_type"]
-    v.votation_status      = j["votation_status"]
-    v.list_voters          = j["list_voters"]
-    options_text           = j["options_text"]
-    judgement_text         = j["judgement_text"]
-    errmsg, msg_ok = votation_bo.insert_votation_with_options(v, options_text, judgement_text)
-    result = {"rc":msg_ok, "error_message": errmsg }
-    return jsonify(result), 201
+@app.route("/api/votation", methods=['POST','GET'])
+#@login_required
+def api_votation():
+    if request.method == "POST":
+        j = request.json
+        v = Votation()
+        v.promoter_user_id     = j["promoter_user_id"]   
+        v.votation_description = j["votation_description"]
+        v.description_url      = j["description_url"]
+        v.begin_date           = j["begin_date"]
+        v.end_date             = j["end_date"]
+        v.votation_type        = j["votation_type"]
+        v.votation_status      = j["votation_status"]
+        v.list_voters          = j["list_voters"]
+        options_text           = j["options_text"]
+        judgement_text         = j["judgement_text"]
+        errmsg, msg_ok = votation_bo.insert_votation_with_options(v, options_text, judgement_text)
+        result = {"rc":msg_ok, "error_message": errmsg , "votation_id": v.votation_id}
+        return jsonify(result), 201
+    if request.method == "GET":
+        votations = votation_dao.load_votations()
+        l = []
+        for v in votations:
+            o = {"votation_id":          v.votation_id,
+                "promoter_user_id":     v.promoter_user_id     ,  
+                "votation_description": v.votation_description,
+                "description_url":      v.description_url    , 
+                "begin_date":           str(v.begin_date)   ,       
+                "end_date":             str(v.end_date)    ,        
+                "votation_type":        v.votation_type   ,    
+                "votation_status":      v.votation_status,     
+                "list_voters":          v.list_voters}
+            l.append(o)
+        result = {"rc":True, "votations": l }
+        return jsonify(result), 201
+
 
 @app.route("/api/votation/<int:votation_id>", methods=['GET',])
 #@login_required
 def api_votation_get_by_id(votation_id):
-    j = request.json
-    votation_id = j["votation_id"]
     v = votation_dao.load_votation_by_id(votation_id)
-    result = {"rc":True,     "votation": v }
+    o = {"votation_id":          v.votation_id,
+        "promoter_user_id":     v.promoter_user_id     ,  
+        "votation_description": v.votation_description,
+        "description_url":      v.description_url    , 
+        "begin_date":           str(v.begin_date)   ,       
+        "end_date":             str(v.end_date)    ,        
+        "votation_type":        v.votation_type   ,    
+        "votation_status":      v.votation_status,     
+        "list_voters":          v.list_voters}
+    result = {"rc":True, "votation": o }
     return jsonify(result), 201
 
 
