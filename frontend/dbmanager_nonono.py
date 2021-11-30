@@ -1,3 +1,4 @@
+# ignore this file, it is sometime useful...
 import config
 if config.DBTYPE == 'postgresql':
     import psycopg2 as db

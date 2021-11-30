@@ -18,4 +18,17 @@ We have few types of modules:
     * model.py: map objects to DB tables in database using SqlAlchemy. Every object has comments explaining his purpose.
     * config.py: retrieve configuration from environment
 
+To setup and run system in your pc you need following:
+  - install postgresql
+  - create the database in database/postgresql/create.sql
+  - configure environment variables (see config.py)
+  - set SPRITZ_AUTH as 'test'
+  - install python modules (see requirements.txt)
+  - run index.py
+  - point your browser to http://localhost:5000/
+  - login as 'aldo' with password 'aldo'
+
+Virtualenv is highly recommended.
+If you use Visual Studio Code or another dev editor, you can set environment variables in the editor configuration.
+
 
