@@ -132,7 +132,7 @@ def api_votation():
 
 
 @app.route("/api/votation/<int:votation_id>", methods=['GET',])
-#@login_required
+@login_required
 def api_votation_get_by_id(votation_id):
     v = votation_dao.load_votation_by_id(votation_id)
     o = {"votation_id":          v.votation_id,
