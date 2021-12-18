@@ -6,7 +6,7 @@ describe('Login Test', function() {
         cy.visit('/login')  
         cy.get('#user_name').type('aldo')
         cy.get('#pass_word').type('aldo')
-        cy.get('button').click()
+        cy.get('[data-cy=login_button]').click()
         cy.get('.alert-success')
         // logout
         cy.get('[data-cy=logoff]').click()
@@ -34,7 +34,7 @@ describe('Login Test', function() {
         cy.visit('/login')  
         cy.get('#user_name').type('aldo')
         cy.get('#pass_word').type('wrong password')
-        cy.get('button').click()
+        cy.get('[data-cy=login_button]').click()
         cy.get('.alert-danger')
     })
 

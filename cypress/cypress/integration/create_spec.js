@@ -18,7 +18,7 @@ describe('Create election Test', function() {
         cy.get('#end_date').type('2019-04-02')
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("mare\nmonti\ncampagna")
-        cy.get('button').click()
+        cy.get('[data-cy=save]').click()
         cy.get('.alert-success').should('contain', 'Election data saved')
     })
     it('delete the simple maj', function() {
@@ -37,7 +37,7 @@ describe('Create election Test', function() {
         cy.get('#end_date').type('2019-04-02')
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("mare\nmonti\ncampagna")
-        cy.get('button').click()
+        cy.get('[data-cy=save]').click()
         cy.get('.alert-success').should('contain', 'Election data saved')
         cy.visit("/votation_propose")
         cy.get('#votation_description').type('cypress Duplicate description error')
@@ -47,7 +47,7 @@ describe('Create election Test', function() {
         cy.get('#end_date').type('2019-04-02')
         cy.get('#end_time').type('14:45')
         cy.get('#votation_options').type("cypress\nDuplicate\ndescription\nerror")
-        cy.get('button').click()
+        cy.get('[data-cy=save]').click()
         cy.get('.alert-danger').should('contain', 'Cannot save the election')
     })
     it('delete the duplicate', function() {

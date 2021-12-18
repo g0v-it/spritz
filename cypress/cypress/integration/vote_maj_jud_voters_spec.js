@@ -31,8 +31,8 @@ describe('voting majority judgment (voters) Test', function() {
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set the end_date and time so you can close
-            const new_end_date = Cypress.moment().utc().format("YYYY-MM-DD")
-            const new_end_time = Cypress.moment().utc().subtract(2,'m').format("HH:mm")
+            const new_end_date = Cypress.dayjs().utc().format("YYYY-MM-DD")
+            const new_end_time = Cypress.dayjs().utc().subtract(2,'m').format("HH:mm")
 
             cy.updateenddate(votation_id, new_end_date,new_end_time)
     

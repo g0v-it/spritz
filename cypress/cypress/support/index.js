@@ -13,6 +13,14 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+// dayjs module - install it with npm
+// It allow date calculation
+const dayjs = require('dayjs')
+const utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
+// make it global
+Cypress.dayjs = dayjs
+
 // Import commands.js using ES2015 syntax:
 import './commands'
 

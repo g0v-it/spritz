@@ -10,7 +10,6 @@ describe('voting list randomize  (no voters) Test', function() {
     })
 
     it('vote a list radomize  (no voters)', function() {
-        
         // go in the votation and get the first ID
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {
@@ -23,8 +22,8 @@ describe('voting list randomize  (no voters) Test', function() {
             cy.get('.alert-success').should('contain', 'Your vote has been registered')
 
             // set the end_date and time so you can close
-            const new_end_date = Cypress.moment().utc().format("YYYY-MM-DD")
-            const new_end_time = Cypress.moment().utc().subtract(2,'m').format("HH:mm")
+            const new_end_date = Cypress.dayjs().utc().format("YYYY-MM-DD")
+            const new_end_time = Cypress.dayjs().utc().subtract(2,'m').format("HH:mm")
             //cy.wait(1000 * 120)
 
             cy.updateenddate(votation_id, new_end_date,new_end_time)
@@ -66,7 +65,6 @@ describe('voting list randomize  (no voters) Test', function() {
     })
 
     it('vote two different users  (no voters)', function() {
-        
         // aldo voting
         cy.visit("/votation_list")
         cy.get('[data-cy=votation_id]').first().then(($span) => {
@@ -94,8 +92,8 @@ describe('voting list randomize  (no voters) Test', function() {
             cy.visit('/lang/uk')
             
             cy.log("set the end_date and time so you can close")
-            const new_end_date = Cypress.moment().utc().format("YYYY-MM-DD")
-            const new_end_time = Cypress.moment().utc().subtract(2,'m').format("HH:mm")
+            const new_end_date = Cypress.dayjs().utc().format("YYYY-MM-DD")
+            const new_end_time = Cypress.dayjs().utc().subtract(2,'m').format("HH:mm")
 
             cy.updateenddate(votation_id, new_end_date,new_end_time)
     

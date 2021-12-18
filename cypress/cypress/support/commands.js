@@ -41,22 +41,22 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
     const random_number = Math.trunc( Math.random() * 10000 ) 
     var begin_date,begin_time,end_date,end_time
     if (when == 'before') {
-        begin_date = Cypress.moment().format("YYYY-MM-DD")
+        begin_date = Cypress.dayjs().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().add(  delay_minutes,'m').format("HH:mm")
-        end_time   = Cypress.moment().add(2*delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.dayjs().add(  delay_minutes,'m').format("HH:mm")
+        end_time   = Cypress.dayjs().add(2*delay_minutes,'m').format("HH:mm")
     }
     if (when == 'during') {
-        begin_date = Cypress.moment().format("YYYY-MM-DD")
+        begin_date = Cypress.dayjs().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().subtract(delay_minutes,'m').format("HH:mm")
-        end_time = Cypress.moment().add(delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.dayjs().subtract(delay_minutes,'m').format("HH:mm")
+        end_time = Cypress.dayjs().add(delay_minutes,'m').format("HH:mm")
     }
     if (when == 'after') {
-        begin_date = Cypress.moment().format("YYYY-MM-DD")
+        begin_date = Cypress.dayjs().format("YYYY-MM-DD")
         end_date   = begin_date
-        begin_time = Cypress.moment().subtract(2*delay_minutes,'m').format("HH:mm")
-        end_time = Cypress.moment().subtract(delay_minutes,'m').format("HH:mm")
+        begin_time = Cypress.dayjs().subtract(2*delay_minutes,'m').format("HH:mm")
+        end_time = Cypress.dayjs().subtract(delay_minutes,'m').format("HH:mm")
     }
     cy.get('#votation_description').type('cypress' + random_number)
     if (type == 'simple') {
@@ -76,7 +76,7 @@ Cypress.Commands.add("createvotation", (when,type,options_list="a\nb\nc",list_vo
     if (list_voters) {
         cy.get('#list_voters').check()
     }
-    cy.get('button').click()
+    cy.get('[data-cy=save]').click()
     cy.get('.alert-success').should('contain', 'Election data saved')
 })
 
