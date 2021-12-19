@@ -271,7 +271,7 @@ def close_election(votation_id):
     #v = votation_dao.load_votation_by_id(votation_id)
     #votation_dao.update_status(votation_id,votation_dao.STATUS_ENDED)
     votation_bo.set_votation_status_ended(votation_id)
-    return render_template('thank_you_template.html', \
+    return render_template('thank_you_template.html', votation_id=votation_id, \
     pagetitle=_("Election closed"), \
     message=(_("Election closed, please, check results"),MSG_OK))
 
@@ -280,10 +280,10 @@ def close_election(votation_id):
 def delete_election(votation_id):
     if request.args.get('confirm') == "yes":
         votation_bo.deltree_votation_by_id(votation_id)
-        return render_template('thank_you_template.html', \
+        return render_template('thank_you_template.html',  votation_id=0, \
         pagetitle=_("Delete"), \
         message=(_("Election deleted"),MSG_OK))
-    else:
+    else: 
         return render_template('confirmation_template.html', \
         pagetitle=_("Delete"), \
         message=None,votation_id=votation_id)
@@ -297,11 +297,11 @@ def add_voters():
         list_voters = request.form['list_voters']
         ar = voter_dao.split_string_remove_dup(list_voters)
         n = voter_bo.insert_voters_array(votation_id,ar)
-        return render_template('thank_you_template.html', \
+        return render_template('thank_you_template.html', votation_id=votation_id, \
         pagetitle=_("Voter"), \
         message=(_("{} voters being added").format(n),MSG_OK))
     if v.promoter_user.user_id != current_user.u.user_id:
-        return render_template('thank_you_template.html', \
+        return render_template('thank_you_template.html',  votation_id=votation_id,\
             pagetitle=_("Voters"), \
             message=(_("Sorry, only the owner of this election can add voters"),MSG_KO))        
 
@@ -345,7 +345,7 @@ def votemajjud(v):
             message = (_("Your vote has been registered"), MSG_OK)
         else:
             message = (_("Error. Vote NOT registered. Wrong key?"),MSG_KO)
-        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
+        return render_template('thank_you_template.html',  votation_id=v.votation_id, pagetitle=_("Vote registering"), message=message)
 
 def votesimplemaj(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
@@ -360,7 +360,7 @@ def votesimplemaj(v):
             message = (_("Your vote has been registered"), MSG_OK)
         else:
             message = (_("Error. Vote NOT registered. Wrong Password?"),MSG_KO)
-        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
+        return render_template('thank_you_template.html',  votation_id=v.votation_id, pagetitle=_("Vote registering"), message=message)
 
 def votelistrand(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
@@ -378,7 +378,7 @@ def votelistrand(v):
             message = (_("Your vote has been registered"), MSG_OK)
         else:
             message = (_("Error. Vote NOT registered. Wrong key?"),MSG_KO)
-        return render_template('thank_you_template.html', pagetitle=_("Vote registering"), message=message)
+        return render_template('thank_you_template.html', votation_id=v.votation_id, pagetitle=_("Vote registering"), message=message)
 
 
 @app.route("/update_end_date/<int:votation_id>",  methods=['GET',])

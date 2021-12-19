@@ -1,7 +1,10 @@
 {% extends "base_template.html" %}
 {% block body %}
 <div>{{_("Thank you!")}}</div>
-<hr />
-<div><a type="button" class="btn btn-primary btn-lg" href="/votation_list">{{_("Back to Elections list")}}</a></div>
+{% if votation_id > 0 %}
+  <hr />
+  <div><a type="button" class="btn btn-primary btn-lg" href="/votation_detail/{{votation_id}}">{{_("Back to the election")}}</a></div>
+{% endif %}
+
 {% endblock %}
     
