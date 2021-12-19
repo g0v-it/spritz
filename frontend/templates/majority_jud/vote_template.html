@@ -22,20 +22,21 @@
         <form action="/vote/{{v.votation_id}}" method="POST" id="vote_form">
             <table class="table table-bordered">
             <tr>
-                <th>{{_("Option")}}</th>
+                <th class="vote_option">{{_("Option")}}</th>
                 <th>{{_("Judgement")}}</th>
             </tr>
             {% for c in options_array %}
             <tr>
-                <td>{{c.option_name}}</td>
+                <td class="vote_option" >{{c.option_name}}</td>
                 <td>
                 {% for i in range(words_array|count) %}
-                    <div class="form-check form-check-inline">
+                    <div class="form-check">
                         <input class="form-check-input" type="radio" 
                         name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} data-cy="word{{i}}" />
                         <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i].jud_name}}</label>
                     </div>
                 {% endfor %}
+                <br><br>
                 </td> 
             </tr>
             {% endfor %}

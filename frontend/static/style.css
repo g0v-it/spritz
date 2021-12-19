@@ -35,3 +35,8 @@ h1 {
     width: auto;
 }
 
+.vote_option {
+    text-align: right;
+    vertical-align: middle;
+}
+
