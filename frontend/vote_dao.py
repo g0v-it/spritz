@@ -106,7 +106,7 @@ def get_report_data(votation_id):
     """Extract data for a report on a votation
     """
     separator = ";"
-    result = "Raw data" + separator
+    result = '"Raw data"' + separator
     opts = option_dao.load_options_by_votation(votation_id)
     juds = judgement_dao.load_judgement_by_votation(votation_id)
     # header
