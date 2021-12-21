@@ -6,7 +6,7 @@
     <p><span class="font-weight-bold">{{_("Status")}}:</span> {{states[v.votation_status]}} ({{v.votation_status}})</p>
     <p><span class="font-weight-bold">{{_("Owner")}}:</span> {{v.promoter_user.user_name}}</p>
 
-    <p><a href="/api/report/{{v.votation_id}}">CSV</a></p>
+    <p>Download a <a href="/api/report/{{v.votation_id}}">CSV fle</a></p>
 
     {% if is_voter %}
         <p><span class="font-weight-bold" data-cy="is_voter">{{_("You are a voter")}}</span></p>
