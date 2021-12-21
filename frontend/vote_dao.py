@@ -1,3 +1,4 @@
+from os import sep
 import config
 from model import Vote,Votation
 from sqlalchemy import func
@@ -99,3 +100,25 @@ def save_vote(votation_id, vote_key, array_judgements):
         insert_dto(v)
         i += 1
     return True
+
+
+def get_report_data(votation_id):    
+    """Extract data for a report on a votation
+    """
+    separator = ";"
+    result = "Raw data" + separator
+    opts = option_dao.load_options_by_votation(votation_id)
+    juds = judgement_dao.load_judgement_by_votation(votation_id)
+    # header
+    for j in juds:
+        result += '"{}"{}'.format(j.jud_name, separator)
+    result += "\n"
+    # data
+    for o in opts:
+        result += '"{}"{}'.format(o.option_name, separator)
+        for j in juds:
+            result += "{}{}".format(__counts_votes_by_options_and_jud(votation_id, o.option_id,j.jud_value), separator )
+        result += "\n"
+    return result
+
+

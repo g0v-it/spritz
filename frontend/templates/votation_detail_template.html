@@ -5,6 +5,9 @@
     <p><a href="{{v.description_url}}" target="votation_page">{{_("Election home page")}}</a></p>
     <p><span class="font-weight-bold">{{_("Status")}}:</span> {{states[v.votation_status]}} ({{v.votation_status}})</p>
     <p><span class="font-weight-bold">{{_("Owner")}}:</span> {{v.promoter_user.user_name}}</p>
+
+    <p><a href="/api/report/{{v.votation_id}}">CSV</a></p>
+
     {% if is_voter %}
         <p><span class="font-weight-bold" data-cy="is_voter">{{_("You are a voter")}}</span></p>
     {% else %}
