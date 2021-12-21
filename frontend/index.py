@@ -6,7 +6,7 @@ from flask_babel import Babel,gettext
 from flask_sqlalchemy import SQLAlchemy
 import config 
 import datetime
-from config import MSG_INFO,MSG_OK,MSG_KO
+from config import AUTH, MSG_INFO,MSG_OK,MSG_KO
 #per abilitare CORS
 from flask_cors import CORS, cross_origin
 
@@ -34,6 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 config.db = db
+config.app = app
 
 import user
 import votation_dao
@@ -54,6 +55,8 @@ if config.AUTH == 'google':
     import auth_google as auth
 if config.AUTH == 'superauth':
     import auth_superauth as auth
+if config.AUTH == 'auth0':
+    import auth_auth0 as auth
 if config.AUTH == 'test':
     import auth_test as auth
 
@@ -100,6 +103,11 @@ def login():
             message = (auth_result['message'],MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
 
+@app.route("/login_auth0", methods=['GET', 'POST'])
+def login_auth0():
+    return auth.get_auth_data()
+
+
 @app.route("/superauthcallback", methods=['GET',])
 def superauth_callback():
     message = None
@@ -112,6 +120,19 @@ def superauth_callback():
     else:
         message = (auth_result['message'],MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login result"),message=message)
+
+@app.route('/auth0_callback_url')
+def auth0_callback_handling():
+    message = None
+    auth_result = auth.auth()
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+    else:
+        message = (auth_result['message'],MSG_KO)
+    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login result"),message=message)
+
 
 @app.route("/logout")
 @login_required
