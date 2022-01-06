@@ -4,6 +4,8 @@ import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask_babel import gettext
+from flask import redirect,url_for,render_template
+
 import user
 _ = gettext
 
@@ -54,4 +56,6 @@ def auth(auth_data):
     return auth_result
 
 
+def logout_action():
+    return render_template('logout_template.html', pagetitle="Logout")
 

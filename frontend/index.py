@@ -88,27 +88,31 @@ def termsandconditions():
     return render_template('docs/terms-and-conditions.html', pagetitle=_("Credits"))
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET'])
 def login():
     message = None
-    #print(auth.CLIENT_ID)
-    if request.method == 'POST': 
-        auth_data = auth.get_auth_data(request)
-        auth_result = auth.auth(auth_data)
-        if auth_result['logged_in']:
-            u = user.User(auth_result['username'])
-            login_user(u)
-            message = (auth_result['message'],MSG_OK)
-        else:
-            message = (auth_result['message'],MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
 
-@app.route("/login_auth0", methods=['GET', 'POST'])
+@app.route("/login_test_callback", methods=['POST',])
+def login_test_callback():
+    message = None
+    auth_data = auth.get_auth_data(request)
+    auth_result = auth.auth(auth_data)
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+        return redirect("/votation_list")
+    else:
+        message = (auth_result['message'],MSG_KO)
+        return redirect("/login")    
+
+@app.route("/login_auth0")
 def login_auth0():
-    return auth.get_auth_data()
+    return auth.get_auth_data() # is a request to redirect to callback_url
 
 
-@app.route("/superauthcallback", methods=['GET',])
+@app.route("/superauthcallback")
 def superauth_callback():
     message = None
     auth_data = auth.get_auth_data(request)
@@ -129,16 +133,18 @@ def auth0_callback_handling():
         u = user.User(auth_result['username'])
         login_user(u)
         message = (auth_result['message'],MSG_OK)
+        return redirect(url_for('votation_list'))
     else:
         message = (auth_result['message'],MSG_KO)
-    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login result"),message=message)
+        return redirect(url_for('login'))
 
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return render_template('logout_template.html', pagetitle="Logout")
+    #return render_template('logout_template.html', pagetitle="Logout")
+    return auth.logout_action()
 
 
 

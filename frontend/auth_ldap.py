@@ -3,6 +3,8 @@
 import os
 import ldap
 from flask_babel import gettext
+from flask import redirect,url_for,render_template
+
 _ = gettext
 
 LDAP_SERVER_HOST = os.environ.get('LDAP_SERVER_HOST') # ldap.forumsys.com
@@ -48,4 +50,6 @@ def auth(auth_data):
     auth_result = {'username': user_name, 'message': message, 'logged_in': return_code}
     return auth_result
 
+def logout_action():
+    return render_template('logout_template.html', pagetitle="Logout")
 

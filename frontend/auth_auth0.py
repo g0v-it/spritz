@@ -5,6 +5,7 @@ from werkzeug.exceptions import HTTPException
 from dotenv import load_dotenv, find_dotenv
 
 import user
+from flask import redirect,url_for
 from flask_babel import gettext
 _ = gettext
 from authlib.integrations.flask_client import OAuth
@@ -33,7 +34,7 @@ auth0 = oauth.register(
     },
 )
 
-ADD_UNKNOWN_USER=False
+ADD_UNKNOWN_USER=True
 
 def get_auth_data():
     return auth0.authorize_redirect(redirect_uri=CALLBACK_URL)
@@ -55,3 +56,7 @@ def auth():
     auth_result = {'username': userinfo['email'], 'message': message, 'logged_in': return_code}
     return auth_result
 
+def logout_action():
+    home_url = url_for('login', _external=True)
+    params = {'returnTo': home_url, 'client_id': CLIENT_ID}
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))

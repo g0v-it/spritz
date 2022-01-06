@@ -6,6 +6,7 @@ import urllib.request
 import hashlib 
 import json
 from flask_babel import gettext
+from flask import redirect,url_for,render_template
 _ = gettext
 
 ADD_UNKNOWN_USER = True
@@ -47,3 +48,5 @@ def auth(auth_data):
     return {'username': user_name, 'message': message, 'logged_in': return_code}
 
 
+def logout_action():
+    return render_template('logout_template.html', pagetitle="Logout")
