@@ -13,7 +13,7 @@
 Cypress.Commands.add("login", (username, password) => {
     cy.request({
         method: 'POST',
-        url: '/login', 
+        url: '/login_test_callback', 
         form: true, 
         body: {
           user_name: username,

@@ -88,7 +88,7 @@ def termsandconditions():
     return render_template('docs/terms-and-conditions.html', pagetitle=_("Credits"))
 
 
-@app.route("/login", methods=['GET'])
+@app.route("/login", methods=['GET',])
 def login():
     message = None
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
@@ -102,10 +102,10 @@ def login_test_callback():
         u = user.User(auth_result['username'])
         login_user(u)
         message = (auth_result['message'],MSG_OK)
-        return redirect("/votation_list")
+        return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login successful"),message=message)
     else:
         message = (auth_result['message'],MSG_KO)
-        return redirect("/login")    
+        return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login unsuccessful"),message=message)
 
 @app.route("/login_auth0")
 def login_auth0():
@@ -318,7 +318,7 @@ def delete_election(votation_id):
 @app.route("/add_voters", methods=["POST",])
 @login_required
 def add_voters():
-    votation_id = request.form['votation_id']
+    votation_id = int(request.form['votation_id'])
     v = votation_dao.load_votation_by_id(votation_id)
     if v.promoter_user.user_id == current_user.u.user_id: 
         list_voters = request.form['list_voters']
