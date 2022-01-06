@@ -6,6 +6,8 @@ the login is successful.
 import os
 import user
 from flask_babel import gettext
+from flask import redirect,url_for,render_template
+
 _ = gettext
 
 LOGIN_TEMPLATE = 'login_template.html'
@@ -32,3 +34,5 @@ def auth(auth_data):
     auth_result = {'username': user_name, 'message': message, 'logged_in': return_code}
     return auth_result
 
+def logout_action():
+    return render_template('logout_template.html', pagetitle="Logout")

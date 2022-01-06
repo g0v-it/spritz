@@ -4,7 +4,7 @@
 {{_("Welcome")}} {{ current_user.user_name }}. 
 <div>{{_("Go to")}} <a href="/">{{_("Main menu")}}</a></div>
 {% else %}
-  <form action="login" method="post" id="login">
+  <form action="/login_test_callback" method="post" id="login">
     <h2>{{_('Please, login')}}</h2>
     <div class="form-group">
       <label for="user_name">{{_('User name')}}:</label><br>

@@ -16,7 +16,7 @@ describe('Login Test', function() {
         // login
         cy.request({
             method: 'POST',
-            url: '/login', // baseUrl is prepended to url
+            url: '/login_test_callback', // baseUrl is prepended to url
             form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
             body: {
               user_name: 'aldo',

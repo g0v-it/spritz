@@ -24,6 +24,7 @@ SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBP
 # AUTH = 'ldap' # ldap auth
 # AUTH = 'google' # google auth
 # AUTH = 'superauth' # www.superauth.com
+# AUTH = 'auth0' # auth0.com
 # AUTH = os.environ.get('SPRITZ_AUTH')
 AUTH = os.environ.get('SPRITZ_AUTH')
 
@@ -31,6 +32,7 @@ AUTH = os.environ.get('SPRITZ_AUTH')
 # Global variables
 #
 db = None
+app = None
 
 # Constants, do not edit
 MSG_INFO = 0

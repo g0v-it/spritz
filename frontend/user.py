@@ -8,6 +8,8 @@ if config.AUTH == 'google':
     import auth_google as auth
 if config.AUTH == 'superauth':
     import auth_superauth as auth
+if config.AUTH == 'auth0':
+    import auth_auth0 as auth
 if config.AUTH == 'test':
     import auth_test as auth
     

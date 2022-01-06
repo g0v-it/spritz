@@ -1,0 +1,13 @@
+{% extends "base_template.html" %} 
+{% block body %} 
+{% if current_user.is_authenticated %} 
+  {{_("Welcome")}} {{ current_user.user_name }}. 
+  <div>{{_("Go to")}} <a href="/">{{_("Main menu")}}</a></div>
+{% else %}
+  <div class="container">
+    <div class="mb-4">
+        Please <a href="/login_auth0">{{_("Sign in")}}</a> or <a href="/login_auth0">{{_("sign up")}}.</a>
+    </div>
+  </div>
+{% endif %} 
+{% endblock %}

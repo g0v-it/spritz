@@ -6,7 +6,7 @@ from flask_babel import Babel,gettext
 from flask_sqlalchemy import SQLAlchemy
 import config 
 import datetime
-from config import MSG_INFO,MSG_OK,MSG_KO
+from config import AUTH, MSG_INFO,MSG_OK,MSG_KO
 #per abilitare CORS
 from flask_cors import CORS, cross_origin
 
@@ -34,6 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 config.db = db
+config.app = app
 
 import user
 import votation_dao
@@ -54,6 +55,8 @@ if config.AUTH == 'google':
     import auth_google as auth
 if config.AUTH == 'superauth':
     import auth_superauth as auth
+if config.AUTH == 'auth0':
+    import auth_auth0 as auth
 if config.AUTH == 'test':
     import auth_test as auth
 
@@ -85,22 +88,31 @@ def termsandconditions():
     return render_template('docs/terms-and-conditions.html', pagetitle=_("Credits"))
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET',])
 def login():
     message = None
-    #print(auth.CLIENT_ID)
-    if request.method == 'POST': 
-        auth_data = auth.get_auth_data(request)
-        auth_result = auth.auth(auth_data)
-        if auth_result['logged_in']:
-            u = user.User(auth_result['username'])
-            login_user(u)
-            message = (auth_result['message'],MSG_OK)
-        else:
-            message = (auth_result['message'],MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
 
-@app.route("/superauthcallback", methods=['GET',])
+@app.route("/login_test_callback", methods=['POST',])
+def login_test_callback():
+    message = None
+    auth_data = auth.get_auth_data(request)
+    auth_result = auth.auth(auth_data)
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+        return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login successful"),message=message)
+    else:
+        message = (auth_result['message'],MSG_KO)
+        return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login unsuccessful"),message=message)
+
+@app.route("/login_auth0")
+def login_auth0():
+    return auth.get_auth_data() # is a request to redirect to callback_url
+
+
+@app.route("/superauthcallback")
 def superauth_callback():
     message = None
     auth_data = auth.get_auth_data(request)
@@ -113,11 +125,26 @@ def superauth_callback():
         message = (auth_result['message'],MSG_KO)
     return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login result"),message=message)
 
+@app.route('/auth0_callback_url')
+def auth0_callback_handling():
+    message = None
+    auth_result = auth.auth()
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+        return redirect(url_for('votation_list'))
+    else:
+        message = (auth_result['message'],MSG_KO)
+        return redirect(url_for('login'))
+
+
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return render_template('logout_template.html', pagetitle="Logout")
+    #return render_template('logout_template.html', pagetitle="Logout")
+    return auth.logout_action()
 
 
 
@@ -291,7 +318,7 @@ def delete_election(votation_id):
 @app.route("/add_voters", methods=["POST",])
 @login_required
 def add_voters():
-    votation_id = request.form['votation_id']
+    votation_id = int(request.form['votation_id'])
     v = votation_dao.load_votation_by_id(votation_id)
     if v.promoter_user.user_id == current_user.u.user_id: 
         list_voters = request.form['list_voters']
