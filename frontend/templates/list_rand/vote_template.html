@@ -29,11 +29,15 @@
             <tr>
                 <td>{{c.option_name}}</td>
                 <td>
-                {% for i in range(words_array|count) %}
+                {% for j in words_array %}
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" 
-                        name="v_{{c.option_id}}" id="v_{{c.option_id}}_{{i}}" value="{{i}}" {% if i==0 %}checked{% endif %} data-cy="word{{i}}" />
-                        <label class="form-check-label" for="v_{{c.option_id}}_{{i}}">{{words_array[i].jud_name}}</label>
+                        <input class="form-check-input" 
+                               type="radio" 
+                               name="v_{{c.option_id}}" 
+                               id="v_{{c.option_id}}_{{j.jud_value}}" 
+                               value="{{j.jud_value}}" {% if j.jud_value==0 %}checked{% endif %} 
+                               data-cy="word{{j.jud_value}}" />
+                        <label class="form-check-label" for="v_{{c.option_id}}_{{j.jud_value}}">{{j.jud_name}}</label>
                     </div>
                 {% endfor %}
                 </td> 

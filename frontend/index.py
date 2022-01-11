@@ -48,7 +48,7 @@ import vote_simple
 import voter_dao
 import voter_bo
 import votation_bo
-from model import Votation
+from model import Judgement, Votation
 if config.AUTH == 'ldap':
     import auth_ldap as auth
 if config.AUTH == 'google':
@@ -358,9 +358,14 @@ def vote_(votation_id):
         
 def votemajjud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
-    if request.method == 'GET':    
-        return render_template('majority_jud/vote_template.html', pagetitle=_("Vote"), \
-        v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id)) 
+    if request.method == 'GET': 
+        Judgement_array = judgement_dao.load_judgement_by_votation(v.votation_id)
+        Judgement_array.reverse()
+        return render_template('majority_jud/vote_template.html', 
+                               pagetitle=_("Vote"), 
+                               v=v, 
+                               options_array=options_array,
+                               juds_array=Judgement_array) 
     if request.method == 'POST':  
         vote_key = request.form["vote_key"]
         vote_array = []

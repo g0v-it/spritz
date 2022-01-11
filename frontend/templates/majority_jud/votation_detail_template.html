@@ -12,8 +12,12 @@
                     <li class="mb-1">
                         {{r.option_name}}
                         <div class="row">
-                            {% for i in range(juds_array|count) %} 
-                                <div class="col-sm border text-nowrap ml-1 mb-1"><span class="badge badge-pill badge-warning w-25" data-cy="word{{i}}">{{r.totals_array[i]}}</span> {{juds_array[i].jud_name}}</div>                                                  
+                            {% for j in juds_array %} 
+                                <div class="col-sm border text-nowrap ml-1 mb-1">
+                                    <span class="badge badge-pill badge-warning w-25" data-cy="word{{j.jud_value}}">
+                                        {{r.totals_array[j.jud_value]}}
+                                    </span> {{j.jud_name}}
+                                </div>                                                  
                             {% endfor %}
                         </div> 
                     </li>
