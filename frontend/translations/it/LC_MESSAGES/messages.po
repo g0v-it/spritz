@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-31 19:46+0200\n"
+"POT-Creation-Date: 2022-01-15 22:48+0100\n"
 "PO-Revision-Date: 2019-04-24 17:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,30 +18,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: auth_google.py:24 auth_google.py:38 auth_ldap.py:37 auth_test.py:23
+#: auth_auth0.py:44 auth_google.py:26 auth_google.py:40 auth_ldap.py:39
+#: auth_test.py:25
 msgid "Login failed"
-msgstr ""
+msgstr "Accesso fallito"
 
-#: auth_google.py:48 auth_ldap.py:44 auth_superauth.py:42 auth_test.py:29
+#: auth_auth0.py:53 auth_google.py:50 auth_ldap.py:46 auth_superauth.py:43
+#: auth_test.py:31 index.py:105
 msgid "Login successful"
 msgstr "Login eseguito"
 
-#: auth_ldap.py:47 auth_test.py:31
+#: auth_auth0.py:55
+msgid "Access not allowed."
+msgstr "Accesso non permesso"
+
+#: auth_ldap.py:49 auth_test.py:33
 msgid "Wrong user or password"
-msgstr ""
+msgstr "Utente o password errati"
 
-#: auth_superauth.py:46
+#: auth_superauth.py:47
 msgid "Login not successful, (no username)"
-msgstr ""
+msgstr "Accesso fallito, (manca username)"
 
-#: index.py:70 index.py:353 templates/login_google_template.html:5
+#: index.py:80 index.py:433 templates/login_auth0_template.html:5
+#: templates/login_google_template.html:5
 #: templates/login_google_template.html:12
 #: templates/login_superauth_template.html:5
 #: templates/login_superauth_template.html:9 templates/login_template.html:5
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: index.py:74 index.py:78
+#: index.py:84 index.py:88
 msgid "Credits"
 msgstr ""
 
@@ -49,112 +56,122 @@ msgstr ""
 msgid "Login"
 msgstr "Entra"
 
-#: index.py:107
-msgid "Login result"
-msgstr ""
+#: index.py:108
+msgid "Login unsuccessful"
+msgstr "Accesso fallito"
 
-#: index.py:122
+#: index.py:126
+msgid "Login result"
+msgstr "Risultato dell'accesso"
+
+#: index.py:156
 msgid "Please, insert data"
 msgstr "Inserire dati"
 
-#: index.py:139
+#: index.py:173
 msgid "New election"
 msgstr "Crea una elezione"
 
-#: index.py:147 templates/base_template.html:47
+#: index.py:181 templates/base_template.html:47
 msgid "Election list"
 msgstr "Lista delle elezioni"
 
-#: index.py:217 index.py:231
+#: index.py:253 index.py:267 index.py:285
 msgid "Election details"
 msgstr "Dettagli dell'elezione"
 
-#: index.py:248
+#: index.py:302
 msgid "Election closed"
 msgstr "Elezione chiusa"
 
-#: index.py:249
+#: index.py:303
 msgid "Election closed, please, check results"
 msgstr "Elezione chiusa, controlla i risultati"
 
-#: index.py:257 index.py:261
+#: index.py:311 index.py:315
 msgid "Delete"
 msgstr "Cancellazione"
 
-#: index.py:258
+#: index.py:312
 msgid "Election deleted"
 msgstr "Elezione cancellata"
 
-#: index.py:274
+#: index.py:328
 msgid "Voter"
 msgstr "Avente diritto"
 
-#: index.py:275
+#: index.py:329
 msgid "{} voters being added"
 msgstr "{} aventi diritto sono stati aggiunti"
 
-#: index.py:278 templates/votation_detail_template.html:30
+#: index.py:332 templates/votation_detail_template.html:32
 msgid "Voters"
 msgstr "Votanti"
 
-#: index.py:279
+#: index.py:333
 msgid "Sorry, only the owner of this election can add voters"
 msgstr "Solo il promotore dell'elezione può aggiungere aventi diritto"
 
-#: index.py:306 templates/majority_jud/vote_template.html:58
+#: index.py:365 index.py:400 templates/list_rand/vote_template.html:62
+#: templates/majority_jud/vote_template.html:63
 #: templates/votation_list_template.html:25
 msgid "Vote"
 msgstr "Vota"
 
-#: index.py:316 index.py:331
+#: index.py:377 index.py:392 index.py:410
 msgid "Your vote has been registered"
 msgstr "Voto registrato"
 
-#: index.py:318
+#: index.py:379 index.py:412
 msgid "Error. Vote NOT registered. Wrong key?"
 msgstr "Errore. Voto NON registrato. Chiave sbagliata?"
 
-#: index.py:319 index.py:334
+#: index.py:380 index.py:395 index.py:413
 msgid "Vote registering"
 msgstr "Votazione"
 
-#: index.py:333
+#: index.py:394
 msgid "Error. Vote NOT registered. Wrong Password?"
-msgstr ""
+msgstr "Errore. Voto non registrato. Password errata?"
 
-#: votation_dao.py:29
+#: votation_dao.py:30
 msgid "Draw"
 msgstr "Sorteggio"
 
-#: votation_dao.py:30
+#: votation_dao.py:31
 msgid "Secure Majority Judgment"
 msgstr "Majority Judgment Sicuro"
 
-#: votation_dao.py:32
+#: votation_dao.py:33
 msgid "Simple Majority"
 msgstr "Maggioranza semplice"
 
 #: votation_dao.py:34
+msgid "List Randomizer"
+msgstr "Estrazione casuale"
+
+#: votation_dao.py:36
 msgid "Created"
 msgstr "Creata"
 
-#: votation_dao.py:35
+#: votation_dao.py:37
 msgid "Voting"
 msgstr "Voto"
 
-#: votation_dao.py:36
+#: votation_dao.py:38
 msgid "Working, please wait..."
 msgstr "Elaborazione, attendere"
 
-#: votation_dao.py:37
+#: votation_dao.py:39
 msgid "Ended"
 msgstr "Terminata"
 
-#: votation_dao.py:38
+#: votation_dao.py:40
 msgid "Failed"
 msgstr "Fallita"
 
-#: templates/base_template.html:32 templates/login_google_template.html:4
+#: templates/base_template.html:32 templates/login_auth0_template.html:4
+#: templates/login_google_template.html:4
 #: templates/login_superauth_template.html:4 templates/login_template.html:4
 msgid "Welcome"
 msgstr "Benvenuto"
@@ -195,10 +212,14 @@ msgstr "Lista delle elezioni"
 msgid "How it works"
 msgstr "Come funziona"
 
-#: templates/login_google_template.html:5
+#: templates/login_auth0_template.html:5 templates/login_google_template.html:5
 #: templates/login_superauth_template.html:5 templates/login_template.html:5
 msgid "Go to"
 msgstr "Vai a"
+
+#: templates/login_auth0_template.html:8
+msgid "Welcome in Spritz voting system. Please log in."
+msgstr "Benvenuto nel sistema di voto Spritz. Fai login."
 
 #: templates/login_google_template.html:12
 #: templates/login_superauth_template.html:9
@@ -220,6 +241,10 @@ msgstr "Grazie per aver partecipato! Arrivederci!"
 #: templates/thank_you_template.html:3
 msgid "Thank you!"
 msgstr "Grazie!"
+
+#: templates/thank_you_template.html:6
+msgid "Back to the election"
+msgstr "Torna all'elezione"
 
 #: templates/votation_detail_template.html:2
 msgid "Election ID"
@@ -247,93 +272,95 @@ msgstr "Stato"
 msgid "Owner"
 msgstr "Promotore"
 
-#: templates/votation_detail_template.html:9
+#: templates/votation_detail_template.html:11
 msgid "You are a voter"
 msgstr "Hai diritto a votare"
 
-#: templates/votation_detail_template.html:11
+#: templates/votation_detail_template.html:13
 msgid "You are not a voter"
 msgstr "Non hai diritto a votare"
 
-#: templates/votation_detail_template.html:15
+#: templates/votation_detail_template.html:17
 msgid "Election is not started yet"
 msgstr "L'elezione non &egrave; ancora inziata"
 
-#: templates/votation_detail_template.html:16
+#: templates/votation_detail_template.html:18
 msgid "Will begin at"
 msgstr "Inizier&agrave; il "
 
-#: templates/votation_detail_template.html:17
-#: templates/votation_detail_template.html:27
+#: templates/votation_detail_template.html:19
+#: templates/votation_detail_template.html:29
 msgid "Will end at"
 msgstr "Finir&agrave; il"
 
-#: templates/votation_detail_template.html:20
+#: templates/votation_detail_template.html:22
 msgid "Election is over"
 msgstr "Elezione terminata"
 
-#: templates/votation_detail_template.html:21
-#: templates/votation_detail_template.html:26
+#: templates/votation_detail_template.html:23
+#: templates/votation_detail_template.html:28
 msgid "Begin at"
 msgstr "Inizio il"
 
-#: templates/votation_detail_template.html:22
+#: templates/votation_detail_template.html:24
 msgid "Ended at"
 msgstr "Terminata il"
 
-#: templates/votation_detail_template.html:31
+#: templates/votation_detail_template.html:33
 msgid "Votes"
 msgstr "Voti"
 
-#: templates/votation_detail_template.html:37
+#: templates/votation_detail_template.html:39
 msgid "Close the election"
 msgstr "Chiudi l'elezione"
 
-#: templates/votation_detail_template.html:43
+#: templates/votation_detail_template.html:45
 msgid "Delete the election"
 msgstr "Cancella l'elezione"
 
-#: templates/votation_detail_template.html:50
+#: templates/votation_detail_template.html:52
 msgid "Start the election"
 msgstr "Inizia l'elezione"
 
-#: templates/votation_detail_template.html:61
+#: templates/votation_detail_template.html:63
+#: venv/Lib/site-packages/click/core.py:1360
 msgid "Options"
 msgstr "Opzioni"
 
-#: templates/votation_detail_template.html:70
+#: templates/votation_detail_template.html:72
 msgid "Judgements"
 msgstr "Giudizi"
 
+#: templates/list_rand/votation_detail_template.html:2
 #: templates/majority_jud/votation_detail_template.html:2
-#: templates/votation_detail_template.html:80
+#: templates/votation_detail_template.html:82
 msgid "Election Result"
 msgstr "Risultato dell'elezione"
 
-#: templates/votation_detail_template.html:81
+#: templates/votation_detail_template.html:83
 msgid "The election is failed"
 msgstr "Elezione fallita"
 
-#: templates/votation_detail_template.html:92
+#: templates/votation_detail_template.html:97
 msgid "Add Voters"
-msgstr ""
+msgstr "Aggiungi aventi diritto"
 
-#: templates/votation_detail_template.html:96
-#: templates/votation_propose_template.html:68
+#: templates/votation_detail_template.html:101
+#: templates/votation_propose_template.html:69
 msgid "Add voters"
 msgstr "Aggiungi aventi diritto"
 
-#: templates/votation_detail_template.html:98
+#: templates/votation_detail_template.html:103
 msgid "Write an username each row"
 msgstr "Scrivi una username per riga"
 
-#: templates/votation_detail_template.html:100
+#: templates/votation_detail_template.html:105
 msgid "Add"
 msgstr "Aggiungi"
 
-#: templates/votation_detail_template.html:108
+#: templates/votation_detail_template.html:113
 msgid "Voters List"
-msgstr ""
+msgstr "Lista votanti"
 
 #: templates/votation_list_template.html:4
 msgid "This is the list of elections"
@@ -391,90 +418,192 @@ msgstr "Scelta Maggioritaria"
 msgid "Simple majority"
 msgstr "Maggioranza Semplice"
 
-#: templates/votation_propose_template.html:23
+#: templates/votation_propose_template.html:18
+msgid "List randomizer"
+msgstr "Estrazione casuale"
+
+#: templates/votation_propose_template.html:24
 msgid "Begin date"
 msgstr "Data di inizio"
 
-#: templates/votation_propose_template.html:27
+#: templates/votation_propose_template.html:28
 msgid "Begin time"
 msgstr "Orario di inizio"
 
-#: templates/votation_propose_template.html:34
+#: templates/votation_propose_template.html:35
 msgid "End date"
 msgstr "Data di fine"
 
-#: templates/votation_propose_template.html:38
+#: templates/votation_propose_template.html:39
 msgid "End time"
 msgstr "Orario di fine"
 
-#: templates/votation_propose_template.html:44
+#: templates/votation_propose_template.html:45
 msgid "Option or candidate list"
 msgstr "Opzioni o lista dei candidati"
 
-#: templates/votation_propose_template.html:46
+#: templates/votation_propose_template.html:47
 msgid "One option each row"
 msgstr "Una opzione per riga"
 
-#: templates/votation_propose_template.html:50
+#: templates/votation_propose_template.html:51
 msgid "Judgement list"
 msgstr "Lista dei giudizi"
 
-#: templates/votation_propose_template.html:56
+#: templates/votation_propose_template.html:57
+#: templates/votation_propose_template.html:87
 msgid "Very good"
 msgstr "Ottimo"
 
-#: templates/votation_propose_template.html:57
+#: templates/votation_propose_template.html:58
+#: templates/votation_propose_template.html:87
 msgid "Good"
 msgstr "Buono"
 
-#: templates/votation_propose_template.html:58
+#: templates/votation_propose_template.html:59
+#: templates/votation_propose_template.html:87
 msgid "Acceptable"
 msgstr "Accettabile"
 
-#: templates/votation_propose_template.html:59
+#: templates/votation_propose_template.html:60
+#: templates/votation_propose_template.html:87
 msgid "Not enough"
 msgstr "Insufficiente"
 
-#: templates/votation_propose_template.html:60
+#: templates/votation_propose_template.html:61
+#: templates/votation_propose_template.html:87
 msgid "Poor"
 msgstr "Scadente"
 
-#: templates/votation_propose_template.html:61
+#: templates/votation_propose_template.html:62
+#: templates/votation_propose_template.html:87
 msgid "No opinion"
 msgstr "Non so"
 
-#: templates/votation_propose_template.html:63
+#: templates/votation_propose_template.html:64
 msgid "One judgement each row, best on top"
 msgstr "Un giudizio per riga, il migliore in alto"
 
-#: templates/votation_propose_template.html:74
+#: templates/votation_propose_template.html:75
 msgid "Save"
 msgstr "Salva"
 
+#: templates/votation_propose_template.html:96
+msgid "RED"
+msgstr "ROSSO"
+
+#: templates/votation_propose_template.html:96
+msgid "BLUE"
+msgstr "BLU"
+
+#: templates/votation_propose_template.html:96
+msgid "GREEN"
+msgstr "VERDE"
+
+#: templates/list_rand/votation_detail_template.html:4
 #: templates/majority_jud/votation_detail_template.html:4
 #: templates/simple_majority/votation_detail_template.html:4
 msgid "The number of votes and the number of voters match"
 msgstr "Il numero di voti e di votanti corrisponde"
 
+#: templates/list_rand/votation_detail_template.html:6
 #: templates/majority_jud/votation_detail_template.html:6
 #: templates/simple_majority/votation_detail_template.html:6
 msgid "The number of votes and the number of voters do not match"
 msgstr "Il numero di voti e di votanti non corrisponde"
 
-#: templates/majority_jud/votation_detail_template.html:8
-#: templates/simple_majority/votation_detail_template.html:8
-msgid "Ranking"
-msgstr "Classifica"
+#: templates/list_rand/votation_detail_template.html:8
+msgid "Votes Counting"
+msgstr "Conteggio voti"
 
+#: templates/list_rand/votation_detail_template.html:28
+msgid "Randomized list"
+msgstr "Estrazione casuale"
+
+#: templates/list_rand/vote_template.html:4
 #: templates/majority_jud/vote_template.html:4
 #: templates/simple_majority/vote_template.html:4
 msgid "You cannot vote yet"
 msgstr "Non puoi ancora votare"
 
+#: templates/list_rand/vote_template.html:7
 #: templates/majority_jud/vote_template.html:7
 #: templates/simple_majority/vote_template.html:7
 msgid "You cannot vote anymore"
 msgstr "Non puoi votare pi&ugrave;"
+
+#: templates/list_rand/vote_template.html:12
+msgid "You must choose a color for each option"
+msgstr "Devi scegliere un colore per ogni opzione"
+
+#: templates/list_rand/vote_template.html:13
+msgid "Your choice will be used to randomize the list."
+msgstr "La tua scelta sarà usata per l'estrazione a sorte."
+
+#: templates/list_rand/vote_template.html:14
+#: templates/majority_jud/vote_template.html:14
+msgid "You need to think up and enter a secret key, type it and keep it secret"
+msgstr "Pensa e scrivi una frase segreta, tienila segreta"
+
+#: templates/list_rand/vote_template.html:15
+#: templates/majority_jud/vote_template.html:15
+msgid "You can use any word or phrase you want"
+msgstr "Puoi usare la parola o la frase che vuoi"
+
+#: templates/list_rand/vote_template.html:16
+#: templates/majority_jud/vote_template.html:16
+msgid ""
+"You can change your vote later, but you MUST use the same secret key as "
+"before"
+msgstr ""
+"Potrai cambiare il tuo voto pi&ugrave; tardi, ma dovrai usare la stessa "
+"frase di prima"
+
+#: templates/list_rand/vote_template.html:25
+#: templates/majority_jud/vote_template.html:25
+msgid "Option"
+msgstr "Opzione"
+
+#: templates/list_rand/vote_template.html:26
+msgid "Colors"
+msgstr "Colori"
+
+#: templates/list_rand/vote_template.html:49
+#: templates/majority_jud/vote_template.html:50
+#: templates/simple_majority/vote_template.html:32
+msgid "Secret key for this vote"
+msgstr "Chiave segreta per questo voto"
+
+#: templates/list_rand/vote_template.html:51
+#: templates/majority_jud/vote_template.html:52
+msgid "Remember this secret key; it isn't possible to recover it"
+msgstr "Ricorda questa frase segreta. Non sar&agrave; possibile recuperarla"
+
+#: templates/list_rand/vote_template.html:59
+#: templates/majority_jud/vote_template.html:60
+msgid ""
+"This secret key is for THIS election only. You can use any word you want."
+" Keep it secret and don't forget it."
+msgstr ""
+"Questa chiave segreta vale solo per QUESTA elezione. Puoi usare ogni "
+"parola che vuoi. Tienila segreta e non dimenticarla."
+
+#: templates/list_rand/vote_template.html:60
+#: templates/majority_jud/vote_template.html:61
+#: templates/simple_majority/vote_template.html:43
+msgid "What's this secret key?"
+msgstr "Cosa &egrave; questo?"
+
+#: templates/list_rand/vote_template.html:74
+#: templates/majority_jud/vote_template.html:75
+#: templates/simple_majority/vote_template.html:57
+msgid "You must enter a secret key"
+msgstr "Devi scrivere una chiave segreta"
+
+#: templates/majority_jud/votation_detail_template.html:8
+#: templates/simple_majority/votation_detail_template.html:8
+msgid "Ranking"
+msgstr "Classifica"
 
 #: templates/majority_jud/vote_template.html:12
 msgid "You must choose a judgment for each option"
@@ -484,56 +613,9 @@ msgstr "Devi indicare un giudizio per ogni opzione"
 msgid "The \"No opinion\" judgment is the lowest ranking"
 msgstr "Il giudizio \"Non So\" &egrave; il voto pi&ugrave; basso"
 
-#: templates/majority_jud/vote_template.html:14
-msgid "You need to think up and enter a secret key, type it and keep it secret"
-msgstr "Pensa e scrivi una frase segreta, tienila segreta"
-
-#: templates/majority_jud/vote_template.html:15
-msgid "You can use any word or phrase you want"
-msgstr "Puoi usare la parola o la frase che vuoi"
-
-#: templates/majority_jud/vote_template.html:16
-msgid ""
-"You can change your vote later, but you MUST use the same secret key as "
-"before"
-msgstr ""
-"Potrai cambiare il tuo voto pi&ugrave; tardi, ma dovrai usare la stessa "
-"frase di prima"
-
-#: templates/majority_jud/vote_template.html:25
-msgid "Option"
-msgstr "Opzione"
-
 #: templates/majority_jud/vote_template.html:26
 msgid "Judgement"
 msgstr "Giudizio"
-
-#: templates/majority_jud/vote_template.html:45
-#: templates/simple_majority/vote_template.html:32
-msgid "Secret key for this vote"
-msgstr "Chiave segreta per questo voto"
-
-#: templates/majority_jud/vote_template.html:47
-msgid "Remember this secret key; it isn't possible to recover it"
-msgstr "Ricorda questa frase segreta. Non sar&agrave; possibile recuperarla"
-
-#: templates/majority_jud/vote_template.html:55
-msgid ""
-"This secret key is for THIS election only. You can use any word you want."
-" Keep it secret and don't forget it."
-msgstr ""
-"Questa chiave segreta vale solo per QUESTA elezione. Puoi usare ogni "
-"parola che vuoi. Tienila segreta e non dimenticarla."
-
-#: templates/majority_jud/vote_template.html:56
-#: templates/simple_majority/vote_template.html:43
-msgid "What's this secret key?"
-msgstr "Cosa &egrave; questo?"
-
-#: templates/majority_jud/vote_template.html:70
-#: templates/simple_majority/vote_template.html:57
-msgid "You must enter a secret key"
-msgstr "Devi scrivere una chiave segreta"
 
 #: templates/simple_majority/votation_detail_template.html:2
 msgid "Election results"
@@ -575,6 +657,361 @@ msgstr "Scegli solo una opzione"
 #: templates/simple_majority/vote_template.html:34
 msgid "Remember this secret key; it is not possible to recover"
 msgstr "Ricordati questa chiave segreta; non sar&agrave; possibile recuperarla"
+
+#: venv/Lib/site-packages/authlib/oauth1/rfc5849/errors.py:31
+#: venv/Lib/site-packages/authlib/oauth2/rfc6749/errors.py:52
+msgid "OAuth 2 MUST utilize https."
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth1/rfc5849/errors.py:59
+#, python-format
+msgid "missing \"%(key)s\" in parameters"
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth1/rfc5849/errors.py:77
+msgid "Invalid or expired \"oauth_token\" in parameters"
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth1/rfc5849/errors.py:94
+#: venv/Lib/site-packages/authlib/oauth2/rfc6749/errors.py:160
+msgid "The resource owner or authorization server denied the request"
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth2/rfc6749/errors.py:145
+msgid "The requested scope is invalid, unknown, or malformed."
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth2/rfc6749/errors.py:172
+msgid "Missing \"Authorization\" in headers."
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth2/rfc6750/errors.py:41
+msgid ""
+"The access token provided is expired, revoked, malformed, or invalid for "
+"other reasons."
+msgstr ""
+
+#: venv/Lib/site-packages/authlib/oauth2/rfc6750/errors.py:87
+#, python-format
+msgid ""
+"The request requires higher privileges than provided by the access token."
+" Required: \"%(required)s\", Provided:\"%(provided)s\""
+msgstr ""
+
+#: venv/Lib/site-packages/click/_termui_impl.py:495
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_termui_impl.py:499
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_unicodefun.py:19
+msgid ""
+"Click will abort further execution because Python was configured to use "
+"ASCII as encoding for the environment. Consult "
+"https://click.palletsprojects.com/unicode-support/ for mitigation steps."
+msgstr ""
+
+#: venv/Lib/site-packages/click/_unicodefun.py:55
+msgid ""
+"Additional information: on this system no suitable UTF-8 locales were "
+"discovered. This most likely requires resolving by reconfiguring the "
+"locale system."
+msgstr ""
+
+#: venv/Lib/site-packages/click/_unicodefun.py:64
+msgid ""
+"This system supports the C.UTF-8 locale which is recommended. You might "
+"be able to resolve your issue by exporting the following environment "
+"variables:"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_unicodefun.py:74
+msgid ""
+"This system lists some UTF-8 supporting locales that you can pick from. "
+"The following suitable locales were discovered: {locales}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/_unicodefun.py:92
+msgid ""
+"Click discovered that you exported a UTF-8 locale but the locale system "
+"could not pick up from it because it does not exist. The exported locale "
+"is {locale!r} but it is not supported."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1104
+msgid "Aborted!"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1288
+#: venv/Lib/site-packages/click/decorators.py:435
+msgid "Show this message and exit."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1317
+#: venv/Lib/site-packages/click/core.py:1343
+msgid "(Deprecated) {text}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1386
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/core.py:1398
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1616
+msgid "Commands"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1648
+msgid "Missing command."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:1726
+msgid "No such command {name!r}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2274
+msgid "Value must be an iterable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2296
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/core.py:2718
+msgid "env var: {var}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2741
+msgid "(dynamic)"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2751
+msgid "default: {default}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/core.py:2760
+msgid "required"
+msgstr ""
+
+#: venv/Lib/site-packages/click/decorators.py:339
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: venv/Lib/site-packages/click/decorators.py:404
+msgid "Show the version and exit."
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:43
+#: venv/Lib/site-packages/click/exceptions.py:79
+msgid "Error: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:71
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:120
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:122
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:178
+msgid "Missing argument"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:180
+msgid "Missing option"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:182
+msgid "Missing parameter"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:184
+msgid "Missing {param_type}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:191
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:211
+msgid "No such option: {name}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:225
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/exceptions.py:261
+msgid "unknown error"
+msgstr ""
+
+#: venv/Lib/site-packages/click/exceptions.py:268
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:231
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:413
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: venv/Lib/site-packages/click/parser.py:473
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/shell_completion.py:313
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: venv/Lib/site-packages/click/shell_completion.py:320
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:161
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:178
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:180
+msgid "Error: {e.message}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:191
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:245
+msgid "Error: invalid input"
+msgstr ""
+
+#: venv/Lib/site-packages/click/termui.py:796
+msgid "Press any key to continue..."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:258
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:292
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/types.py:382
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/click/types.py:402
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:458
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:599
+msgid "{value!r} is not a valid boolean."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:623
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:801
+msgid "file"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:803
+msgid "directory"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:805
+msgid "path"
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:851
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:860
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:868
+msgid "{name} {filename!r} is a directory."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:876
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:884
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: venv/Lib/site-packages/click/types.py:950
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:385
+#, python-format
+msgid "Content purported to be compressed with %s but failed to decompress."
+msgstr ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:549
+#, python-format
+msgid "Unsupported value for qop: %s."
+msgstr ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:553
+#: venv/Lib/site-packages/httplib2/__init__.py:631
+#, python-format
+msgid "Unsupported value for algorithm: %s.algorithm"
+msgstr ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:626
+msgid "The challenge doesn't contain a server nonce, or this one is empty."
+msgstr ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:636
+#, python-format
+msgid "Unsupported value for pw-algorithm: %s.pw-algorithm"
+msgstr ""
+
+#: venv/Lib/site-packages/httplib2/__init__.py:1465
+msgid "Redirected but the response is missing a Location: header."
+msgstr ""
 
 #~ msgid "New votation"
 #~ msgstr "Crea una votazione"

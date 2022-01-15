@@ -5,9 +5,10 @@
   <div>{{_("Go to")}} <a href="/">{{_("Main menu")}}</a></div>
 {% else %}
   <div class="container">
+    <div>{{_("Welcome in Spritz voting system. Please log in.")}}</div>
     <div class="mb-4">
-        Please <a href="/login_auth0">{{_("Sign in")}}</a> or <a href="/login_auth0">{{_("sign up")}}.</a>
-    </div>
+        <a href="/login_auth0" class="btn btn-warning">Log in</a>
+      </div>
   </div>
 {% endif %} 
 {% endblock %}
