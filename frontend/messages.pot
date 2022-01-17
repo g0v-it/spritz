@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-15 22:48+0100\n"
+"POT-Creation-Date: 2022-01-17 16:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,8 +51,8 @@ msgstr ""
 msgid "Credits"
 msgstr ""
 
-#: index.py:94 templates/base_template.html:55
-msgid "Login"
+#: index.py:94
+msgid "Spritz, Online Voting System"
 msgstr ""
 
 #: index.py:108
@@ -187,6 +187,14 @@ msgstr ""
 msgid "Logoff"
 msgstr ""
 
+#: templates/base_template.html:55
+msgid "Login"
+msgstr ""
+
+#: templates/base_template.html:86 templates/login_auth0_template.html:29
+msgid "Spritz_online_voting_system.pdf"
+msgstr ""
+
 #: templates/confirmation_template.html:3
 msgid "Confirm"
 msgstr ""
@@ -218,6 +226,14 @@ msgstr ""
 
 #: templates/login_auth0_template.html:8
 msgid "Welcome in Spritz voting system. Please log in."
+msgstr ""
+
+#: templates/login_auth0_template.html:29
+msgid "How it works?"
+msgstr ""
+
+#: templates/login_auth0_template.html:39
+msgid "Please accept terms."
 msgstr ""
 
 #: templates/login_google_template.html:12

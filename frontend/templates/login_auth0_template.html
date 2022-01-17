@@ -7,8 +7,38 @@
   <div class="container">
     <div>{{_("Welcome in Spritz voting system. Please log in.")}}</div>
     <div class="mb-4">
-        <a href="/login_auth0" class="btn btn-warning">Log in</a>
+        <button class="btn btn-warning" id="login_button">Log in</button>
       </div>
-  </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="chk1">
+        <label class="form-check-label" for="flexCheckDefault">
+          Accetto il regolamento della sperimentazione descritta nel sito e 
+          dichiaro di avere preso visione della Privacy Policy [<a href="/static/PrivacyPolicyQuirinarie.v.22.01.2022.pdf" target="privacy">link</a>]
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="chk2">
+        <label class="form-check-label" for="flexCheckDefault">
+          Acconsento al trattamento dei miei Dati personali per poter partecipare 
+          alla sperimentazione, ai sensi del punto 5 della Privacy Policy [<a href="/static/PrivacyPolicyQuirinarie.v.22.01.2022.pdf" target="privacy">link</a>]
+        </label>
+      </div>
+
+<div><br><br><br>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/J_UJ19t5vuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<a href="/static/{{_('Spritz_online_voting_system.pdf')}}" target="spritz">{{_("How it works?")}}</a>       
+    </div>
+    <script>
+      $("#login_button").click(function(){
+        var consent1 = $("#chk1").prop("checked")
+        var consent2 = $("#chk2").prop("checked")
+        if (consent1 && consent2) {
+          window.location.href = "{{url_for('login_auth0')}}"
+        } else
+        {
+          alert('{{_("Please accept terms.")}}');
+        }
+      });
+    </script>
 {% endif %} 
 {% endblock %}
