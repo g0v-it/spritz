@@ -91,7 +91,7 @@ def termsandconditions():
 @app.route("/login", methods=['GET',])
 def login():
     message = None
-    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Login"),message=message, CLIENT_ID=auth.CLIENT_ID)
+    return render_template(auth.LOGIN_TEMPLATE, pagetitle=_("Spritz, Online Voting System"),message=message, CLIENT_ID=auth.CLIENT_ID)
 
 @app.route("/login_test_callback", methods=['POST',])
 def login_test_callback():
