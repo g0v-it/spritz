@@ -5,7 +5,7 @@
 CREATE TABLE judgement (
     votation_id integer NOT NULL,
     jud_value integer NOT NULL,
-    jud_name character varying(50) NOT NULL
+    jud_name VARCHAR(50) NOT NULL
 );
 
 
@@ -17,7 +17,7 @@ CREATE TABLE judgement (
 CREATE TABLE `option` (
     option_id integer NOT NULL primary key auto_increment,
     votation_id integer,
-    option_name character varying(50) NOT NULL
+    option_name VARCHAR(50) NOT NULL
 );
 
 
@@ -28,11 +28,11 @@ CREATE TABLE `option` (
 CREATE TABLE votation (
     votation_id integer NOT NULL primary key auto_increment,
     promoter_user_id integer,
-    votation_description character varying(500) NOT NULL,
-    description_url character varying(500) NOT NULL,
-    begin_date timestamp without time zone NOT NULL,
-    end_date timestamp without time zone NOT NULL,
-    votation_type character varying(10) NOT NULL,
+    votation_description VARCHAR(500) NOT NULL,
+    description_url VARCHAR(500) NOT NULL,
+    begin_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    votation_type VARCHAR(10) NOT NULL,
     votation_status integer NOT NULL,
     list_voters integer NOT NULL
 );
@@ -46,7 +46,7 @@ CREATE TABLE votation (
 --
 
 CREATE TABLE vote (
-    vote_key character varying(128) NOT NULL,
+    vote_key VARCHAR(128) NOT NULL,
     votation_id integer NOT NULL,
     option_id integer NOT NULL,
     jud_value integer NOT NULL
@@ -72,9 +72,9 @@ CREATE TABLE voter (
 
 CREATE TABLE votinguser (
     user_id integer NOT NULL primary key auto_increment,
-    user_name character varying(200) NOT NULL,
-    pass_word character varying(200) NOT NULL,
-    email character varying(200),
+    user_name VARCHAR(200) NOT NULL,
+    pass_word VARCHAR(200) NOT NULL,
+    email VARCHAR(200),
     verified integer
 );
 
