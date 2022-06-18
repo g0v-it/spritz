@@ -138,10 +138,10 @@ def auth0_callback_handling():
         message = (auth_result['message'],MSG_KO)
         return redirect(url_for('login'))
 
-@app.route('/google_callback_url')
+@app.route('/google_callback_url', methods=['POST',])
 def google_callback_handling():
     message = None
-    auth_result = auth.auth()
+    auth_result = auth.auth(request.form)
     if auth_result['logged_in']:
         u = user.User(auth_result['username'])
         login_user(u)

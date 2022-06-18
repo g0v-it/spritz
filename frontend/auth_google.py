@@ -22,9 +22,9 @@ def get_auth_data(request):
 
 def auth(auth_data):
     return_code = False
-    user_name = auth_data['username']
+    user_name = auth_data['user_name']
     message = _('Login failed')
-    token = auth_data['password']
+    token = auth_data['pass_word']
     try:
         # Specify the CLIENT_ID of the app that accesses the backend:
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
