@@ -14,8 +14,8 @@ CREATE TABLE judgement (
 -- Name: option; Type: TABLE; Schema: public; Owner: dinogen
 --
 
-CREATE TABLE option (
-    option_id integer NOT NULL autoincrement,
+CREATE TABLE `option` (
+    option_id integer NOT NULL primary key auto_increment,
     votation_id integer,
     option_name character varying(50) NOT NULL
 );
@@ -26,7 +26,7 @@ CREATE TABLE option (
 --
 
 CREATE TABLE votation (
-    votation_id integer NOT NULL autoincrement,
+    votation_id integer NOT NULL primary key auto_increment,
     promoter_user_id integer,
     votation_description character varying(500) NOT NULL,
     description_url character varying(500) NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE voter (
 --
 
 CREATE TABLE votinguser (
-    user_id integer NOT NULL autoincrement,
+    user_id integer NOT NULL primary key auto_increment,
     user_name character varying(200) NOT NULL,
     pass_word character varying(200) NOT NULL,
     email character varying(200),
@@ -88,28 +88,9 @@ ALTER TABLE ONLY judgement
     ADD CONSTRAINT judgement_pkey PRIMARY KEY (votation_id, jud_value);
 
 
---
--- Name: option option_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE ONLY option
-    ADD CONSTRAINT option_pkey PRIMARY KEY (option_id);
 
 
---
--- Name: option option_votation_id_option_name_key; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
 
-ALTER TABLE ONLY option
-    ADD CONSTRAINT option_votation_id_option_name_key UNIQUE (votation_id, option_name);
-
-
---
--- Name: votation votation_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE ONLY votation
-    ADD CONSTRAINT votation_pkey PRIMARY KEY (votation_id);
 
 
 --
@@ -164,7 +145,7 @@ ALTER TABLE ONLY judgement
 -- Name: option option_votation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY option
+ALTER TABLE ONLY `option`
     ADD CONSTRAINT option_votation_id_fkey FOREIGN KEY (votation_id) REFERENCES votation(votation_id);
 
 
@@ -181,7 +162,7 @@ ALTER TABLE ONLY votation
 --
 
 ALTER TABLE ONLY vote
-    ADD CONSTRAINT vote_option_id_fkey FOREIGN KEY (option_id) REFERENCES option(option_id);
+    ADD CONSTRAINT vote_option_id_fkey FOREIGN KEY (option_id) REFERENCES `option`(option_id);
 
 
 --
