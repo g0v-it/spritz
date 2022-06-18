@@ -5,7 +5,8 @@
 CREATE TABLE judgement (
     votation_id integer NOT NULL,
     jud_value integer NOT NULL,
-    jud_name VARCHAR(50) NOT NULL
+    jud_name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (votation_id, jud_value);
 );
 
 
@@ -49,7 +50,8 @@ CREATE TABLE vote (
     vote_key VARCHAR(128) NOT NULL,
     votation_id integer NOT NULL,
     option_id integer NOT NULL,
-    jud_value integer NOT NULL
+    jud_value integer NOT NULL,
+    PRIMARY KEY (vote_key, votation_id, option_id)
 );
 
 
@@ -61,7 +63,8 @@ CREATE TABLE vote (
 CREATE TABLE voter (
     user_id integer NOT NULL,
     votation_id integer NOT NULL,
-    voted integer
+    voted integer, 
+    PRIMARY KEY (user_id, votation_id)
 );
 
 
@@ -80,18 +83,6 @@ CREATE TABLE votinguser (
 
 
 
---
--- Name: judgement judgement_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE  judgement
-    ADD CONSTRAINT judgement_pkey PRIMARY KEY (votation_id, jud_value);
-
-
-
-
-
-
 
 --
 -- Name: votation votation_votation_description_key; Type: CONSTRAINT; Schema: public; Owner: dinogen
@@ -101,28 +92,8 @@ ALTER TABLE  votation
     ADD CONSTRAINT votation_votation_description_key UNIQUE (votation_description);
 
 
---
--- Name: vote vote_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE  vote
-    ADD CONSTRAINT vote_pkey PRIMARY KEY (vote_key, votation_id, option_id);
 
 
---
--- Name: voter voter_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE  voter
-    ADD CONSTRAINT voter_pkey PRIMARY KEY (user_id, votation_id);
-
-
---
--- Name: votinguser votinguser_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
---
-
-ALTER TABLE  votinguser
-    ADD CONSTRAINT votinguser_pkey PRIMARY KEY (user_id);
 
 
 --
