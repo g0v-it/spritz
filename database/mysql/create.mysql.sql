@@ -6,7 +6,7 @@ CREATE TABLE judgement (
     votation_id integer NOT NULL,
     jud_value integer NOT NULL,
     jud_name VARCHAR(50) NOT NULL,
-    PRIMARY KEY (votation_id, jud_value);
+    PRIMARY KEY (votation_id, jud_value)
 );
 
 
