@@ -84,7 +84,7 @@ CREATE TABLE votinguser (
 -- Name: judgement judgement_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY judgement
+ALTER TABLE  judgement
     ADD CONSTRAINT judgement_pkey PRIMARY KEY (votation_id, jud_value);
 
 
@@ -97,7 +97,7 @@ ALTER TABLE ONLY judgement
 -- Name: votation votation_votation_description_key; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY votation
+ALTER TABLE  votation
     ADD CONSTRAINT votation_votation_description_key UNIQUE (votation_description);
 
 
@@ -105,7 +105,7 @@ ALTER TABLE ONLY votation
 -- Name: vote vote_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY vote
+ALTER TABLE  vote
     ADD CONSTRAINT vote_pkey PRIMARY KEY (vote_key, votation_id, option_id);
 
 
@@ -113,7 +113,7 @@ ALTER TABLE ONLY vote
 -- Name: voter voter_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY voter
+ALTER TABLE  voter
     ADD CONSTRAINT voter_pkey PRIMARY KEY (user_id, votation_id);
 
 
@@ -121,7 +121,7 @@ ALTER TABLE ONLY voter
 -- Name: votinguser votinguser_pkey; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY votinguser
+ALTER TABLE  votinguser
     ADD CONSTRAINT votinguser_pkey PRIMARY KEY (user_id);
 
 
@@ -129,7 +129,7 @@ ALTER TABLE ONLY votinguser
 -- Name: votinguser votinguser_user_name_key; Type: CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY votinguser
+ALTER TABLE  votinguser
     ADD CONSTRAINT votinguser_user_name_key UNIQUE (user_name);
 
 
@@ -137,7 +137,7 @@ ALTER TABLE ONLY votinguser
 -- Name: judgement judgement_votation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY judgement
+ALTER TABLE  judgement
     ADD CONSTRAINT judgement_votation_id_fkey FOREIGN KEY (votation_id) REFERENCES votation(votation_id);
 
 
@@ -145,7 +145,7 @@ ALTER TABLE ONLY judgement
 -- Name: option option_votation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY `option`
+ALTER TABLE  `option`
     ADD CONSTRAINT option_votation_id_fkey FOREIGN KEY (votation_id) REFERENCES votation(votation_id);
 
 
@@ -153,7 +153,7 @@ ALTER TABLE ONLY `option`
 -- Name: votation votation_promoter_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY votation
+ALTER TABLE  votation
     ADD CONSTRAINT votation_promoter_user_id_fkey FOREIGN KEY (promoter_user_id) REFERENCES votinguser(user_id);
 
 
@@ -161,7 +161,7 @@ ALTER TABLE ONLY votation
 -- Name: vote vote_option_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY vote
+ALTER TABLE  vote
     ADD CONSTRAINT vote_option_id_fkey FOREIGN KEY (option_id) REFERENCES `option`(option_id);
 
 
@@ -169,7 +169,7 @@ ALTER TABLE ONLY vote
 -- Name: vote vote_votation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY vote
+ALTER TABLE  vote
     ADD CONSTRAINT vote_votation_id_fkey FOREIGN KEY (votation_id) REFERENCES votation(votation_id);
 
 
@@ -177,7 +177,7 @@ ALTER TABLE ONLY vote
 -- Name: voter voter_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY voter
+ALTER TABLE  voter
     ADD CONSTRAINT voter_user_id_fkey FOREIGN KEY (user_id) REFERENCES votinguser(user_id);
 
 
@@ -185,7 +185,7 @@ ALTER TABLE ONLY voter
 -- Name: voter voter_votation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: dinogen
 --
 
-ALTER TABLE ONLY voter
+ALTER TABLE  voter
     ADD CONSTRAINT voter_votation_id_fkey FOREIGN KEY (votation_id) REFERENCES votation(votation_id);
 
 
