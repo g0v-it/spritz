@@ -1,43 +1,19 @@
--- MariaDB dump 10.19  Distrib 10.6.8-MariaDB, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 5.7.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: spritz
 -- ------------------------------------------------------
--- Server version	10.6.8-MariaDB
+-- Server version	5.7.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Sequence structure for `option_id_seq`
---
-
-DROP SEQUENCE IF EXISTS `option_id_seq`;
-CREATE SEQUENCE `option_id_seq` start with 1 minvalue 1 maxvalue 9223372036854775806 increment by 1 cache 1000 nocycle ENGINE=InnoDB;
-SELECT SETVAL(`option_id_seq`, 1, 0);
-
---
--- Sequence structure for `user_id_seq`
---
-
-DROP SEQUENCE IF EXISTS `user_id_seq`;
-CREATE SEQUENCE `user_id_seq` start with 1 minvalue 1 maxvalue 9223372036854775806 increment by 1 cache 1000 nocycle ENGINE=InnoDB;
-SELECT SETVAL(`user_id_seq`, 1001, 0);
-
---
--- Sequence structure for `votation_id_seq`
---
-
-DROP SEQUENCE IF EXISTS `votation_id_seq`;
-CREATE SEQUENCE `votation_id_seq` start with 1 minvalue 1 maxvalue 9223372036854775806 increment by 1 cache 1000 nocycle ENGINE=InnoDB;
-SELECT SETVAL(`votation_id_seq`, 1, 0);
 
 --
 -- Table structure for table `judgement`
@@ -52,7 +28,7 @@ CREATE TABLE `judgement` (
   `jud_name` varchar(50) NOT NULL,
   PRIMARY KEY (`votation_id`,`jud_value`),
   CONSTRAINT `judgement_ibfk_1` FOREIGN KEY (`votation_id`) REFERENCES `votation` (`votation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,13 +48,13 @@ DROP TABLE IF EXISTS `option`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `option` (
-  `option_id` int(11) NOT NULL,
+  `option_id` int(11) NOT NULL AUTO_INCREMENT,
   `votation_id` int(11) DEFAULT NULL,
   `option_name` varchar(50) NOT NULL,
   PRIMARY KEY (`option_id`),
   UNIQUE KEY `votation_id` (`votation_id`,`option_name`),
   CONSTRAINT `option_ibfk_1` FOREIGN KEY (`votation_id`) REFERENCES `votation` (`votation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +74,7 @@ DROP TABLE IF EXISTS `votation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `votation` (
-  `votation_id` int(11) NOT NULL,
+  `votation_id` int(11) NOT NULL AUTO_INCREMENT,
   `promoter_user_id` int(11) DEFAULT NULL,
   `votation_description` varchar(500) NOT NULL,
   `description_url` varchar(500) NOT NULL,
@@ -111,7 +87,7 @@ CREATE TABLE `votation` (
   UNIQUE KEY `votation_description` (`votation_description`),
   KEY `promoter_user_id` (`promoter_user_id`),
   CONSTRAINT `votation_ibfk_1` FOREIGN KEY (`promoter_user_id`) REFERENCES `votinguser` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +116,7 @@ CREATE TABLE `vote` (
   KEY `option_id` (`option_id`),
   CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`votation_id`) REFERENCES `votation` (`votation_id`),
   CONSTRAINT `vote_ibfk_2` FOREIGN KEY (`option_id`) REFERENCES `option` (`option_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,7 +143,7 @@ CREATE TABLE `voter` (
   KEY `votation_id` (`votation_id`),
   CONSTRAINT `voter_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `votinguser` (`user_id`),
   CONSTRAINT `voter_ibfk_2` FOREIGN KEY (`votation_id`) REFERENCES `votation` (`votation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,14 +163,14 @@ DROP TABLE IF EXISTS `votinguser`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `votinguser` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(200) NOT NULL,
   `pass_word` varchar(200) NOT NULL,
   `email` varchar(200) DEFAULT NULL,
   `verified` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-18 19:05:55
+-- Dump completed on 2022-06-18 21:10:13
