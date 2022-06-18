@@ -163,9 +163,9 @@ ALTER TABLE  voter
 --
 -- users for test pourpose
 --
-insert into  votinguser(user_id,user_name,pass_word,email,verified) values (0,'aldo','aldo','',1);
-insert into  votinguser(user_id,user_name,pass_word,email,verified) values (1,'beppe','beppe','',1);
-insert into  votinguser(user_id,user_name,pass_word,email,verified) values (2,'carlo','carlo','',1);
-insert into  votinguser(user_id,user_name,pass_word,email,verified) values (3,'dario','dario','',1);
-insert into  votinguser(user_id,user_name,pass_word,email,verified) values (4,'ezio','ezio','',1);
+insert into  votinguser(user_id,user_name,pass_word,email,verified) values (1,'aldo','aldo','',1);
+insert into  votinguser(user_id,user_name,pass_word,email,verified) values (2,'beppe','beppe','',1);
+insert into  votinguser(user_id,user_name,pass_word,email,verified) values (3,'carlo','carlo','',1);
+insert into  votinguser(user_id,user_name,pass_word,email,verified) values (4,'dario','dario','',1);
+insert into  votinguser(user_id,user_name,pass_word,email,verified) values (5,'ezio','ezio','',1);
 

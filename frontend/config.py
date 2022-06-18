@@ -8,13 +8,14 @@ import os
 #
 # Database configuration
 #
-DBTYPE="postgresql"
-DBHOST = os.environ.get('POSTGRES_HOST')   # "localhost"
-DBNAME = os.environ.get('POSTGRES_DBNAME') # "spritz"
-#DBNAME = "prova" # just a test
-DBUSER = os.environ.get('POSTGRES_USER')   # "dinogen"
-DBPWD  = os.environ.get('POSTGRES_PWD')    # "abc123"
-SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,5432,DBNAME)
+# DBTYPE="postgresql"   #   deprecated
+DBHOST  = os.environ.get('SPRITZ_DBHOST') # "localhost"
+DBNAME  = os.environ.get('SPRITZ_DBNAME') # "spritz"
+DBUSER  = os.environ.get('SPRITZ_DBUSER') # "dinogen"
+DBPWD   = os.environ.get('SPRITZ_DBPWD')  # "abc123"
+DBPORT  = os.environ.get('SPRITZ_DBPORT') # 3306
+#SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,5432,DBNAME)
+SQLALCHEMY_DATABASE_URI='mysql://{}:{}@{}:{}/{}'.format(DBUSER,DBPWD,DBHOST,DBPORT,DBNAME)
 #SQLALCHEMY_DATABASE_URI='sqlite:///test.db'
 
 #

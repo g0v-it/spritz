@@ -138,6 +138,19 @@ def auth0_callback_handling():
         message = (auth_result['message'],MSG_KO)
         return redirect(url_for('login'))
 
+@app.route('/google_callback_url')
+def google_callback_handling():
+    message = None
+    auth_result = auth.auth()
+    if auth_result['logged_in']:
+        u = user.User(auth_result['username'])
+        login_user(u)
+        message = (auth_result['message'],MSG_OK)
+        return redirect(url_for('votation_list'))
+    else:
+        message = (auth_result['message'],MSG_KO)
+        return redirect(url_for('login'))
+
 
 @app.route("/logout")
 @login_required
@@ -443,5 +456,5 @@ def api_report(votation_id):
 
     return response
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0') 
+#if __name__ == '__main__':
+#    app.run(debug=True, host='0.0.0.0') 

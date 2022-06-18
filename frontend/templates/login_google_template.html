@@ -24,7 +24,7 @@ function onSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
   console.log('idtoken: ' + id_token);
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', "{{ url_for('login') }}");
+  xhr.open('POST', "{{ url_for('google_callback_handling') }}");
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function() {
       console.log('Signed in as: ' + xhr.responseText);
