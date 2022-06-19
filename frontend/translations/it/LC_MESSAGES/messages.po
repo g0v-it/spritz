@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-17 16:58+0100\n"
+"POT-Creation-Date: 2022-06-19 14:53+0200\n"
 "PO-Revision-Date: 2019-04-24 17:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: auth_auth0.py:44 auth_google.py:26 auth_google.py:40 auth_ldap.py:39
 #: auth_test.py:25
@@ -24,7 +24,7 @@ msgid "Login failed"
 msgstr "Accesso fallito"
 
 #: auth_auth0.py:53 auth_google.py:50 auth_ldap.py:46 auth_superauth.py:43
-#: auth_test.py:31 index.py:105
+#: auth_test.py:31 index.py:123
 msgid "Login successful"
 msgstr "Login eseguito"
 
@@ -40,7 +40,7 @@ msgstr "Utente o password errati"
 msgid "Login not successful, (no username)"
 msgstr "Accesso fallito, (manca username)"
 
-#: index.py:80 index.py:433 templates/login_auth0_template.html:5
+#: index.py:98 index.py:464 templates/login_auth0_template.html:5
 #: templates/login_google_template.html:5
 #: templates/login_google_template.html:12
 #: templates/login_superauth_template.html:5
@@ -48,89 +48,89 @@ msgstr "Accesso fallito, (manca username)"
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: index.py:84 index.py:88
+#: index.py:102 index.py:106
 msgid "Credits"
-msgstr ""
+msgstr "Riconoscimenti"
 
-#: index.py:94
+#: index.py:112
 msgid "Spritz, Online Voting System"
 msgstr "Spritz, Sistema per il voto online"
 
-#: index.py:108
+#: index.py:126
 msgid "Login unsuccessful"
 msgstr "Accesso fallito"
 
-#: index.py:126
+#: index.py:144
 msgid "Login result"
 msgstr "Risultato dell'accesso"
 
-#: index.py:156
+#: index.py:187
 msgid "Please, insert data"
 msgstr "Inserire dati"
 
-#: index.py:173
+#: index.py:204
 msgid "New election"
 msgstr "Crea una elezione"
 
-#: index.py:181 templates/base_template.html:47
+#: index.py:212 templates/base_template.html:47
 msgid "Election list"
 msgstr "Lista delle elezioni"
 
-#: index.py:253 index.py:267 index.py:285
+#: index.py:284 index.py:298 index.py:316
 msgid "Election details"
 msgstr "Dettagli dell'elezione"
 
-#: index.py:302
+#: index.py:333
 msgid "Election closed"
 msgstr "Elezione chiusa"
 
-#: index.py:303
+#: index.py:334
 msgid "Election closed, please, check results"
 msgstr "Elezione chiusa, controlla i risultati"
 
-#: index.py:311 index.py:315
+#: index.py:342 index.py:346
 msgid "Delete"
 msgstr "Cancellazione"
 
-#: index.py:312
+#: index.py:343
 msgid "Election deleted"
 msgstr "Elezione cancellata"
 
-#: index.py:328
+#: index.py:359
 msgid "Voter"
 msgstr "Avente diritto"
 
-#: index.py:329
+#: index.py:360
 msgid "{} voters being added"
 msgstr "{} aventi diritto sono stati aggiunti"
 
-#: index.py:332 templates/votation_detail_template.html:32
+#: index.py:363 templates/votation_detail_template.html:32
 msgid "Voters"
 msgstr "Votanti"
 
-#: index.py:333
+#: index.py:364
 msgid "Sorry, only the owner of this election can add voters"
 msgstr "Solo il promotore dell'elezione può aggiungere aventi diritto"
 
-#: index.py:365 index.py:400 templates/list_rand/vote_template.html:62
+#: index.py:396 index.py:431 templates/list_rand/vote_template.html:62
 #: templates/majority_jud/vote_template.html:63
 #: templates/votation_list_template.html:25
 msgid "Vote"
 msgstr "Vota"
 
-#: index.py:377 index.py:392 index.py:410
+#: index.py:408 index.py:423 index.py:441
 msgid "Your vote has been registered"
 msgstr "Voto registrato"
 
-#: index.py:379 index.py:412
+#: index.py:410 index.py:443
 msgid "Error. Vote NOT registered. Wrong key?"
 msgstr "Errore. Voto NON registrato. Chiave sbagliata?"
 
-#: index.py:380 index.py:395 index.py:413
+#: index.py:411 index.py:426 index.py:444
 msgid "Vote registering"
 msgstr "Votazione"
 
-#: index.py:394
+#: index.py:425
 msgid "Error. Vote NOT registered. Wrong Password?"
 msgstr "Errore. Voto non registrato. Password errata?"
 
@@ -192,9 +192,13 @@ msgstr "Esci"
 msgid "Login"
 msgstr "Entra"
 
-#: templates/base_template.html:86 templates/login_auth0_template.html:29
+#: templates/base_template.html:86 templates/login_auth0_template.html:33
 msgid "Spritz_online_voting_system.pdf"
 msgstr "Spritz_sistema_di_voto_online.pdf"
+
+#: templates/base_template.html:86 templates/login_auth0_template.html:33
+msgid "How it works?"
+msgstr "Come funziona?"
 
 #: templates/confirmation_template.html:3
 msgid "Confirm"
@@ -229,11 +233,7 @@ msgstr "Vai a"
 msgid "Welcome in Spritz voting system. Please log in."
 msgstr "Benvenuto nel sistema di voto Spritz. Fai login."
 
-#: templates/login_auth0_template.html:29
-msgid "How it works?"
-msgstr "Come funziona?"
-
-#: templates/login_auth0_template.html:39
+#: templates/login_auth0_template.html:43
 msgid "Please accept terms."
 msgstr "Accettare i termini per proseguire"
 
@@ -339,7 +339,6 @@ msgid "Start the election"
 msgstr "Inizia l'elezione"
 
 #: templates/votation_detail_template.html:63
-#: venv/Lib/site-packages/click/core.py:1360
 msgid "Options"
 msgstr "Opzioni"
 
@@ -548,6 +547,11 @@ msgstr "Non puoi ancora votare"
 msgid "You cannot vote anymore"
 msgstr "Non puoi votare pi&ugrave;"
 
+#: templates/list_rand/vote_template.html:11
+#: templates/simple_majority/vote_template.html:11
+msgid "Set your vote"
+msgstr "Poni il tuo voto"
+
 #: templates/list_rand/vote_template.html:12
 msgid "You must choose a color for each option"
 msgstr "Devi scegliere un colore per ogni opzione"
@@ -595,11 +599,16 @@ msgstr "Chiave segreta per questo voto"
 msgid "Remember this secret key; it isn't possible to recover it"
 msgstr "Ricorda questa frase segreta. Non sar&agrave; possibile recuperarla"
 
+#: templates/list_rand/vote_template.html:58
+#, fuzzy
+msgid "Think up a secret key"
+msgstr "Cosa &egrave; questo?"
+
 #: templates/list_rand/vote_template.html:59
-#: templates/majority_jud/vote_template.html:60
+#, fuzzy
 msgid ""
 "This secret key is for THIS election only. You can use any word you want."
-" Keep it secret and don't forget it."
+" Keep it secret and dont forget it."
 msgstr ""
 "Questa chiave segreta vale solo per QUESTA elezione. Puoi usare ogni "
 "parola che vuoi. Tienila segreta e non dimenticarla."
@@ -633,6 +642,14 @@ msgstr "Il giudizio \"Non So\" &egrave; il voto pi&ugrave; basso"
 msgid "Judgement"
 msgstr "Giudizio"
 
+#: templates/majority_jud/vote_template.html:60
+msgid ""
+"This secret key is for THIS election only. You can use any word you want."
+" Keep it secret and don't forget it."
+msgstr ""
+"Questa chiave segreta vale solo per QUESTA elezione. Puoi usare ogni "
+"parola che vuoi. Tienila segreta e non dimenticarla."
+
 #: templates/simple_majority/votation_detail_template.html:2
 msgid "Election results"
 msgstr "Risultati dell'elezione"
@@ -641,10 +658,6 @@ msgstr "Risultati dell'elezione"
 #: templates/simple_majority/votation_detail_template.html:15
 msgid "votes"
 msgstr "voti"
-
-#: templates/simple_majority/vote_template.html:11
-msgid "Set your vote"
-msgstr "Poni il tuo voto"
 
 #: templates/simple_majority/vote_template.html:12
 msgid "You can vote only one option."
@@ -673,3 +686,4 @@ msgstr "Scegli solo una opzione"
 #: templates/simple_majority/vote_template.html:34
 msgid "Remember this secret key; it is not possible to recover"
 msgstr "Ricordati questa chiave segreta; non sar&agrave; possibile recuperarla"
+
