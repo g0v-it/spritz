@@ -9,7 +9,7 @@
     <div id="g_id_onload"
          data-client_id="{{ CLIENT_ID }}"
          data-ux_mode="redirect"
-         data-login_uri="https://copernicani.pythonanywhere.com/google_callback_url">
+         data-login_uri="{{url_for('google_callback_url',_external=True)}}">
     </div>
     <div class="g_id_signin" data-type="standard"></div>
 

@@ -157,7 +157,7 @@ def auth0_callback_handling():
         return redirect(url_for('login'))
 
 @app.route('/google_callback_url', methods=['POST',])
-def google_callback_handling():
+def google_callback_url():
     message = None
 
 
