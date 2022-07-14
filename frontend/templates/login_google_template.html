@@ -1,38 +1,18 @@
-{% extends "base_template.html" %} 
-{% block body %} 
-{% if current_user.is_authenticated %} 
-{{_("Welcome")}} {{ current_user.user_name }}. 
+{% extends "base_template.html" %}
+{% block body %}
+{% if current_user.is_authenticated %}
+{{_("Welcome")}} {{ current_user.user_name }}.
 <div>{{_("Go to")}} <a href="/">{{_("Main menu")}}</a></div>
 {% else %}
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-<meta name="google-signin-client_id" content="{{ CLIENT_ID }}">
 
-<div class="container">
-  <div class="mb-4">
-    {{_("After logging in by this button, please go to")}} <a href="/">{{_("Main menu")}}</a>
-  </div>
-  <div class="g-signin2" data-onsuccess="onSignIn"></div>
-</div>
-
-<script>
-function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  var id_token = googleUser.getAuthResponse().id_token;
-  console.log('idtoken: ' + id_token);
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', "{{ url_for('google_callback_handling') }}");
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.onload = function() {
-      console.log('Signed in as: ' + xhr.responseText);
-    };
-  xhr.send('user_name=' + profile.getEmail() + "&pass_word=" + id_token);
-}
-</script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="{{ CLIENT_ID }}"
+         data-ux_mode="redirect"
+         data-login_uri="https://copernicani.pythonanywhere.com/google_callback_url">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
 
 
-{% endif %} 
+{% endif %}
 {% endblock %}

@@ -22,7 +22,7 @@ from flask import Flask, render_template,request,redirect,url_for,jsonify,make_r
 from flask_login import LoginManager, login_required, current_user,login_user,logout_user
 from flask_babel import Babel,gettext
 from flask_sqlalchemy import SQLAlchemy
-import config 
+import config
 import datetime
 from config import AUTH, MSG_INFO,MSG_OK,MSG_KO
 #per abilitare CORS
@@ -40,7 +40,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 # fine CORS
 
-app.secret_key = os.urandom(24) 
+app.secret_key = os.urandom(24)
 # flask-login initialization
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -159,6 +159,11 @@ def auth0_callback_handling():
 @app.route('/google_callback_url', methods=['POST',])
 def google_callback_handling():
     message = None
+
+
+
+
+
     auth_result = auth.auth(request.form)
     if auth_result['logged_in']:
         u = user.User(auth_result['username'])
@@ -185,7 +190,7 @@ def logout():
 def votation_propose():
     v = Votation()
     message = (_("Please, insert data"),MSG_INFO)
-    if request.method == 'POST':    
+    if request.method == 'POST':
         #v.votation_id = request.form['votation_id']
         v.votation_description = request.form['votation_description']
         v.description_url = request.form['description_url']
@@ -341,7 +346,7 @@ def delete_election(votation_id):
         return render_template('thank_you_template.html',  votation_id=0, \
         pagetitle=_("Delete"), \
         message=(_("Election deleted"),MSG_OK))
-    else: 
+    else:
         return render_template('confirmation_template.html', \
         pagetitle=_("Delete"), \
         message=None,votation_id=votation_id)
@@ -351,7 +356,7 @@ def delete_election(votation_id):
 def add_voters():
     votation_id = int(request.form['votation_id'])
     v = votation_dao.load_votation_by_id(votation_id)
-    if v.promoter_user.user_id == current_user.u.user_id: 
+    if v.promoter_user.user_id == current_user.u.user_id:
         list_voters = request.form['list_voters']
         ar = voter_dao.split_string_remove_dup(list_voters)
         n = voter_bo.insert_voters_array(votation_id,ar)
@@ -361,7 +366,7 @@ def add_voters():
     if v.promoter_user.user_id != current_user.u.user_id:
         return render_template('thank_you_template.html',  votation_id=votation_id,\
             pagetitle=_("Voters"), \
-            message=(_("Sorry, only the owner of this election can add voters"),MSG_KO))        
+            message=(_("Sorry, only the owner of this election can add voters"),MSG_KO))
 
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -371,7 +376,7 @@ def unauthorized():
 # @app.route("/version")
 # def print_version():
 #     return render_template('version_template.html', pagetitle="Frontend Version", version=os.environ['voting_version'])
-  
+
 @app.route("/vote/<int:votation_id>",  methods=['GET', 'POST'])
 @login_required
 def vote_(votation_id):
@@ -386,18 +391,18 @@ def vote_(votation_id):
         return votesimplemaj(v)
     if v.votation_type == votation_dao.TYPE_LIST_RAND:
         return votelistrand(v)
-        
+
 def votemajjud(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
-    if request.method == 'GET': 
+    if request.method == 'GET':
         Judgement_array = judgement_dao.load_judgement_by_votation(v.votation_id)
         Judgement_array.reverse()
-        return render_template('majority_jud/vote_template.html', 
-                               pagetitle=_("Vote"), 
-                               v=v, 
+        return render_template('majority_jud/vote_template.html',
+                               pagetitle=_("Vote"),
+                               v=v,
                                options_array=options_array,
-                               juds_array=Judgement_array) 
-    if request.method == 'POST':  
+                               juds_array=Judgement_array)
+    if request.method == 'POST':
         vote_key = request.form["vote_key"]
         vote_array = []
         for c in options_array:
@@ -412,10 +417,10 @@ def votemajjud(v):
 
 def votesimplemaj(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
-    if request.method == 'GET':    
+    if request.method == 'GET':
         return render_template('simple_majority/vote_template.html', pagetitle="Vota", \
-        v=v, options_array=options_array) 
-    if request.method == 'POST':  
+        v=v, options_array=options_array)
+    if request.method == 'POST':
         vote_key = request.form["vote_key"]
         my_vote = request.form["my_vote"]
         result = vote_simple.save_vote(current_user.u.user_id, vote_key, v.votation_id,int(my_vote))
@@ -427,10 +432,10 @@ def votesimplemaj(v):
 
 def votelistrand(v):
     options_array = option_dao.load_options_by_votation(v.votation_id)
-    if request.method == 'GET':    
+    if request.method == 'GET':
         return render_template('list_rand/vote_template.html', pagetitle=_("Vote"), \
-        v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id)) 
-    if request.method == 'POST':  
+        v=v, options_array=options_array,words_array=judgement_dao.load_judgement_by_votation(v.votation_id))
+    if request.method == 'POST':
         vote_key = request.form["vote_key"]
         vote_array = []
         for c in options_array:
@@ -469,10 +474,10 @@ def api_report(votation_id):
     csv = vote_dao.get_report_data(votation_id)
     response = make_response(csv)
     cd = 'attachment; filename=election_{}_result.csv'.format(votation_id)
-    response.headers['Content-Disposition'] = cd 
+    response.headers['Content-Disposition'] = cd
     response.mimetype='text/csv'
 
     return response
 
 #if __name__ == '__main__':
-#    app.run(debug=True, host='0.0.0.0') 
+#    app.run(debug=True, host='0.0.0.0')
