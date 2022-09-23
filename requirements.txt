@@ -25,7 +25,7 @@ itsdangerous==2.1.2
 Jinja2==3.0.2
 MarkupSafe==2.1.1
 mysqlclient==2.1.0
-protobuf==3.20.1
+protobuf==3.20.2
 psycopg2==2.9.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
